@@ -9,6 +9,7 @@
 npm install
 
 # serve with hot reload at localhost:8080
+# 브라우저에서 localhost:8080으로 들어가면 확인할 수 있고 파일 내용을 바꾸고 저장만 하면 즉시적용됩니다.
 npm run dev
 
 # build for production with minification
