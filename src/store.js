@@ -5,11 +5,13 @@ Vue.use(Vuex)
     /* eslint-disable */
 export const store = new Vuex.Store({
     state: {
-
+        isLogged: false
     },
     plugins: [createPersistedState()],
     getters: {
-
+        isLogged: function(state){
+            return state.isLogged
+        }
     },
     mutations: {
 

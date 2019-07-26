@@ -21,6 +21,10 @@ import 'vue-datetime/dist/vue-datetime.css'
 
 import VueProgressBar from 'vue-progressbar'
 import wysiwyg from 'vue-wysiwyg'
+import VueSidebarMenu from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+
+
 
 
 Vue.config.productionTip = false
@@ -32,7 +36,7 @@ Vue.use(vueNotice)
 Vue.use(Notifications)
 Vue.use(Datetime)
 Vue.mixin(common)
-
+Vue.use(VueSidebarMenu)
 Vue.use(wysiwyg, {})
 
 

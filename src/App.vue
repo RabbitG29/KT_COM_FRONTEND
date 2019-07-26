@@ -27,14 +27,22 @@
                 </div>
             </div>
         </div>
-    <router-view/>
-    
-  </div>
+        <sidebar-menu :menu="menu"/>
+        <router-view/>
+        <div id="footer">
+            <small>ⓒ Copyright 2019 developed by 권동현 All Rights Reserved</small>
+        </div>
+    </div>
 </template>
 
 <script>
+// TODO : 디폴트로 접혀있게 하려면 어떻게 해야하지?
+import { SidebarMenu } from 'vue-sidebar-menu';
 export default {
   name: 'App',
+  components: {
+    SidebarMenu
+  },
   computed: {
        
     },
@@ -46,7 +54,59 @@ export default {
     },
     data(){
         return {
-            
+             menu: [ // TODO : 아이콘 바꾸자
+                {
+                    href: '/',
+                    title: '홈',
+                    //icon: '@/assets/kt_ci2.png'
+                    icon: {
+                            element: 'span',
+                            class: 'fa fa-user',
+                            attributes: {},
+                            text: '홈'
+                        }
+                },
+                {
+                    href: '/',
+                    title: '게시판',
+                    icon: {
+                            element: 'span',
+                            class: 'fa fa-user',
+                            attributes: {},
+                            text: '게'
+                        }
+                },
+                {
+                    href: '/',
+                    title: '채팅',
+                    icon: {
+                            element: 'span',
+                            class: 'fa fa-user',
+                            attributes: {},
+                            text: '채'
+                        }
+                },
+                {
+                    href: '/',
+                    title: '코드 리뷰',
+                    icon: {
+                            element: 'span',
+                            class: 'fa fa-user',
+                            attributes: {},
+                            text: '코'
+                        }
+                },
+                {
+                    href: '/',
+                    title: '사이트맵',
+                    icon: {
+                            element: 'span',
+                            class: 'fa fa-user',
+                            attributes: {},
+                            text: '사'
+                        }
+                },
+            ]
         }
     }
 }
@@ -55,6 +115,7 @@ export default {
 <style>
 @import './assets/noty.css';
 @import '../node_modules/vue-wysiwyg/dist/vueWysiwyg.css';
+
 @import url(//fonts.googleapis.com/earlyaccess/nanumgothic.css);
 @font-face {
   font-family: 'NanumGothic' ;
@@ -134,5 +195,12 @@ a {
     position: relative;
     padding-top: 50px;
     padding-bottom: 20px;
+}
+#footer {
+    margin-top: 175px;
+    padding: 10px;
+    position: relative;
+    background: rgb(220, 220, 220);
+    color: black;
 }
 </style>
