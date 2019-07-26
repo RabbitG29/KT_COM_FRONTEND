@@ -197,7 +197,7 @@ a {
     padding-bottom: 20px;
 }
 #footer {
-    margin-top: 175px;
+    margin-top: 800px;
     padding: 10px;
     position: relative;
     background: rgb(220, 220, 220);
