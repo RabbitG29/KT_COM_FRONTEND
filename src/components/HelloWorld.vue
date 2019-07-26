@@ -1,7 +1,6 @@
 <template>
   <div class="hello">
-    <h1>KT API GateWay</h1>
-    
+    <img src="../assets/kt_ci2.png" width="500px">
   </div>
 </template>
 

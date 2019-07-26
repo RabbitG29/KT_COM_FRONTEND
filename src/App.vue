@@ -1,6 +1,34 @@
 <template>
   <div id="app">
+      <div id="header">
+            <div id="login-box">
+                <div>
+                    <img src="./assets/kt_ci2.png" width="40px" align="left"/>
+                </div>
+                <div id="login-menu">
+                    <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
+                    <span v-else>
+                        <a href="" @click="logOut"> 로그아웃 </a>
+                    </span>
+                </div>
+            </div>
+            <div class="header">
+                <div class="container">
+                    <div class="row">
+                        <div class=" col-sm-8 col-xs-8 container">
+                            <div id="navigation">
+                                  <h1><router-link to="/">KT SW Developers Community</router-link></h1>
+                            </div>
+                        </div>
+                        <div id="nav-menu" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <app-menu-navigation/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     <router-view/>
+    
   </div>
 </template>
 
@@ -38,8 +66,14 @@ export default {
   font-weight : normal;
   font-style : normal;
 }
+@font-face {
+    font-family: 'Olleh';
+    src:url('assets/Droid-Sans-Fallback.ttf') format('truetype');
+    font-weight : normal;
+    font-style : normal;
+}
 div {
- font-family: 'NanumGothic';
+ font-family: 'Olleh','NanumGothic';
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -98,7 +132,7 @@ a {
     background-color: #fff;
     z-index: 99;
     position: relative;
-    padding-top: 80px;
+    padding-top: 50px;
     padding-bottom: 20px;
 }
 </style>
