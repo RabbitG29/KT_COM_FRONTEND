@@ -27,7 +27,10 @@
                 </div>
             </div>
         </div>
-        <sidebar-menu :menu="menu"/>
+        <sidebar-menu :menu="menu" :collapsed="collapsed" @item-click="onItemClick">
+            <span slot="collapse-icon" v-if="collapsed">↔</span>
+            <span slot="dropdown-icon">▶</span>
+        </sidebar-menu>
         <router-view/>
         <div id="footer">
             <small>ⓒ Copyright 2019 developed by 권동현 All Rights Reserved</small>
@@ -36,12 +39,14 @@
 </template>
 
 <script>
-// TODO : 디폴트로 접혀있게 하려면 어떻게 해야하지?
+// TODO : 디폴트로 접혀있게 하려면 어떻게 해야하지? -> 해결
 import { SidebarMenu } from 'vue-sidebar-menu';
+import customIcon from 'vue-icon/lib/vue-feather.esm'
 export default {
   name: 'App',
   components: {
-    SidebarMenu
+    SidebarMenu,
+    customIcon
   },
   computed: {
        
@@ -50,63 +55,85 @@ export default {
         
     },
     methods: {
-       
+       onItemClick(event, item) {
+           if(item.title=='kt.com')
+            window.open("http://www.kt.com","new page");
+       }
     },
     data(){
         return {
-             menu: [ // TODO : 아이콘 바꾸자
+            baseClass: 'v-icon',
+             menu: [ // TODO : 아이콘 바꾸자 -> 해결
                 {
                     href: '/',
                     title: '홈',
-                    //icon: '@/assets/kt_ci2.png'
-                    icon: {
-                            element: 'span',
-                            class: 'fa fa-user',
-                            attributes: {},
-                            text: '홈'
-                        }
+                    icon: 'fa fa-home'
+                    
+                        
                 },
                 {
-                    href: '/',
+                    //href: '/',
                     title: '게시판',
-                    icon: {
-                            element: 'span',
-                            class: 'fa fa-user',
-                            attributes: {},
-                            text: '게'
+                    icon: 'fa fa-user',
+                    child: [
+                        {
+                            href: '/',
+                            title: '공지사항',
+                            icon: 'fa fa-user',
+                        },
+                        {
+                            href: '/',
+                            title: '자유게시판',
+                            icon: 'fa fa-user',
+                        },
+                        {
+                            href: '/',
+                            title: 'Q&A',
+                            icon: 'fa fa-user',
+                        },
+                        {
+                            href: '/',
+                            title: '지식 공유',
+                            icon: 'fa fa-user',
                         }
+                    ]
                 },
                 {
-                    href: '/',
+                    //href: '/',
                     title: '채팅',
-                    icon: {
-                            element: 'span',
-                            class: 'fa fa-user',
-                            attributes: {},
-                            text: '채'
+                    icon: 'fa fa-user',
+                    child: [
+                        {
+                            href: '/',
+                            title: '자유채팅',
+                            icon: 'fa fa-user',
+                        },
+                        {
+                            href: '/',
+                            title: 'Q&A',
+                            icon: 'fa fa-user',
                         }
+                    ]
                 },
                 {
                     href: '/',
                     title: '코드 리뷰',
-                    icon: {
-                            element: 'span',
-                            class: 'fa fa-user',
-                            attributes: {},
-                            text: '코'
-                        }
+                    icon: 'fa fa-code',
                 },
                 {
-                    href: '/',
+                    //href: '/',
                     title: '사이트맵',
-                    icon: {
-                            element: 'span',
-                            class: 'fa fa-user',
-                            attributes: {},
-                            text: '사'
+                    icon: 'fa fa-map',
+                    child: [ // TODO : 링크가 안걸려 -> 해결
+                        {
+                            //href: 'http://www.kt.com',
+                            title: 'kt.com',
+                            icon: 'fa fa-user',
                         }
+                    ]
                 },
-            ]
+            ],
+            collapsed: true
         }
     }
 }
@@ -197,10 +224,28 @@ a {
     padding-bottom: 20px;
 }
 #footer {
-    margin-top: 800px;
+    margin-top: 400px;
     padding: 10px;
     position: relative;
     background: rgb(220, 220, 220);
     color: black;
+}
+.v-sidebar-menu .vsm-arrow:after {
+    content: '\f105';
+    font-family: 'Font Awesome 5 Free';
+}
+
+.v-sidebar-menu .collapse-btn:after {
+    content: '\f337';
+    font-family: 'Font Awesome 5 Free';
+}
+.sidebar.v-sidebar-menu .vsm-arrow:after {
+  content: '\f105';
+  font-family: 'FontAwesome';
+}
+
+.sidebar.v-sidebar-menu .collapse-btn:after {
+  content: '\f07e';
+  font-family: 'FontAwesome';
 }
 </style>

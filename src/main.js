@@ -23,6 +23,10 @@ import VueProgressBar from 'vue-progressbar'
 import wysiwyg from 'vue-wysiwyg'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import feather from 'vue-icon'
+import fontawesome from '@fortawesome/fontawesome'
+
+Vue.use(feather, 'v-icon')
 
 
 
@@ -62,5 +66,6 @@ new Vue({
     router,
     store,
     components: { App },
-    template: '<App/>'
+    template: '<App/>',
+    render: h => h(App)
 })
