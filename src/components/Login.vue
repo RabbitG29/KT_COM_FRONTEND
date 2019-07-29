@@ -31,7 +31,6 @@ export default {
       id: '',
       password: '',
       name: '',
-      password: ''
     }
   },
   computed: {
@@ -42,18 +41,43 @@ export default {
   methods: {
       logIn(data){
         console.log("commit")
-        console.log(data.ec)
-          console.log(data.cand)
-          this.$store.commit('logIn', {
-              id: this.id,
-              password: this.password,
-              cand: data.cand,
-              ec: data.ec
-          })
+        console.log(data.id)
+        console.log(data.name)
+        this.$store.commit('logIn', { // TODO : 사원정보넣기!!
+            id: data.id,
+            name: data.name
+        })
       },
       submit() {
           //this.$store.getters.isLogged=true;
-          this.$router.push("/");
+          //this.$router.push("/");
+          this.$http.get(this.$config.targetURL+`/users/login?id=${this.id}&password=${this.password}`)
+          .then((result)=>{
+              if(result.data.status == 'success'){ // 로그인 성공
+                  console.log('success')
+                  console.log(result.data)
+                  this.logIn(result.data)
+                  this.$notice({
+                      type: 'success',
+                      text: '무사히 로그인 성공!',
+                  })
+                  this.$router.push("/")
+              }
+              else {
+                console.log('error')
+                    this.$notice({
+                        type: 'alert',
+                        text: '로그인 정보가 올바르지 않습니다'
+                    })
+              }
+            })
+          .catch((error)=>{
+            console.log('server success')
+            this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
+          })
       }
   }
 }

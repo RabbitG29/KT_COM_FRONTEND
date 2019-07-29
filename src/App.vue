@@ -8,6 +8,7 @@
                 <div id="login-menu">
                     <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
                     <span v-else>
+                        <a>안녕하세요 {{getName}}님</a>
                         <a href="" @click="logOut"> 로그아웃 </a>
                     </span>
                 </div>
@@ -49,15 +50,28 @@ export default {
     customIcon
   },
   computed: {
-       
+        isLogged: function() {
+            return this.$store.getters.isLogged
+        },
+        getId() {
+            return this.$store.getters.getId
+        },
+        getName() {
+            return this.$store.getters.getName
+        }
     },
     watch: {
         
     },
     methods: {
-       onItemClick(event, item) {
-           if(item.title=='kt.com')
-            window.open("http://www.kt.com","new page");
+        logOut: function() {
+            this.$store.commit('logOut')
+        },
+       onItemClick(event, item) { // 여기서 분기해서 처리 가능
+            if(item.title=='kt.com')
+                window.open("http://www.kt.com","new page");
+            else if(item.title=='recruit.kt.com')
+                window.open("http://recruit.kt.com","new page");
        }
     },
     data(){
@@ -68,18 +82,16 @@ export default {
                     href: '/',
                     title: '홈',
                     icon: 'fa fa-home'
-                    
-                        
                 },
                 {
                     //href: '/',
                     title: '게시판',
-                    icon: 'fa fa-user',
+                    icon: 'fa fa-newspaper',
                     child: [
                         {
                             href: '/',
                             title: '공지사항',
-                            icon: 'fa fa-user',
+                            icon: 'fa fa-flag',
                         },
                         {
                             href: '/',
@@ -89,19 +101,19 @@ export default {
                         {
                             href: '/',
                             title: 'Q&A',
-                            icon: 'fa fa-user',
+                            icon: 'fa fa-question-circle',
                         },
                         {
                             href: '/',
                             title: '지식 공유',
-                            icon: 'fa fa-user',
+                            icon: 'fa fa-exclamation',
                         }
                     ]
                 },
                 {
                     //href: '/',
                     title: '채팅',
-                    icon: 'fa fa-user',
+                    icon: 'fa fa-comments',
                     child: [
                         {
                             href: '/',
@@ -111,7 +123,7 @@ export default {
                         {
                             href: '/',
                             title: 'Q&A',
-                            icon: 'fa fa-user',
+                            icon: 'fa fa-question-circle',
                         }
                     ]
                 },
@@ -128,8 +140,13 @@ export default {
                         {
                             //href: 'http://www.kt.com',
                             title: 'kt.com',
-                            icon: 'fa fa-user',
-                        }
+                            icon: 'fa fa-hashtag',
+                        },
+                        {
+                            //href: 'http://www.kt.com',
+                            title: 'recruit.kt.com',
+                            icon: 'fa fa-hashtag',
+                        },
                     ]
                 },
             ],
