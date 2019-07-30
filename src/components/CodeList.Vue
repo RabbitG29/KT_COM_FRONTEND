@@ -25,10 +25,10 @@
               </tr>
             </thead>
             <tbody> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -->
-              <tr v-for="(item, index) in list" @click="readBoard(item)" :key="index" style="cursor: pointer">
+              <tr v-for="(item, index) in list" :key="index" >
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.이름}}</td>
-                <td>{{item.파일명}}</td>
+                <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
                 <td>{{item.writetime}}</td>
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
@@ -65,6 +65,9 @@ export default {
         },
         gotoSonar: function() {
             window.open("https://sonarcloud.io/organizations/kt/projects");
+        },
+        readCode: function(item) {
+            window.open(item.링크);
         },
         getData: function() {
             var url = this.$config.targetURL+`/review?id=${this.id}`;
