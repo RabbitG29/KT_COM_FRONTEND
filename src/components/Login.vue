@@ -59,7 +59,7 @@ export default {
                   this.logIn(result.data)
                   this.$notice({
                       type: 'success',
-                      text: '무사히 로그인 성공!',
+                      text: '로그인이 성공적으로 완료되었습니다.',
                   })
                   this.$router.push("/")
               }

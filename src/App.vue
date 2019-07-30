@@ -68,10 +68,12 @@ export default {
             this.$store.commit('logOut')
         },
        onItemClick(event, item) { // 여기서 분기해서 처리 가능
+            //SidebarMenu.collapse(true); 페이지 바뀌면 메뉴가 접혔으면 좋겠는뎅
             if(item.title=='kt.com')
                 window.open("http://www.kt.com","new page");
             else if(item.title=='recruit.kt.com')
                 window.open("http://recruit.kt.com","new page");
+
        }
     },
     data(){
@@ -128,7 +130,7 @@ export default {
                     ]
                 },
                 {
-                    href: '/',
+                    href: '/codelist',
                     title: '코드 리뷰',
                     icon: 'fa fa-code',
                 },
