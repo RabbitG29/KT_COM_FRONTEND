@@ -1,5 +1,15 @@
 <template>
     <div class="container">
+      <modal id="code-delete" name="code-delete" height="auto" :scrollable="true" padding="10px">
+        <div class="modal-container">
+            <h3>코드를 정말 삭제하시겠습니까?</h3>
+            <hr>
+            <div>
+                <button class="btn btn-danger" @click.prevent="deleteCode(item.코드번호)">삭제</button>
+                <button class="btn btn-secondary" @click="$modal.hide('code-delete')">닫기</button>
+            </div>
+        </div>
+    </modal>
         <h1>My Code Review List</h1>
         <div id="board">
       <div class="board-box">
@@ -24,7 +34,7 @@
                 <th class="text-center">다운로드/삭제</th>
               </tr>
             </thead>
-            <tbody> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -->
+            <tbody> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
               <tr v-for="(item, index) in list" :key="index" >
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.이름}}</td>
@@ -32,7 +42,7 @@
                 <td>{{item.writetime}}</td>
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
-                    <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteCode(item.코드번호)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
+                    <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
               </tr>
             </tbody>
           </table>
@@ -43,6 +53,7 @@
 </template>
 
 <script>
+//TODO : 여기서 색인 기능?
 var path = require('path');
 export default {
   name: 'CodeList',
@@ -68,6 +79,10 @@ export default {
         },
         readCode: function(item) {
             window.open(item.링크);
+        },
+        deleteRequest: function(item) {
+            this.item = item
+            this.$modal.show('code-delete')
         },
         getData: function() {
             var url = this.$config.targetURL+`/review?id=${this.id}`;
@@ -164,5 +179,17 @@ li {
 }
 a {
   color: #42b983;
+}
+.modal {
+        text-align: center;
+}
+.modal-container {
+  width: auto;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
 }
 </style>

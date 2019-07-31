@@ -44,6 +44,7 @@ Vue.use(Datetime)
 Vue.mixin(common)
 Vue.use(VueSidebarMenu)
 Vue.use(wysiwyg, {})
+Vue.use(vuejsmodal, {dialog: true})
 
 
 const options = {
