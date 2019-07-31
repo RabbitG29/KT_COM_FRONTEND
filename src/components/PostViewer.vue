@@ -1,12 +1,17 @@
 <template>
-  <div class="hello">
-    <img src="../assets/kt_ci2.png" width="500px">
+  <div class="container">
+    <h1>최고의 게시판!!{{this.postId}}</h1>
+    <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
   </div>
 </template>
 
 <script>
+// TODO : Markdown Viewer 적용하기
 export default {
   name: 'HelloWorld',
+  mounted: function() {
+      this.postId = this.$route.query.postId;
+  },
   computed: {
         
     },
@@ -15,7 +20,8 @@ export default {
     },
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      postId: ''
     }
   }
 }

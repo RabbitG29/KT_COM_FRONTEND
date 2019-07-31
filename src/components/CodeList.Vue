@@ -11,11 +11,12 @@
         </div>
     </modal>
         <h1>My Code Review List</h1>
+        <br>
         <div id="board">
       <div class="board-box">
       <div v-show="isLogged" class="row form-group">
         
-        <div class="col-sm-50" >
+        <div class="col-sm-4" >
             <button type="button" class="btn btn-secondary"
         @click="gotoSonar()">과거 리뷰 보러가기</button>
           <button type="button" class="btn btn-secondary"
@@ -35,7 +36,7 @@
               </tr>
             </thead>
             <tbody> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
-              <tr v-for="(item, index) in list" :key="index" >
+              <tr v-for="(item, index) in result" :key="index" >
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.이름}}</td>
                 <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
@@ -48,6 +49,17 @@
           </table>
         </div>
       </div>
+      <br>
+      <div class="row form-group">
+        <label class="col-sm-1">코드검색</label>
+        <div class="col-sm-10">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명을 입력해주세요(대소문자 구분).">
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
+        </div>
+      </div>
+      
     </div>
     </div>
 </template>
@@ -61,6 +73,13 @@ export default {
         isLogged () {
             return this.$store.getters.isLogged;
         }
+    },
+    watch: {
+      $route: function(to, from){
+        this.msg = ''
+        this.id = this.getId;
+        this.getData()
+      }
     },
     mounted: function() {
         if(!this.isLogged) {
@@ -99,6 +118,7 @@ export default {
                         v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY년 M월 D일 H시 m분')
                         console.log(v);
                     })
+                    this.getResult(true);
                 }
             })
             .catch(e=>{
@@ -129,6 +149,19 @@ export default {
             this.$router.push({
                 name: 'CodeUploader'
             })
+        },
+        getResult: function(flag){
+            let arr_base=[];
+            let arr=[];            
+            for(var i=0;i<this.list.length;i++){
+              console.log(this.name);
+              if(this.name && this.list[i].파일명.indexOf(String(this.name)) == -1)
+                continue;
+              arr_base.push(this.list[i]);
+            }
+            this.result = arr_base;
+            console.log(this.result);
+            //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
         }
     },
     data () {
@@ -137,7 +170,9 @@ export default {
       id: '',
       counter: '1',
       list: [],
-      path: ''
+      path: '',
+      result: [],
+      name: ''
     }
   }
 }

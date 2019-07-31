@@ -73,7 +73,30 @@ export default {
                 window.open("http://www.kt.com","new page");
             else if(item.title=='recruit.kt.com')
                 window.open("http://recruit.kt.com","new page");
-
+            else if(item.title=='공지사항') {
+                this.$router.push({
+                name: 'PostList',
+                query: { boardId:1 }
+                })
+            }
+            else if(item.title=='자유게시판') {
+                this.$router.push({
+                name: 'PostList',
+                query: { boardId:2 }
+                })
+            }
+            else if(item.title=='Q&A') {
+                this.$router.push({
+                name: 'PostList',
+                query: { boardId:3 }
+                })
+            }
+            else if(item.title=='지식 공유') {
+                this.$router.push({
+                name: 'PostList',
+                query: { boardId:4 }
+                })
+            }
        }
     },
     data(){
@@ -87,11 +110,13 @@ export default {
                 },
                 {
                     //href: '/',
+                    // TODO : query로 boardId 어케 넘겨주지?
                     title: '게시판',
                     icon: 'fa fa-newspaper',
                     child: [
                         {
-                            href: '/',
+                            href: '/postlist',
+                            query: 'boardId=1',
                             title: '공지사항',
                             icon: 'fa fa-flag',
                         },
