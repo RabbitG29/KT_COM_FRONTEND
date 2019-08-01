@@ -3,7 +3,7 @@
     <h1>ㅎㅇ{{this.boardId}}</h1>
     <div v-show="isLogged">
       <div class="board-box container">
-        <button type="button" class="btn btn-outline-primary" style="float:right" @click.prevent="submitLog">{{mode=='create'?'등록':'수정'}}</button>
+        <button type="button" class="btn btn-outline-primary" style="float:right" @click.prevent="submitPost">{{mode=='create'?'등록':'수정'}}</button>
         <button type="button" class="btn btn-outline-secondary" style="float:right" @click="$router.go(-1)">뒤로가기</button>
         <form>
           <div class="form-group">
@@ -15,7 +15,12 @@
             <input v-model="title" class="form-control" id="exampleFormControlInput1" placeholder="title">
           </div>
           <div class="form-group">
-            <Editor ref="editor" :outline="true" :preview="true" v-model="content" />
+            <textarea class="md-text" rows="10" v-model="content" placeholder="content(markdown)"/>
+            <br>
+            <br>
+            <h2>Markdown Preview</h2>
+            <br>
+            <markdown-it-vue class="md-body" :content="content" :options="options" />
           </div>
         </form>
       </div>
@@ -24,12 +29,15 @@
 </template>
 
 <script>
-import { Editor } from 'vuetify-markdown-editor';
-
+//import { Editor } from 'vuetify-markdown-editor';             
+//<Editor ref="editor" :outline="true" :preview="true" v-model="content" />
+import MarkdownItVue from 'markdown-it-vue'
+import 'markdown-it-vue/dist/markdown-it-vue.css'
 export default {
 name: 'PostUploader',
 components: {
-    Editor
+//    Editor
+  MarkdownItVue
 },
 computed: {
         isLogged: function() {
@@ -43,10 +51,14 @@ mounted: function() {
     this.boardId = this.$route.query.boardId;
     this.mode = this.$route.query.mode;
     if(this.mode=='edit') {
+      this.postId = this.$route.query.postId;
+      console.log(this.postId);
           this.$http.get(this.$config.targetURL+'/board/post/view?postId='+this.postId)
           .then(r=>{
+            console.log(r.data.result);
             if(r.data.status == 'success'){
-              var result = JSON.parse(r.data.result)
+              var result = JSON.parse(r.data.result)[0]
+              console.log(result);
               this.title = result.제목
               this.writer = result.이름
               this.content = result.내용
@@ -63,7 +75,65 @@ methods: {
           console.log(e)
           var file = e.target.files[0]
           this.file1 = file;
+        },
+        submitPost: function() {
+          if(this.mode == 'create'){
+            var url = this.$config.targetURL+'/board/post/';
+            var json = {
+              writer: this.getId,
+              content: this.content,
+              categoryId: this.categoryId,
+              title: this.title,
+              boardId: this.boardId
+            }
+            console.log(this.boardId)
+            var formData = new FormData()
+            formData.append('information', JSON.stringify(json))
+            formData.append('userfile', this.file1)
+            this.$http.post(url, formData)
+            .then(result=>{
+              console.log('success!')
+              this.$notice({
+                type: 'success',
+                text: '글 등록이 성공적으로 완료되었습니다.'
+              })
+              this.$router.go(-1)
+            })
+            .catch(error=>{
+                console.log('서버에러')
+                this.$router.push({
+                  name: 'Board'
+                })
+              })
+          }
+          else {
+            var url = this.$config.targetURL+'/board/post/';
+            var json = {
+              content: this.content,
+              title: this.title,
+              postId: this.postId
+            }
+            var formData = new FormData()
+            formData.append('information', JSON.stringify(json))
+            formData.append('userfile', this.file1)
+            this.$http.put(url, formData)
+            .then(result=>{
+              console.log('success!')
+              this.$notice({
+                type: 'success',
+                text: '글 수정이 성공적으로 완료되었습니다.'
+              })
+              this.$router.go(-1)
+            })
+            .catch(error=>{
+                console.log('서버에러')
+                this.$router.push({
+                  name: 'Board'
+                })
+              })
+          }
         }
+
 },
 data () {
     return {
@@ -79,7 +149,17 @@ data () {
         content: '',
         mode: '',
         writerID:'',
-        list: []
+        categoryId:1,
+        list: [],
+        options: {
+        markdownIt: {
+          linkify: true
+        },
+        linkAttributes: {
+          target: '_blank',
+          rel: 'noopener'
+        }
+      }
     }
   }
 }
@@ -120,5 +200,12 @@ li {
 }
 a {
   color: #42b983;
+}
+
+.md-text {
+ width: 100%;
+}
+.md-body {
+  width: 100%;
 }
 </style>

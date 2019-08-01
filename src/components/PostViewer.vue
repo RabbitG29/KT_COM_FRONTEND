@@ -8,8 +8,8 @@
           <h5><small class="text-right">{{writetime}}(추천수 : {{thumbsup}})</small></h5>
           <div id="edit-box">
             <div v-show="isLogged && getId == writerID">
-              <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="editLog">수정</button>
-              <button type="button" class="btn btn-danger" style="cursor: pointer" @click.prevent="deleteLog">삭제</button>
+              <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="editPost">수정</button>
+              <button type="button" class="btn btn-danger" style="cursor: pointer" @click.prevent="deletePost">삭제</button>
             </div>
           </div>
         </div>
@@ -101,6 +101,27 @@ export default {
       else
         this.list[index].mode = 'view'
       this.$forceUpdate()
+    },
+    deletePost: function() {
+      var url = this.$config.targetURL+'/board/post?postId='+this.postId;
+      this.$http.delete(url)
+      .then(result=>{
+        console.log('success!')
+              this.$notice({
+                type: 'success',
+                text: '글 삭제가 성공적으로 완료되었습니다.'
+              })
+        this.$router.go(-1)
+      })
+    },
+    editPost: function() {
+      this.$router.push({
+                name: 'PostUploader',
+                query: {
+                    postId: this.postId,
+                    mode: 'edit'
+                }
+            })
     },
     getComment: function(){
       this.$http.get(this.$config.targetURL+'/board/comment?postId='+this.postId)

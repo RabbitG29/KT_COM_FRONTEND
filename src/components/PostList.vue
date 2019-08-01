@@ -50,7 +50,6 @@ export default {
   },
   watch: {
       $route: function(to, from){
-        this.msg = ''
         this.boardId = this.$route.query.boardId
         console.log('현재 게시판 번호 : '+this.boardId)
         this.getData()
@@ -77,10 +76,7 @@ export default {
             })
             .catch(error=>{
                 console.log('서버에러')
-                this.$notice({
-                type: 'alert',
-                text: '서버에 오류가 있습니다.'
-            })
+                
             })
         },
         createPost: function() {
