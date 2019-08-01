@@ -77,10 +77,20 @@ export default {
             })
             .catch(error=>{
                 console.log('서버에러')
+                this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
             })
         },
         createPost: function() {
-
+            this.$router.push({
+                name: 'PostUploader',
+                query: {
+                    boardId: this.boardId,
+                    mode: 'create'
+                }
+            })
         },
         readPost: function(item) {
             this.$router.push({

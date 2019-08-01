@@ -6,6 +6,7 @@ import CodeList from '@/components/CodeList'
 import CodeUploader from '@/components/CodeUploader'
 import PostList from '@/components/PostList'
 import PostViewer from '@/components/PostViewer'
+import PostUploader from '@/components/PostUploader'
 
 
 Vue.use(Router)
@@ -41,6 +42,11 @@ export default new Router({
             path: '/postviewer',
             name: 'PostViewer',
             component: PostViewer
+        },
+        {
+            path: '/postuploader',
+            name: 'PostUploader',
+            component: PostUploader
         }
     ]
 })

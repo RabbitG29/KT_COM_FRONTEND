@@ -123,6 +123,10 @@ export default {
             })
             .catch(e=>{
               console.log(e);
+              this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
             })
         },
         deleteCode: function(codeId) {
@@ -139,6 +143,10 @@ export default {
             })
             .catch(e=>{
                 console.log(e);
+                this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
             })
         },
         downloadCode: function(codeId) {

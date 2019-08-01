@@ -7,13 +7,12 @@
       <br>
     <div class="dropbox">
       <input class="input-file" type="file" name="userfile" @change="upload($event.target.name, $event.target.files)" @drop="upload($event.target.name, $event.target.files)">
-      <h2>파일을 드래그해서 드랍해주세요. </h2>
+      <h2>압축파일 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
     </div>
     <br>
     <h5>{{this.filename}}</h5>
     <br>
     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="submit()">등록하기</button>
-    <button class="btn btn-sm btn-primary" @click.prevent="spinner()">테스트</button>
     <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
   </div>
 </template>
@@ -76,6 +75,10 @@ export default {
             })
             .catch(error=>{
                 console.log('서버에러')
+                this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
                 this.$router.push({
                   name: 'CodeList'
                 })
