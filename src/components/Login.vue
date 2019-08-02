@@ -31,6 +31,7 @@ export default {
       id: '',
       password: '',
       name: '',
+      deptId: ''
     }
   },
   computed: {
@@ -43,9 +44,11 @@ export default {
         console.log("commit")
         console.log(data.id)
         console.log(data.name)
+        console.log(data.deptId)
         this.$store.commit('logIn', { // TODO : 사원정보넣기!!
             id: data.id,
-            name: data.name
+            name: data.name,
+            deptId: data.deptId
         })
       },
       submit() {

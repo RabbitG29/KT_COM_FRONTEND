@@ -9,7 +9,8 @@ export const store = new Vuex.Store({
         isLogged: false,
         id: '',
         token: '',
-        name: ''
+        name: '',
+        deptId: ''
     },
     plugins: [createPersistedState()],
     getters: {
@@ -21,6 +22,9 @@ export const store = new Vuex.Store({
         },
         getName: function(state){
             return state.name
+        },
+        getDeptId: function(state) {
+            return state.deptId
         }
     },
     mutations: {
@@ -28,11 +32,13 @@ export const store = new Vuex.Store({
             state.isLogged = true
             state.id = payload.id
             state.name = payload.name
+            state.deptId = payload.deptId
         },
         logOut: function(state, payload){
             state.isLogged = false
             state.id = ''
             state.name=''
+            state.deptId=''
         }
     }
 });

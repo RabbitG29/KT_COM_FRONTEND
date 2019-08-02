@@ -14,6 +14,9 @@ export default {
         },
         getName(){
             return this.$store.getters.getName
+        },
+        getDeptId() {
+            return this.$store.getter.getDeptId
         }
     },
     methods: {

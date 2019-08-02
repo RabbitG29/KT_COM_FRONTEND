@@ -18,11 +18,8 @@
                     <div class="row">
                         <div class=" col-sm-8 col-xs-8 container">
                             <div id="navigation">
-                                  <h1><router-link to="/">KT SW Developers Community</router-link></h1>
+                                  <h1><router-link to="/">KT Dev-Cleaner</router-link></h1>
                             </div>
-                        </div>
-                        <div id="nav-menu" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <app-menu-navigation/>
                         </div>
                     </div>
                 </div>
@@ -76,25 +73,43 @@ export default {
             else if(item.title=='공지사항') {
                 this.$router.push({
                 name: 'PostList',
-                query: { boardId:1 }
+                query: { boardId:1, boardName:item.title }
                 })
             }
             else if(item.title=='자유게시판') {
                 this.$router.push({
                 name: 'PostList',
-                query: { boardId:2 }
+                query: { boardId:2, boardName:item.title }
                 })
             }
             else if(item.title=='Q&A') {
                 this.$router.push({
                 name: 'PostList',
-                query: { boardId:3 }
+                query: { boardId:3, boardName:item.title }
                 })
             }
             else if(item.title=='지식 공유') {
                 this.$router.push({
                 name: 'PostList',
-                query: { boardId:4 }
+                query: { boardId:4, boardName:item.title }
+                })
+            }
+            else if(item.title=='내 코드') {
+                this.$router.push({
+                name: 'CodeList',
+                query: { mode:1 }
+                })
+            }
+            else if(item.title=='부서 코드') {
+                this.$router.push({
+                name: 'CodeList',
+                query: { mode:2 }
+                })
+            }
+            else if(item.title=='전체 코드') {
+                this.$router.push({
+                name: 'CodeList',
+                query: { mode:3 }
                 })
             }
        }
@@ -155,9 +170,26 @@ export default {
                     ]
                 },
                 {
-                    href: '/codelist',
+                    //href: '/codelist',
                     title: '코드 리뷰',
                     icon: 'fa fa-code',
+                    child: [
+                        {
+                            href: '/',
+                            title: '내 코드',
+                            icon: 'fa fa-user',
+                        },
+                        {
+                            href: '/',
+                            title: '부서 코드',
+                            icon: 'fa fa-users',
+                        },
+                        {
+                            href: '/',
+                            title: '전체 코드',
+                            icon: 'fa fa-code',
+                        }
+                    ]
                 },
                 {
                     //href: '/',

@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1>ㅎㅇ{{this.boardId}}</h1>
     <div v-show="isLogged">
       <div class="board-box container">
         <button type="button" class="btn btn-outline-primary" style="float:right" @click.prevent="submitPost">{{mode=='create'?'등록':'수정'}}</button>

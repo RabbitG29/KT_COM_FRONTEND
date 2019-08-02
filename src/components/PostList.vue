@@ -45,12 +45,14 @@ export default {
   name: 'HelloWorld',
   mounted: function() {
     this.boardId = this.$route.query.boardId;
+    this.boardName = this.$route.query.boardName;
     console.log(this.boardId);
     this.getData()
   },
   watch: {
       $route: function(to, from){
         this.boardId = this.$route.query.boardId
+        this.boardName = this.$route.query.boardName;
         console.log('현재 게시판 번호 : '+this.boardId)
         this.getData()
       }

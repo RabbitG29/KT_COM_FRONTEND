@@ -10,7 +10,9 @@
             </div>
         </div>
     </modal>
-        <h1>My Code Review List</h1>
+        <h1 v-if="this.mode==1">My Code Review List</h1>
+        <h1 v-if="this.mode==2">My Dept Review List</h1>
+        <h1 v-if="this.mode!=1&&this.mode!=2">All Code Review List</h1>
         <br>
         <div id="board">
       <div class="board-box">
@@ -30,6 +32,7 @@
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center">작성자</th>
+                <th class="text-center">부서</th>
                 <th class="text-center">코드</th>
                 <th class="text-center">작성일시</th>
                 <th class="text-center">다운로드/삭제</th>
@@ -39,6 +42,7 @@
               <tr v-for="(item, index) in result" :key="index" >
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.이름}}</td>
+                <td>{{item.부서명}}</td>
                 <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
                 <td>{{item.writetime}}</td>
                 <td>
@@ -72,12 +76,20 @@ export default {
   computed: {
         isLogged () {
             return this.$store.getters.isLogged;
-        }
+        },
+        getId: function() {
+            return this.$store.getters.getId;
+        },
+        getDeptId: function() {
+          return this.$store.getters.getDeptId;
+        },
     },
     watch: {
       $route: function(to, from){
         this.msg = ''
         this.id = this.getId;
+        this.mode = this.$route.query.mode;
+        this.deptId = this.getDeptId;
         this.getData()
       }
     },
@@ -86,13 +98,12 @@ export default {
             $router.go(-1);
         }
         this.id=this.getId;
+        this.mode = this.$route.query.mode;
+        this.deptId = this.getDeptId;
         console.log(this.id);
         this.getData();
     },
     methods: {
-        getId: function() {
-            return this.$store.getters.getId;
-        },
         gotoSonar: function() {
             window.open("https://sonarcloud.io/organizations/kt/projects");
         },
@@ -104,7 +115,7 @@ export default {
             this.$modal.show('code-delete')
         },
         getData: function() {
-            var url = this.$config.targetURL+`/review?id=${this.id}`;
+            var url = this.$config.targetURL+`/review?id=${this.id}&mode=${this.mode}&deptId=${this.deptId}`;
             console.log(url);
             this.$http.get(url).then(r=>{
                 console.log(r);
@@ -138,6 +149,7 @@ export default {
                       type: 'success',
                       text: '정상적으로 삭제되었습니다.',
                   })
+                  this.$modal.hide('code-delete')
                   this.getData();
                 }
             })
@@ -180,7 +192,10 @@ export default {
       list: [],
       path: '',
       result: [],
-      name: ''
+      name: '',
+      mode: '',
+      deptId: '',
+      deptName: ''
     }
   }
 }
