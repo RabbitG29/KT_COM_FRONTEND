@@ -24,7 +24,8 @@
           <a v-if="filename" :href="path">첨부파일 다운로드 ({{filename}})</a>
           <br v-if="filename">
         </div>
-        <button type="button" class="btn btn-primary" style="float:right cursor: pointer" @click.prevent="goBack">추천하기</button>
+        <button v-if="this.like!=1" type="button" class="btn btn-primary" style="float:right cursor: pointer" @click.prevent="goLike">추천하기</button>
+        <button v-if="this.like==1" type="button" class="btn btn-primary" style="float:right cursor: pointer" @click.prevent="goLike">추천취소</button>
         <button type="button" class="btn btn-secondary" style="float:right cursor: pointer" @click.prevent="goBack">뒤로가기</button>
       </div>
     </div>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-// TODO : Markdown Viewer 적용하기 https://github.com/markdown-it/markdown-it 
+// TODO : Markdown Viewer 적용하기 https://github.com/markdown-it/markdown-it -> 완료
 import MarkdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
 export default {
@@ -82,6 +83,7 @@ export default {
       this.postId = this.$route.query.postId;
       this.getData();
       this.getComment();
+      this.getLike();
   },
   computed: {
     isLogged: function(){
@@ -94,6 +96,44 @@ export default {
   methods: {
     goBack: function(){
       this.$router.go(-1)
+    },
+    goLike: function() {
+      var url = this.$config.targetURL+'/board/post/like';
+      var json = {
+          postId: this.postId,
+          id: this.getId
+      }
+      this.$http.post(url, json)
+      .then(result=>{
+        if(result.data.status == 'like'){
+         this.$notice({
+           type: 'success',
+           text: '게시글 추천이 성공적으로 완료되었습니다.'
+         })
+         this.getData();
+         this.like=1;
+       }
+       else if(result.data.status == 'unlike'){
+         this.$notice({
+           type: 'success',
+           text: '게시글 추천 취소가 성공적으로 완료되었습니다.'
+         })
+         this.getData();
+         this.like=0;
+       }
+      })
+    },
+    getLike: function() {
+      var url = this.$config.targetURL+'/board/post/like?postId='+this.postId+'&id='+this.getId;
+      this.$http.get(url)
+      .then(result=>{
+        if(result.data.status == 'like'){
+         this.like=1;
+       }
+       else if(result.data.status == 'unlike'){
+         this.like=0;
+       }
+      })
     },
     changeCommentMode: function(index){
       if(this.list[index].mode == 'view')
@@ -251,7 +291,8 @@ export default {
       id: '',
       thumbsup: '',
       filename: '',
-      list: []
+      list: [],
+      like: ''
     }
   }
 }

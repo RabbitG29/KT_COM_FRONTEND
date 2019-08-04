@@ -26,6 +26,11 @@ import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import feather from 'vue-icon'
 import fontawesome from '@fortawesome/fontawesome'
 import { SpinnerPlugin } from 'bootstrap-vue'
+import vSelect from 'vue-select'
+import { BFormSelect } from 'bootstrap-vue'
+Vue.component('b-form-select', BFormSelect)
+
+Vue.component('v-select', vSelect)
 Vue.use(SpinnerPlugin)
 
 Vue.use(feather, 'v-icon')

@@ -1,6 +1,14 @@
 <template>
   <div class="container">
       <h1>리뷰할 코드 업로드</h1>
+      <br>
+      <div class="col-sm-4">
+        <b-form-select v-model="mode" class="mb-3">
+          <option value="1">비공개</option>
+          <option value="2">부서 공개</option>
+          <option value="3">전체 공개</option>
+        </b-form-select>
+      </div>
       <modal id="spinner" name="spinner" height="auto" :scrollable="true" :clickToClose="false" >
         <pulse-loader id="myspinner" :loading="loading" :color="color" :size="size"></pulse-loader>
       </modal>
@@ -19,7 +27,8 @@
 
 <script>
 // TODO : 아오 프로그레스 스피너 외않되? -> 해결
-// TODO : 코드 파일 형식 or .zip 파일만 올릴 수 있게
+// TODO : 코드 파일 형식 or .zip 파일만 올릴 수 있게 -> 해결
+// TODO : 유효성 검사
 import VueCircle from 'vue2-circle-progress'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
@@ -62,6 +71,7 @@ export default {
             var formData = new FormData()
             formData.append('id', this.id)
             formData.append('userfile', this.file1)
+            formData.append('mode', this.mode);
             this.$http.post(url, formData)
             .then(result=>{
                this.$modal.hide('spinner');
@@ -92,6 +102,7 @@ export default {
       file1: '',
       id: '',
       fill : { gradient: ["red", "green", "blue"] },
+      mode: ''
     }
   }
 }
@@ -155,7 +166,10 @@ a {
     height:100%;
     top:0;
     left:0;
-     z-index: 3;
+    z-index: 3;
+  }
+  .mb-3 {
+   margin-left: 107%
   }
   .modal-container {
   width: 0px;
