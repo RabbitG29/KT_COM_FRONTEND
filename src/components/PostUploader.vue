@@ -23,6 +23,7 @@
           <div class="form-group">
             <textarea class="md-text" rows="10" v-model="content" placeholder="content(markdown)"/>
             <br>
+              <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
             <br>
             <h2>Markdown Preview</h2>
             <br>
@@ -38,12 +39,14 @@
 //import { Editor } from 'vuetify-markdown-editor';             
 //<Editor ref="editor" :outline="true" :preview="true" v-model="content" />
 import MarkdownItVue from 'markdown-it-vue'
+import VueTagsInput from '@johmun/vue-tags-input';
 import 'markdown-it-vue/dist/markdown-it-vue.css'
 export default {
 name: 'PostUploader',
 components: {
 //    Editor
-  MarkdownItVue
+  MarkdownItVue,
+  VueTagsInput
 },
 computed: {
         isLogged: function() {
@@ -90,6 +93,7 @@ methods: {
           .then(r=>{
             if(r.data.status=="success") {
               this.categories = JSON.parse(r.data.result);
+              console.log(this.categories);
             }
           })
         },
@@ -169,6 +173,9 @@ data () {
         mode: '',
         writerID:'',
         categoryId:1,
+        categories: [],
+        tag: '',
+        tags: [],
         list: [],
         options: {
         markdownIt: {
@@ -177,8 +184,7 @@ data () {
         linkAttributes: {
           target: '_blank',
           rel: 'noopener'
-        },
-        categories: []
+        }, 
       }
     }
   }

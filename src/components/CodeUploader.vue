@@ -21,6 +21,10 @@
     <div class="form-group">
       <label for="id">SonarCloud Organization(기본 : kt)</label>
       <input class="form-control" id="id" placeholder="organization(기본 : kt)" v-model="organization">
+      <br>HashTags
+    <div class="form-group">
+      <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
+    </div>
     </div>
     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="submit()">등록하기</button>
     <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
@@ -33,11 +37,13 @@
 // TODO : 유효성 검사
 import VueCircle from 'vue2-circle-progress'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import VueTagsInput from '@johmun/vue-tags-input';
 
 export default {
   components: {
       VueCircle,
-      PulseLoader
+      PulseLoader,
+      VueTagsInput
   },
   name: 'CodeUploader',
   computed: {
@@ -106,7 +112,9 @@ export default {
       id: '',
       fill : { gradient: ["red", "green", "blue"] },
       mode: '3',
-      organization: 'kt'
+      organization: 'kt',
+      tag: '',
+      tags: []
     }
   }
 }
@@ -185,6 +193,9 @@ a {
 }
 #myspinner {
   margin-left: 250px;
+}
+.tagtag {
+  width: 1200px;
 }
 
 </style>

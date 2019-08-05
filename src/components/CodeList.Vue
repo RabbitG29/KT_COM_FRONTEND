@@ -34,6 +34,7 @@
                 <th class="text-center">부서</th>
                 <th class="text-center">코드</th>
                 <th class="text-center">작성일시</th>
+                <th class="text-center">코멘트</th>
                 <th class="text-center">다운로드/삭제</th>
               </tr>
             </thead>
@@ -44,15 +45,25 @@
                 <td>{{item.부서명}}</td>
                 <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
                 <td>{{item.writetime}}</td>
+                <td><button v-if="isLogged" v-b-toggle.collapse-1 class="btn btn-sm btn-primary" >펼치기</button>
+                </td>
                 <td>
-                    <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
+                    <button v-if="isLogged" class="btn btn-sm btn-secondary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
                     <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
               </tr>
             </tbody>
           </table>
+          <b-collapse id="collapse-1" class="mt-2">
+    <div class="card-body">
+      <p class="card-text">Collapse contents Here</p>
+    </div>
+  </b-collapse>
         </div>
       </div>
       <br>
+      <div>
+  
+</div>
       <div class="row form-group">
         <label class="col-sm-1">코드검색</label>
         <div class="col-sm-10">
@@ -68,10 +79,16 @@
 </template>
 
 <script>
-//TODO : 여기서 색인 기능?
+//TODO : 여기서 검색 기능? -> 완료
+//TODO : Callapse Toggle을 자유롭게 다룰 수 있다면 가능할 듯? -> Arcodian 이용 codeId, 현재 펼쳐진 codeId 이용 https://bootstrap-vue.js.org/docs/components/collapse/
 var path = require('path');
+import { BCollapse } from 'bootstrap-vue'
+
 export default {
   name: 'CodeList',
+  component: {
+    BCollapse
+  },
   computed: {
         isLogged () {
             return this.$store.getters.isLogged;

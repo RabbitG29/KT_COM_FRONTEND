@@ -110,7 +110,7 @@ export default {
       codes: [],
       posts: [],
       hots: [],
-      tags: ["C++","Java","Vue","Vue","Vue","Vue","Vue","Vue","Vue","Vue","Vue"]
+      tags: ["C++","Java","JavaScript","KT","SW아키텍처","SW개발단","Python","Dev-Ops","Agile","DB","node.js","Vue.js","React.js","Angular.js","Git","Jenkins","Spring","MySQL","Express.js"]
     }
   }
 }
