@@ -2,13 +2,11 @@
   <div class="container">
       <h1>리뷰할 코드 업로드</h1>
       <br>
-      <div class="col-sm-4">
         <b-form-select v-model="mode" class="mb-3">
-          <option value="1">비공개</option>
+          <option value="1" >비공개</option>
           <option value="2">부서 공개</option>
           <option value="3">전체 공개</option>
         </b-form-select>
-      </div>
       <modal id="spinner" name="spinner" height="auto" :scrollable="true" :clickToClose="false" >
         <pulse-loader id="myspinner" :loading="loading" :color="color" :size="size"></pulse-loader>
       </modal>
@@ -18,8 +16,12 @@
       <h2>압축파일 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
     </div>
     <br>
-    <h5>{{this.filename}}</h5>
+    <h5>파일명 : {{this.filename}}</h5>
     <br>
+    <div class="form-group">
+      <label for="id">SonarCloud Organization(기본 : kt)</label>
+      <input class="form-control" id="id" placeholder="organization(기본 : kt)" v-model="organization">
+    </div>
     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="submit()">등록하기</button>
     <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
   </div>
@@ -72,6 +74,7 @@ export default {
             formData.append('id', this.id)
             formData.append('userfile', this.file1)
             formData.append('mode', this.mode);
+            formData.append('organization', this.organization);
             this.$http.post(url, formData)
             .then(result=>{
                this.$modal.hide('spinner');
@@ -102,7 +105,8 @@ export default {
       file1: '',
       id: '',
       fill : { gradient: ["red", "green", "blue"] },
-      mode: ''
+      mode: '3',
+      organization: 'kt'
     }
   }
 }
@@ -148,15 +152,15 @@ a {
 .dropbox {
     outline: 2px dashed #aaa;
     background: #7fb4dd;
-    width: 300px;
+    width: 1100px;
     height: 300px;
     position: relative; 
      margin: 0 auto;
   } 
   .dropbox > h2{
     position: absolute;
-    top: 50px;
-    left: 0;
+    top: 45%;
+    left: 20%;
     z-index: 2;
   }
   .input-file{
@@ -168,9 +172,7 @@ a {
     left:0;
     z-index: 3;
   }
-  .mb-3 {
-   margin-left: 107%
-  }
+  
   .modal-container {
   width: 0px;
   margin: 0px auto;

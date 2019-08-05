@@ -5,9 +5,16 @@
         <button type="button" class="btn btn-outline-primary" style="float:right" @click.prevent="submitPost">{{mode=='create'?'등록':'수정'}}</button>
         <button type="button" class="btn btn-outline-secondary" style="float:right" @click="$router.go(-1)">뒤로가기</button>
         <form>
-          <div class="form-group">
+          <div class="form-group row container">
+            <div class="col-lg-8" id="content-box">
+              <b-form-select v-model="categoryId" class="mb-10" id="category" >
+                <option v-for="(category, index) in categories" :key="index" :value="category.카테고리번호" >{{category.카테고리명}}</option>
+              </b-form-select>
+            </div>
+          <div class="col-lg-4" id="content-box">
             <input type="file" ref="file" id="files" class="form-control-file" @change="fileChanges">
           </div>
+        </div>
         </form>
         <form>
           <div class="form-group">
@@ -49,6 +56,7 @@ computed: {
 mounted: function() {
     this.boardId = this.$route.query.boardId;
     this.mode = this.$route.query.mode;
+    this.getCategories();
     if(this.mode=='edit') {
       this.postId = this.$route.query.postId;
       console.log(this.postId);
@@ -63,6 +71,7 @@ mounted: function() {
               this.content = result.내용
               this.id = result.게시글번호
               this.writerID = result.작성자
+              this.categoryId = result.소속카테고리
             }
           })
           .catch(e=>{
@@ -75,6 +84,15 @@ methods: {
           var file = e.target.files[0]
           this.file1 = file;
         },
+        getCategories: function() {
+          var url = this.$config.targetURL+'/board/categories/';
+          this.$http.get(url)
+          .then(r=>{
+            if(r.data.status=="success") {
+              this.categories = JSON.parse(r.data.result);
+            }
+          })
+        },
         submitPost: function() {
           if(this.mode == 'create'){
             var url = this.$config.targetURL+'/board/post/';
@@ -83,7 +101,8 @@ methods: {
               content: this.content,
               categoryId: this.categoryId,
               title: this.title,
-              boardId: this.boardId
+              boardId: this.boardId,
+              categoryId: this.categoryId
             }
             console.log(this.boardId)
             var formData = new FormData()
@@ -110,7 +129,8 @@ methods: {
             var json = {
               content: this.content,
               title: this.title,
-              postId: this.postId
+              postId: this.postId,
+              categoryId: this.categoryId
             }
             var formData = new FormData()
             formData.append('information', JSON.stringify(json))
@@ -157,7 +177,8 @@ data () {
         linkAttributes: {
           target: '_blank',
           rel: 'noopener'
-        }
+        },
+        categories: []
       }
     }
   }

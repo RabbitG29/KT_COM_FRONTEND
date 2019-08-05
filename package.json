@@ -43,6 +43,7 @@
     "vue-socket.io": "^3.0.4",
     "vue-socketio": "^2.1.1-c",
     "vue-spinner": "^1.0.3",
+    "vue-tags-ball": "^1.2.0",
     "vue-wysiwyg": "^1.7.2",
     "vue2-circle-progress": "^1.2.3",
     "vuetify": "^2.0.3",

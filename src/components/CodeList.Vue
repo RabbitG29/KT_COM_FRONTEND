@@ -11,13 +11,12 @@
         </div>
     </modal>
         <h1 v-if="this.mode==1">My Code Review List</h1>
-        <h1 v-if="this.mode==2">My Dept Review List</h1>
+        <h1 v-if="this.mode==2">My Dept's Code Review List</h1>
         <h1 v-if="this.mode!=1&&this.mode!=2">All Code Review List</h1>
         <br>
         <div id="board">
       <div class="board-box">
       <div v-show="isLogged" class="row form-group">
-        
         <div class="col-sm-4" >
             <button type="button" class="btn btn-secondary"
         @click="gotoSonar()">과거 리뷰 보러가기</button>

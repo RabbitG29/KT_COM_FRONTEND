@@ -16,24 +16,35 @@
             <thead>
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
-                 <th class="text-center">카테고리</th>
+                <th class="text-center">카테고리</th>
                 <th class="text-center">작성자</th>
+                <th class="text-center">부서</th>
                 <th class="text-center">제목</th>
                 <th class="text-center">작성일시</th>
                 <th class="text-center">추천수</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in list" @click="readPost(item)" :key="index" style="cursor: pointer">
+              <tr v-for="(item, index) in result" @click="readPost(item)" :key="index" style="cursor: pointer">
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.카테고리명}}</td>
                 <td>{{item.이름}}</td>
-                <td width=500>{{item.제목}}</td>
+                <td>{{item.부서명}}</td>
+                <td width=400>{{item.제목}}</td>
                 <td>{{item.writetime}}</td>
                 <td width=100>{{item.추천수}}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-sm-2">게시글 검색</label>
+        <div class="col-sm-9">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명을 입력해주세요(대소문자 구분).">
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
         </div>
       </div>
     </div>
@@ -75,11 +86,13 @@ export default {
                   var dateinfo = v.작성시각
                   v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY년 M월 D일 H시 m분')
                 })
+                 this.getResult(true);
             })
             .catch(error=>{
                 console.log('서버에러')
                 
             })
+           
         },
         createPost: function() {
             this.$router.push({
@@ -97,6 +110,19 @@ export default {
                     postId: item.게시글번호
                 }
             })
+        },
+        getResult: function(flag){
+            let arr_base=[];
+            let arr=[];            
+            for(var i=0;i<this.list.length;i++){
+              console.log(this.name);
+              if(this.name && this.list[i].제목.indexOf(String(this.name)) == -1)
+                continue;
+              arr_base.push(this.list[i]);
+            }
+            this.result = arr_base;
+            console.log(this.result);
+            //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
         }
     },
     data () {
@@ -104,7 +130,9 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       boardId: '',
       boardName: '',
-      list: []
+      list: [],
+      result: [],
+      name: ''
     }
   }
 }

@@ -31,7 +31,7 @@
         </sidebar-menu>
         <router-view/>
         <div id="footer">
-            <small>ⓒ Copyright 2019 developed by 권동현 All Rights Reserved</small>
+            <small>ⓒ Copyright 2019 All Rights Reserved</small>
         </div>
     </div>
 </template>
@@ -70,6 +70,8 @@ export default {
                 window.open("http://www.kt.com","new page");
             else if(item.title=='recruit.kt.com')
                 window.open("http://recruit.kt.com","new page");
+            else if(item.title=='보안취약점 가이드')
+                window.open("https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard", "new page");
             else if(item.title=='공지사항') {
                 this.$router.push({
                 name: 'PostList',
@@ -152,7 +154,7 @@ export default {
                         }
                     ]
                 },
-                {
+               /* {
                     //href: '/',
                     title: '채팅',
                     icon: 'fa fa-comments',
@@ -168,7 +170,7 @@ export default {
                             icon: 'fa fa-question-circle',
                         }
                     ]
-                },
+                },*/
                 {
                     //href: '/codelist',
                     title: '코드 리뷰',
@@ -206,6 +208,10 @@ export default {
                             title: 'recruit.kt.com',
                             icon: 'fa fa-hashtag',
                         },
+                        {
+                            title: '보안취약점 가이드',
+                            icon: 'fa fa-code',
+                        }
                     ]
                 },
             ],
@@ -300,7 +306,7 @@ a {
     padding-bottom: 20px;
 }
 #footer {
-    margin-top: 400px;
+    margin-top: 10%;
     padding: 10px;
     position: relative;
     background: rgb(220, 220, 220);
