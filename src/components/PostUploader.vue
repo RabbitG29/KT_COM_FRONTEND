@@ -100,13 +100,18 @@ methods: {
         submitPost: function() {
           if(this.mode == 'create'){
             var url = this.$config.targetURL+'/board/post/';
+            var submitTags = [];
+            for(var i=0;i<this.tags.length;i++) {
+              submitTags.push(this.tags[i].text);
+            }
             var json = {
               writer: this.getId,
               content: this.content,
               categoryId: this.categoryId,
               title: this.title,
               boardId: this.boardId,
-              categoryId: this.categoryId
+              categoryId: this.categoryId,
+              tags: submitTags
             }
             console.log(this.boardId)
             var formData = new FormData()

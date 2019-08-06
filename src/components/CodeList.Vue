@@ -45,7 +45,7 @@
                 <td>{{item.부서명}}</td>
                 <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
                 <td>{{item.writetime}}</td>
-                <td><button v-if="isLogged" v-b-toggle.collapse-1 class="btn btn-sm btn-primary" >펼치기</button>
+                <td><button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" >펼치기</button>
                 </td>
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-secondary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
@@ -53,11 +53,47 @@
               </tr>
             </tbody>
           </table>
-          <b-collapse id="collapse-1" class="mt-2">
-    <div class="card-body">
-      <p class="card-text">Collapse contents Here</p>
+          
+          <div class="row" id="comment" >
+          <div v-if="isLogged" class="list-group col-sm-12">
+            
+          <b-collapse :id="'accordion-'+(index+1)" accordion="my-accordion" role="tabpanel" v-for="(code, index) in result" :key="index">
+            <h2>Comment : {{code.파일명}}</h2>
+              <div id="comment-post-box">
+                <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
+                <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
+              </div>
+              <div class="row" id="comment">
+      <div class="col-sm-2"></div>
+      <div class="list-group col-sm-12">
+        <div class="text-left card comment-card"
+        v-for="(item, index) in list2" :key="index+item.mode">
+            <div class="card-body" id="comment-box">
+              <h5 class="comment-writer">{{item.이름}}
+                <sub class="comment-timestamp" style="color: #5cb85c">{{item.작성시각}}</sub>
+              </h5>
+              <br>
+              <h6 v-if="item.mode == 'view'">{{item.내용}}</h6>
+              <h6 v-else><textarea class="form-control" v-model="item.내용"></textarea></h6>
+
+              <div class="row" id="edit-box">
+                <div v-show="getId==item.작성자">
+                  <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
+                  <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
+                  <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                  <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
+                </div>
+
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
     </div>
-  </b-collapse>
+          </b-collapse>
+            </div>
+          </div>
+
         </div>
       </div>
       <br>
@@ -107,6 +143,7 @@ export default {
         this.mode = this.$route.query.mode;
         this.deptId = this.getDeptId;
         this.getData()
+        //this.getComment(this.list[0].코드번호);
       }
     },
     mounted: function() {
@@ -118,10 +155,15 @@ export default {
         this.deptId = this.getDeptId;
         console.log(this.id);
         this.getData();
+        //this.getComment(this.list[0].코드번호);
     },
     methods: {
         gotoSonar: function() {
             window.open("https://sonarcloud.io/organizations/kt/projects");
+        },
+        changeIndex: function(index,item) {
+            this.currentIndex = index;
+            this.getComment(item.코드번호);
         },
         readCode: function(item) {
             window.open(item.링크);
@@ -198,7 +240,109 @@ export default {
             this.result = arr_base;
             console.log(this.result);
             //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
+        },
+        changeCommentMode: function(index){
+          if(this.list2[index].mode == 'view')
+            this.list2[index].mode = 'edit'
+          else
+            this.list2[index].mode = 'view'
+          console.log("good");
+          //console.log(this.list[index].mode);
+          this.$forceUpdate()
+        },
+        getComment: function(index){
+          console.log("hihi");
+          this.$http.get(this.$config.targetURL+'/review/comment?codeId='+index)
+          .then(result=>{
+            console.log("hi2");
+            console.log(result.data)
+          this.list2 = JSON.parse(result.data.result)
+          console.log(this.list2);
+          this.list2.forEach(v=>{
+            var ct = v.작성시각
+            console.log(ct)
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY년 M월 D일 h시 m분')
+            v.mode = 'view'
+          })
+      })
+      .catch(error=>{
+          console.log('서버에러')
+          this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
+      })
+    },
+    commentEroll : function(index){
+     var url = this.$config.targetURL+'/review/comment';
+     var json = {
+       codeId: index,
+       content: this.comment,
+       writer: this.getId
+     }
+     this.$http.post(url, json)
+     .then(result=>{
+       if(result.data.status == 'success'){
+         this.getComment(index)
+         this.comment = ''
+         this.$notice({
+           type: 'success',
+           text: '댓글 등록이 성공적으로 완료되었습니다.'
+         })
+       }
+     })
+     .catch(error=>{
+         console.log('서버에러')
+         this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
+       })
+    },
+    deleteComment : function(commentId,index){
+      this.$http.delete(this.$config.targetURL+'/review/comment?commentId='+commentId)
+      .then(result=>{
+        if(result.data.status == 'success'){
+          console.log('삭제성공')
+          this.getComment(index)
+          this.$notice({
+            type: 'success',
+            text: '삭제가 성공적으로 완료되었습니다.'
+          })
         }
+      })
+      .catch(error=>{
+        console.log('서버에러')
+        this.$notice({
+                type: 'alert',
+                text: '서버에 오류가 있습니다.'
+            })
+      })
+    },
+    editComment : function(item){
+      var commentId = item.댓글번호
+      var comment = item.내용
+      console.log(commentId + '  ' +comment)
+      var url = this.$config.targetURL+'/review/comment';
+      var json = {
+        commentId: commentId,
+        content: comment
+      }
+      this.$http.put(url, json)
+      .then(result=>{
+        if(result.data.status == 'success'){
+          console.log('수정성공')
+          this.getComment(item.소속코드)
+          this.$notice({
+            type: 'success',
+            text: '수정이 성공적으로 완료되었습니다.'
+          })
+        }
+      })
+      .catch(error=>{
+        console.log('서버에러')
+      })
+    }
     },
     data () {
     return {
@@ -206,12 +350,15 @@ export default {
       id: '',
       counter: '1',
       list: [],
+      list2: [],
+      comment: '',
       path: '',
       result: [],
       name: '',
       mode: '',
       deptId: '',
-      deptName: ''
+      deptName: '',
+      currentIndex: '1'
     }
   }
 }
@@ -240,7 +387,7 @@ div {
  font-family: 'Olleh','NanumGothic';
 }
 h1, h2 {
-    font-family: 'Olleh','NanumGothic';
+  font-family: 'Olleh','NanumGothic';
   font-weight: normal;
 }
 ul {
@@ -255,7 +402,7 @@ a {
   color: #42b983;
 }
 .modal {
-        text-align: center;
+  text-align: center;
 }
 .modal-container {
   width: auto;
@@ -265,5 +412,55 @@ a {
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
+}
+#comment {
+  width: 100%;
+  margin-left: 0px;
+}
+#comment-box #edit-box {
+  position: absolute;
+  bottom: 15px;
+  right: 30px;
+}
+#comment-post-box button {
+  position: absolute;
+  top: 75px;
+  right: 30px;
+}
+#comment-post-box {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#comment-box {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.comment-card:hover {
+  background-color: rgb(241,241,241);
+  transition-duration: 0.3s;
+}
+.comment-writer {
+  margin-left: 5px;
+}
+.comment-timestamp {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+}
+#mobile-edit-box {
+  position: absolute;
+  bottom: 9px;
+  right: 9px;
+}
+#post-box #edit-box {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+.list-group .card {
+  margin: 5px;
+}
+.card{
+  margin-bottom:10px;
 }
 </style>

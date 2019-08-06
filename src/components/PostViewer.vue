@@ -30,7 +30,21 @@
       </div>
     </div>
     <br>
-
+    <div class="card">
+    <div class="card-body">
+    <!--    여기에 태그들을 넣자 -->
+      <h2>Tags</h2>
+      <h4>
+        <a class="card-text" v-for="(tag,index) in tags" :key="index">
+            {{tag.태그명}},
+        </a>
+        <a class="card-text" v-if="this.tags.length==0" :key="index">
+          태그가 없습니다.
+        </a>
+        </h4>
+        <br>
+      </div>
+    </div>
         <!--댓글작성-->
     <div v-if="isLogged" class="list-group col-sm-12">
       <div id="comment-post-box">
@@ -84,6 +98,7 @@ export default {
       this.getData();
       this.getComment();
       this.getLike();
+      this.getTags();
   },
   computed: {
     isLogged: function(){
@@ -96,6 +111,15 @@ export default {
   methods: {
     goBack: function(){
       this.$router.go(-1)
+    },
+    getTags: function() {
+      var url = this.$config.targetURL+'/tags/bypost?postId='+this.postId;
+      this.$http.get(url)
+      .then(r=>{
+        if(r.data.status=='success') {
+          this.tags=JSON.parse(r.data.result);
+        }
+      })
     },
     goLike: function() {
       var url = this.$config.targetURL+'/board/post/like';
@@ -292,7 +316,8 @@ export default {
       thumbsup: '',
       filename: '',
       list: [],
-      like: ''
+      like: '',
+      tags: []
     }
   }
 }

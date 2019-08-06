@@ -1,15 +1,41 @@
 <template>
   <div class="hello" align="center">
-    <tags-ball v-bind:style='{"border":"1px solid black"}' :width='1000' :tags='tags'/>
     <br>
-     <br>
-      <br>
+    <div class="form-group row container" align="center">
+      <div class="col-lg-4" id="content-box">
+        <div class="card">
+          <div class="card-header">
+            <h4><b>📜 많이 사용한 태그 </b></h4>
+          </div>
+          <div class="card-body" style="cursor: pointer">
+            <router-link tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="'/'">
+              <h5>{{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회)</h5>
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" id="content-box">
+        <div class="card">
+          <div class="card-header">
+            <h4><b>📜 댓글 많은 코드리뷰 </b></h4>
+          </div>
+          <div class="card-body" style="cursor: pointer">
+            <router-link tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
+              <h5>{{index+1}}. {{code.파일명}}({{code.이름}}, {{code.댓글수}}개)</h5>
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-1"></div>
+    <tags-ball v-bind:style='{"border":"1px solid black"}'  :tags='tags'/>
+    </div>
+    <br>
     <div class="form-group row container" align="center">
     <div class="col-lg-0"></div>
       <div class="col-lg-4" id="content-box">
         <div class="card">
           <div class="card-header">
-            <h4><b>📜 최근 게시글 </b></h4>
+            <h4><b>📃 최근 게시글 </b></h4>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(post, index) in posts" :key="index" :to="'/postviewer?postId='+post.게시글번호">
@@ -21,7 +47,7 @@
       <div class="col-lg-4">
         <div class="card"  id="content-box">
           <div class="card-header">
-            <h4><b>📃 HOT 게시글 </b></h4>
+            <h4><b>📜 HOT 게시글 </b></h4>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(hot, index) in hots" :key="index" :to="'/postviewer?postId='+hot.게시글번호">
@@ -61,19 +87,13 @@ export default {
       type: String,
       default: "200px Olleh",
     },
-    fontMax: {
-      type: Number,
-      default: 1200
-    },
-    radius: {
-      type: Number,
-      default: 1200
-    }
   },
   created: function(){
     this.getCodes();
     this.getPosts();
     this.getHots();
+    this.getTags();
+    this.getCodes2();
   },
   methods: {
         getCodes: function() {
@@ -82,6 +102,15 @@ export default {
           if(r.data.status == 'success'){
             console.log(r)
             this.codes = JSON.parse(r.data.result)
+          }
+        })
+      },
+      getCodes2: function() {
+          this.$http.get(this.$config.targetURL + '/review/many')
+          .then(r=>{
+          if(r.data.status == 'success'){
+            console.log(r)
+            this.codes2 = JSON.parse(r.data.result)
           }
         })
       },
@@ -102,15 +131,30 @@ export default {
             this.hots = JSON.parse(r.data.result)
           }
         })
+      },
+      getTags: function() {
+        this.$http.get(this.$config.targetURL + '/tags/liketag')
+        .then(r=>{
+          if(r.data.status == 'success') {
+            console.log(r)
+            this.tags2 = JSON.parse(r.data.result)
+            for(var i=0;i<this.tags2.length;i++) {
+              this.tags.push(this.tags2[i].태그명);
+            }
+            console.log(this.tags);
+          }
+        })
       }
     },
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
       codes: [],
+      codes2: [],
       posts: [],
       hots: [],
-      tags: ["C++","Java","JavaScript","KT","SW아키텍처","SW개발단","Python","Dev-Ops","Agile","DB","node.js","Vue.js","React.js","Angular.js","Git","Jenkins","Spring","MySQL","Express.js"]
+      tags2: [],
+      tags: []
     }
   }
 }
