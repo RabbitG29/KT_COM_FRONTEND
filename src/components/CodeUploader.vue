@@ -81,6 +81,11 @@ export default {
             formData.append('userfile', this.file1)
             formData.append('mode', this.mode);
             formData.append('organization', this.organization);
+            var submitTags = [];
+            for(var i=0;i<this.tags.length;i++) {
+              submitTags.push(this.tags[i].text);
+            }
+            formData.append('tags', JSON.stringify(submitTags));
             this.$http.post(url, formData)
             .then(result=>{
                this.$modal.hide('spinner');

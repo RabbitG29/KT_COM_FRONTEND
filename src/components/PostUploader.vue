@@ -62,6 +62,7 @@ mounted: function() {
     this.getCategories();
     if(this.mode=='edit') {
       this.postId = this.$route.query.postId;
+      this.getTags();
       console.log(this.postId);
           this.$http.get(this.$config.targetURL+'/board/post/view?postId='+this.postId)
           .then(r=>{
@@ -94,6 +95,18 @@ methods: {
             if(r.data.status=="success") {
               this.categories = JSON.parse(r.data.result);
               console.log(this.categories);
+            }
+          })
+        },
+        getTags: function() {
+          var url = this.$config.targetURL+'/tags/bypost?postId='+this.postId;
+          this.$http.get(url)
+          .then(r=>{
+            if(r.data.status=='success') {
+              var results = JSON.parse(r.data.result);
+              for(var i=0;i<results.length;i++) {
+                this.tags.push(results[i].태그명);
+              }
             }
           })
         },

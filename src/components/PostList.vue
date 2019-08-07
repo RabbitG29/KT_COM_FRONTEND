@@ -39,13 +39,25 @@
         </div>
       </div>
       <div class="row form-group">
-        <label class="col-sm-2">게시글 검색</label>
-        <div class="col-sm-9">
-          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명을 입력해주세요(대소문자 구분).">
+        <label class="col-sm-1">검색</label>
+        <div class="col-sm-2">
+        <b-form-select v-model="searchCategory" class="mb-3">
+          <option value="0" >전체 카테고리</option>
+          <option v-for="(category, index) in categories" :key="index" :value="category.카테고리번호">{{category.카테고리명}}</option>
+        </b-form-select>
+        </div>
+        <div class="col-sm-2">
+        <b-form-select v-model="searchDept" class="mb-3">
+          <option value="0" >전체 부서</option>
+          <option v-for="(dept, index) in depts" :key="index" :value="dept.부서명">{{dept.부서명}}</option>
+        </b-form-select>
+        </div>
+        <div class="col-sm-5">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명 또는 작성자를 입력해주세요(대소문자 구분).">
         </div>
         <div class="col-sm-1">
           <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
-        </div>
+        </div>`
       </div>
     </div>
   </div>
@@ -58,14 +70,18 @@ export default {
     this.boardId = this.$route.query.boardId;
     this.boardName = this.$route.query.boardName;
     console.log(this.boardId);
-    this.getData()
+    this.getData();
+    this.getCategories();
+    this.getDepts();
   },
   watch: {
       $route: function(to, from){
         this.boardId = this.$route.query.boardId
         this.boardName = this.$route.query.boardName;
         console.log('현재 게시판 번호 : '+this.boardId)
-        this.getData()
+        this.getData();
+        this.getCategories();
+        this.getDepts();
       }
   },
   computed: {
@@ -91,8 +107,27 @@ export default {
             .catch(error=>{
                 console.log('서버에러')
                 
-            })
-           
+            }) 
+        },
+        getCategories: function() {
+          var url = this.$config.targetURL+'/board/categories/';
+          this.$http.get(url)
+          .then(r=>{
+            if(r.data.status=="success") {
+              this.categories = JSON.parse(r.data.result);
+              console.log(this.categories);
+            }
+          })
+        },
+        getDepts: function() {
+           var url = this.$config.targetURL+'/users/depts/';
+          this.$http.get(url)
+          .then(r=>{
+            if(r.data.status=="success") {
+              this.depts = JSON.parse(r.data.result);
+              console.log(this.depts);
+            }
+          })
         },
         createPost: function() {
             this.$router.push({
@@ -115,13 +150,16 @@ export default {
             let arr_base=[];
             let arr=[];            
             for(var i=0;i<this.list.length;i++){
-              console.log(this.name);
-              if(this.name && this.list[i].제목.indexOf(String(this.name)) == -1)
+              if(this.name && ((this.list[i].제목.indexOf(String(this.name)) == -1) && (this.list[i].이름.indexOf(String(this.name)) == -1)))
+                continue;
+              if(this.searchCategory!=0 && this.list[i].소속카테고리!=this.searchCategory)
+                continue;
+              if(this.searchDept!=0 && this.list[i].부서명!=this.searchDept)
                 continue;
               arr_base.push(this.list[i]);
             }
             this.result = arr_base;
-            console.log(this.result);
+            //console.log(this.result);
             //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
         }
     },
@@ -132,7 +170,11 @@ export default {
       boardName: '',
       list: [],
       result: [],
-      name: ''
+      name: '',
+      searchCategory: '0',
+      searchDept: '0',
+      categories: [],
+      depts: []
     }
   }
 }

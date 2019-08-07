@@ -1,69 +1,84 @@
 <template>
-  <div class="hello" align="center">
+  <div class="container" align="center">
     <br>
     <div class="form-group row container" align="center">
-      <div class="col-lg-4" id="content-box">
+      <div class="col-lg-9" id="content-box">
+        <div class="card">
+          <div class="card-body" >
+            KT Dev-Cleaner에 오신 것을 환영합니다<br>
+            개발자<br>
+            커뮤니티입니다<br>
+            여기는<br>
+            개발자<br>
+            커뮤니티입니다<br>
+            여기는<br>
+            개발자<br>
+            커뮤니티입니다<br>
+            여기는<br>
+            개발자<br>
+            커뮤니티입니다<br>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" id="content-box">
         <div class="card">
           <div class="card-header">
-            <h4><b>📜 많이 사용한 태그 </b></h4>
+            <h6><b>📜 많이 사용한 태그 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
-            <router-link tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="'/'">
-              <h5>{{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회)</h5>
+            <router-link style="text-align: left;" tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="'/'">
+              {{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회) <br>
             </router-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-4" id="content-box">
-        <div class="card">
-          <div class="card-header">
-            <h4><b>📜 댓글 많은 코드리뷰 </b></h4>
-          </div>
-          <div class="card-body" style="cursor: pointer">
-            <router-link tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
-              <h5>{{index+1}}. {{code.파일명}}({{code.이름}}, {{code.댓글수}}개)</h5>
-            </router-link>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-1"></div>
-    <tags-ball v-bind:style='{"border":"1px solid black"}'  :tags='tags'/>
     </div>
     <br>
-    <div class="form-group row container" align="center">
-    <div class="col-lg-0"></div>
-      <div class="col-lg-4" id="content-box">
+    <div class="form-group row container" align="center">  
+      <div class="col-lg-3" id="content-box">
         <div class="card">
           <div class="card-header">
-            <h4><b>📃 최근 게시글 </b></h4>
+            <h6><b>📃 최근 게시글 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(post, index) in posts" :key="index" :to="'/postviewer?postId='+post.게시글번호">
-              <h5>{{index+1}}. {{post.제목}}({{post.게시판명}})</h5>{{post.이름}}({{post.부서명}})
+              {{index+1}}. {{post.제목}}({{post.게시판명}})<br>{{post.이름}}({{post.부서명}})
             </router-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-4">
+      <div class="col-lg-3">
         <div class="card"  id="content-box">
           <div class="card-header">
-            <h4><b>📜 HOT 게시글 </b></h4>
+            <h6><b>📜 HOT 게시글 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(hot, index) in hots" :key="index" :to="'/postviewer?postId='+hot.게시글번호">
-              <h5>{{index+1}}. {{hot.제목}}({{hot.게시판명}}) - 추천 : {{hot.추천수}}</h5>{{hot.이름}}({{hot.부서명}})
+              {{index+1}}. {{hot.제목}}({{hot.게시판명}}) ({{hot.추천수}}추천)<br>{{hot.이름}}({{hot.부서명}})
             </router-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-4"  id="content-box">
+      <div class="col-lg-3"  id="content-box">
         <div class="card"  id="content-box">
           <div class="card-header">
-            <h4><b>📃 최근 코드리뷰(전체공개) </b></h4>
+            <h6><b>📃 최근 코드리뷰(전체공개) </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(code, index) in codes" :key="index" :to="'/codelist'">
-              <h5>{{index+1}}. {{code.파일명}}</h5>{{code.이름}}({{code.부서명}})
+              {{index+1}}. {{code.파일명}}<br>{{code.이름}}({{code.부서명}})
+            </router-link>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3" id="content-box">
+        <div class="card">
+          <div class="card-header">
+            <h6><b>📜 댓글 많은 코드리뷰 </b></h6>
+          </div>
+          <div class="card-body" style="cursor: pointer">
+            <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
+              {{index+1}}. {{code.파일명}}<br>({{code.이름}}, {{code.댓글수}}개)
             </router-link>
           </div>
         </div>
@@ -198,5 +213,11 @@ a {
 }
 .hello {
     vertical-align: middle;
+}
+.form-group {
+  text-align: left;
+}
+.card-body {
+  font-size: 13px;
 }
 </style>

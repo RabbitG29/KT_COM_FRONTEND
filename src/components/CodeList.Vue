@@ -53,10 +53,8 @@
               </tr>
             </tbody>
           </table>
-          
           <div class="row" id="comment" >
-          <div v-if="isLogged" class="list-group col-sm-12">
-            
+          <div v-if="isLogged" class="list-group col-sm-12">  
           <b-collapse :id="'accordion-'+(index+1)" accordion="my-accordion" role="tabpanel" v-for="(code, index) in result" :key="index">
             <h2>Comment : {{code.파일명}}</h2>
               <div id="comment-post-box">
@@ -64,52 +62,61 @@
                 <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
               </div>
               <div class="row" id="comment">
-      <div class="col-sm-2"></div>
-      <div class="list-group col-sm-12">
-        <div class="text-left card comment-card"
-        v-for="(item, index) in list2" :key="index+item.mode">
-            <div class="card-body" id="comment-box">
-              <h5 class="comment-writer">{{item.이름}}
-                <sub class="comment-timestamp" style="color: #5cb85c">{{item.작성시각}}</sub>
-              </h5>
-              <br>
-              <h6 v-if="item.mode == 'view'">{{item.내용}}</h6>
-              <h6 v-else><textarea class="form-control" v-model="item.내용"></textarea></h6>
-
-              <div class="row" id="edit-box">
-                <div v-show="getId==item.작성자">
-                  <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
-                  <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
-                  <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
-                  <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
+                <div class="col-sm-2"></div>
+                  <div class="list-group col-sm-12">
+                    <div class="text-left card comment-card" v-for="(item, index) in list2" :key="index+item.mode">
+                      <div class="card-body" id="comment-box">
+                        <h5 class="comment-writer">{{item.이름}}
+                          <sub class="comment-timestamp" style="color: #5cb85c">{{item.작성시각}}</sub>
+                        </h5>
+                        <br>
+                        <h6 v-if="item.mode == 'view'">{{item.내용}}</h6>
+                        <h6 v-else><textarea class="form-control" v-model="item.내용"></textarea></h6>
+                        <div class="row" id="edit-box">
+                          <div v-show="getId==item.작성자">
+                            <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
+                            <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
+                            <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                            <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2"></div>
                 </div>
-
-              </div>
-            </div>
-        </div>
-      </div>
-      <div class="col-sm-2"></div>
-    </div>
-          </b-collapse>
+                <div class="card">
+                  <div class="card-body">
+                    <h2>Tags : {{code.파일명}}</h2>
+                    <h4>
+                      <a class="card-text" v-for="(tag,index) in tags" :key="index">
+                      {{tag.태그명}},
+                      </a>
+                      <a class="card-text" v-if="tags.length==0" :key="index">
+                      태그가 없습니다.
+                      </a>
+                    </h4>
+                    <br>
+                  </div>
+                </div>
+              </b-collapse>
             </div>
           </div>
-
         </div>
       </div>
       <br>
       <div>
-  
-</div>
+      </div>
       <div class="row form-group">
         <label class="col-sm-1">코드검색</label>
         <div class="col-sm-10">
-          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명을 입력해주세요(대소문자 구분).">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명 혹은 작성자를 입력해주세요(대소문자 구분).">
         </div>
         <div class="col-sm-1">
           <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
         </div>
       </div>
-      
+
     </div>
     </div>
 </template>
@@ -161,9 +168,19 @@ export default {
         gotoSonar: function() {
             window.open("https://sonarcloud.io/organizations/kt/projects");
         },
+        getTags: function(index) {
+          var url = this.$config.targetURL+'/tags/bycode?codeId='+index;
+          this.$http.get(url)
+          .then(r=>{
+            if(r.data.status=='success') {
+              this.tags=JSON.parse(r.data.result);
+            }
+          })
+        },
         changeIndex: function(index,item) {
             this.currentIndex = index;
             this.getComment(item.코드번호);
+            this.getTags(item.코드번호);
         },
         readCode: function(item) {
             window.open(item.링크);
@@ -233,7 +250,7 @@ export default {
             let arr=[];            
             for(var i=0;i<this.list.length;i++){
               console.log(this.name);
-              if(this.name && this.list[i].파일명.indexOf(String(this.name)) == -1)
+              if(this.name && ((this.list[i].파일명.indexOf(String(this.name)) == -1) && (this.list[i].이름.indexOf(String(this.name)) == -1)))
                 continue;
               arr_base.push(this.list[i]);
             }
@@ -358,7 +375,9 @@ export default {
       mode: '',
       deptId: '',
       deptName: '',
-      currentIndex: '1'
+      currentIndex: '1',
+      tags: [],
+      tag: ''
     }
   }
 }

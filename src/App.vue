@@ -2,9 +2,7 @@
   <div id="app">
       <div id="header">
             <div id="login-box">
-                <div>
-                    <img src="./assets/kt_ci2.png" width="40px" align="left"/>
-                </div>
+                <router-link to="/" style="color: white; margin-left: 200px;"> KT Dev-Cleaner </router-link>
                 <div id="login-menu">
                     <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
                     <span v-else>
@@ -17,19 +15,17 @@
                 <div class="container">
                     <div class="row">
                         <div class=" col-sm-8 col-xs-8 container">
-                            <div id="navigation">
-                                  <h1><router-link to="/">KT Dev-Cleaner</router-link></h1>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <sidebar-menu :menu="menu" :collapsed="collapsed" @item-click="onItemClick">
-            <span slot="collapse-icon" v-if="collapsed">↔</span>
+        <sidebar-menu @collapse="onToggleCollapse" :menu="menu" :collapsed="collapsed" @item-click="onItemClick" >
+            <span slot="collapse-icon">↔</span>
             <span slot="dropdown-icon">▶</span>
         </sidebar-menu>
-        <router-view/>
+        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 375px;' : 'margin-left: 200px'" />
         <div id="footer">
             <small>ⓒ Copyright 2019 All Rights Reserved</small>
         </div>
@@ -63,6 +59,10 @@ export default {
     methods: {
         logOut: function() {
             this.$store.commit('logOut')
+        },
+        onToggleCollapse: function(collapsed) {
+            console.log(collapsed);
+            this.isCallapsed=collapsed;
         },
        onItemClick(event, item) { // 여기서 분기해서 처리 가능
             //SidebarMenu.collapse(true); 페이지 바뀌면 메뉴가 접혔으면 좋겠는뎅
@@ -119,6 +119,7 @@ export default {
     data(){
         return {
             baseClass: 'v-icon',
+            isCallapsed: false,
              menu: [ // TODO : 아이콘 바꾸자 -> 해결
                 {
                     href: '/',
@@ -215,7 +216,7 @@ export default {
                     ]
                 },
             ],
-            collapsed: true
+            collapsed: false
         }
     }
 }
@@ -251,7 +252,9 @@ div {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
 }
+
 </style>
 <style scoped>
 @media (min-width: 999px){
@@ -270,7 +273,8 @@ div {
     z-index: 10000;
     width: 100%;
     height: 30px;
-    background-color: #BBDEFB;
+    background-color: rgb(42, 42, 46);
+    
 }
 #login-menu {
     float: right;
@@ -278,14 +282,14 @@ div {
     margin-bottom: 5px;
     font-size: 15px;
     display: relative;
-    color: black;
+    color: white;
     z-index: 10;
 }
 a {
     margin-left: 5px;
 }
 #login-menu a {
-    color: black;
+    color: white;
 }
 
 #main-menu {
@@ -306,7 +310,7 @@ a {
     padding-bottom: 20px;
 }
 #footer {
-    margin-top: 10%;
+    margin-top: 20%;
     padding: 10px;
     position: relative;
     background: rgb(220, 220, 220);
