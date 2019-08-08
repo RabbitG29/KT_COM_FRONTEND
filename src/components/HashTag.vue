@@ -123,15 +123,17 @@ export default {
                     this.posts = [];
                     var temp = JSON.parse(result.data.result);
                     var temp2 = [];
+                    var temp3 = [];
                     for(var i=0;i<temp.length;i++) {
                         
                         temp2.push(temp[i]);
                         console.log(temp2[i]);
                         for(var j=0;j<temp2[i].length;j++) {
                             console.log(temp2[i][j]);
-                            this.posts.push(temp2[i][j]);
+                            temp3.push(temp2[i][j]);
                         }
                     }
+                    this.posts = [...new Set(temp3)]; // 내용이 배열일 때는 중복이 안걸러지네
                     console.log(this.posts);
                     this.posts.forEach(v=>{
                         var dateinfo = v.작성시각
@@ -143,14 +145,16 @@ export default {
                     this.codes = [];
                     var temp = JSON.parse(result.data.result);
                     var temp2 = [];
+                    var temp3 = [];
                     for(var i=0;i<temp.length;i++) {
                         temp2.push(temp[i]);
                         console.log(temp2[i]);
                         for(var j=0;j<temp2[i].length;j++) {
                             console.log(temp2[i][j]);
-                            this.codes.push(temp2[i][j]);
+                            temp3.push(temp2[i][j]);
                         }
                     }
+                    this.codes = [...new Set(temp3)];
                     console.log(this.codes);
                     this.codes.forEach(v=>{
                         var dateinfo = v.작성시간
