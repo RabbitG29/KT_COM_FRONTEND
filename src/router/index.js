@@ -7,7 +7,7 @@ import CodeUploader from '@/components/CodeUploader'
 import PostList from '@/components/PostList'
 import PostViewer from '@/components/PostViewer'
 import PostUploader from '@/components/PostUploader'
-
+import HashTag from '@/components/HashTag'
 
 Vue.use(Router)
 
@@ -47,6 +47,11 @@ export default new Router({
             path: '/postuploader',
             name: 'PostUploader',
             component: PostUploader
+        },
+        {
+            path: '/hashtag',
+            name: 'HashTag',
+            component: HashTag
         }
     ]
 })

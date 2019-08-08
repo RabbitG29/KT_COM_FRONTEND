@@ -2,6 +2,7 @@
   <div id="app">
       <div id="header">
             <div id="login-box">
+                <img src="./assets/kt_ci2.png" width="40px" style="float: left;" />
                 <router-link to="/" style="color: white; margin-left: 200px;"> KT Dev-Cleaner </router-link>
                 <div id="login-menu">
                     <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
@@ -215,6 +216,11 @@ export default {
                         }
                     ]
                 },
+                {
+                    title: '태그검색',
+                    icon: 'fa fa-hashtag',
+                    href: '/hashtag'
+                }
             ],
             collapsed: false
         }

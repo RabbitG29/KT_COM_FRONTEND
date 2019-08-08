@@ -88,6 +88,7 @@ export default {
             formData.append('tags', JSON.stringify(submitTags));
             this.$http.post(url, formData)
             .then(result=>{
+              console.log(result);
                this.$modal.hide('spinner');
               console.log('success!')
               this.$notice({

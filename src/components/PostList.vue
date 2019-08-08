@@ -57,7 +57,7 @@
         </div>
         <div class="col-sm-1">
           <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
-        </div>`
+        </div>
       </div>
     </div>
   </div>

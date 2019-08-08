@@ -10,6 +10,7 @@
             </div>
         </div>
     </modal>
+      <!-- mode에 따라 제목 다르게 -->
         <h1 v-if="this.mode==1">My Code Review List</h1>
         <h1 v-if="this.mode==2">My Dept's Code Review List</h1>
         <h1 v-if="this.mode!=1&&this.mode!=2">All Code Review List</h1>
@@ -38,8 +39,8 @@
                 <th class="text-center">다운로드/삭제</th>
               </tr>
             </thead>
-            <tbody> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
-              <tr v-for="(item, index) in result" :key="index" >
+            <tbody v-for="(item, index) in result" :key="index"> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
+              <tr>
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.이름}}</td>
                 <td>{{item.부서명}}</td>
@@ -50,58 +51,72 @@
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-secondary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
                     <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
-              </tr>
-            </tbody>
-          </table>
-          <div class="row" id="comment" >
-          <div v-if="isLogged" class="list-group col-sm-12">  
-          <b-collapse :id="'accordion-'+(index+1)" accordion="my-accordion" role="tabpanel" v-for="(code, index) in result" :key="index">
-            <h2>Comment : {{code.파일명}}</h2>
-              <div id="comment-post-box">
-                <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
-                <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
-              </div>
-              <div class="row" id="comment">
-                <div class="col-sm-2"></div>
-                  <div class="list-group col-sm-12">
-                    <div class="text-left card comment-card" v-for="(item, index) in list2" :key="index+item.mode">
-                      <div class="card-body" id="comment-box">
-                        <h5 class="comment-writer">{{item.이름}}
-                          <sub class="comment-timestamp" style="color: #5cb85c">{{item.작성시각}}</sub>
-                        </h5>
-                        <br>
-                        <h6 v-if="item.mode == 'view'">{{item.내용}}</h6>
-                        <h6 v-else><textarea class="form-control" v-model="item.내용"></textarea></h6>
-                        <div class="row" id="edit-box">
-                          <div v-show="getId==item.작성자">
-                            <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
-                            <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
-                            <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
-                            <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
-                          </div>
+              <tr> <!-- row of row로 table 내에서 처리 가능 -->
+              <td colspan="7"> <!-- 모든 열의 자리를 차지하도록 -->
+                <div class="row" id="comment" >
+                  <div v-if="isLogged" class="list-group col-sm-12"> 
+                  <!-- collapse 위치를 테이블 내로 이동하면서 accordion에서 일반 collapse로 변경-->
+                    <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2" >
+                      <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
+                      <div class="card">
+                            <div class="card-body">
+                              <h4>Tags : {{code.파일명}}</h4>
+                              <h5>
+                                <a class="card-text" v-for="(tag,index) in tags2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 태그가 있을 경우 -->
+                                  #{{tag.태그명}} 
+                                </a>
+                                <a class="card-text" v-if="tags2[code.코드번호].length==0" :key="index"> <!-- 해당 코드리뷰에 태그가 없을 경우 -->
+                                  태그가 없습니다.
+                                </a>
+                              </h5>
+                              <br>
+                            </div>
+                            </div>
+                            <br>
+                        <h4>Comment : {{code.파일명}}</h4>
+                        <div id="comment-post-box">
+                          <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
+                          <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
                         </div>
+                        <div id="dummy" style="font-size: 0px;">
+                          {{tags}}
+                          {{tags2}}
+                        {{list2}}
+                        {{list3[code.코드번호]}}
+                        </div>
+                        <div class="row" id="comment">
+                          <div class="col-sm-2"></div>
+                            <div class="list-group col-sm-12">
+                              <div class="text-left card comment-card" v-for="(item, index) in list3[code.코드번호]" :key="index+item.mode">
+                                <div class="card-body" id="comment-box">
+                                  <h5 class="comment-writer">{{item.이름}}
+                                    <sub class="comment-timestamp" style="color: #5cb85c">{{item.작성시각}}</sub>
+                                  </h5>
+                                  <br>
+                                  <h6 v-if="item.mode == 'view'">{{item.내용}}</h6>
+                                  <h6 v-else><textarea class="form-control" v-model="item.내용"></textarea></h6>
+                                  <div class="row" id="edit-box">
+                                    <div v-show="getId==item.작성자">
+                                      <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
+                                      <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
+                                      <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                                      <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-sm-2"></div>
+                          </div>
+                          
+                          </div>
+                        </b-collapse>
                       </div>
                     </div>
-                  </div>
-                  <div class="col-sm-2"></div>
-                </div>
-                <div class="card">
-                  <div class="card-body">
-                    <h2>Tags : {{code.파일명}}</h2>
-                    <h4>
-                      <a class="card-text" v-for="(tag,index) in tags" :key="index">
-                      {{tag.태그명}},
-                      </a>
-                      <a class="card-text" v-if="tags.length==0" :key="index">
-                      태그가 없습니다.
-                      </a>
-                    </h4>
-                    <br>
-                  </div>
-                </div>
-              </b-collapse>
-            </div>
-          </div>
+                  </td>
+                </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <br>
@@ -150,6 +165,7 @@ export default {
         this.mode = this.$route.query.mode;
         this.deptId = this.getDeptId;
         this.getData()
+        
         //this.getComment(this.list[0].코드번호);
       }
     },
@@ -157,6 +173,13 @@ export default {
         if(!this.isLogged) {
             $router.go(-1);
         }
+        for(var i=0;i<5000;i++) {
+          this.list3.push([]);
+          this.tags2.push([]);
+        }
+
+        console.log("hoho");
+        console.log(this.list3[1000]);
         this.id=this.getId;
         this.mode = this.$route.query.mode;
         this.deptId = this.getDeptId;
@@ -174,6 +197,8 @@ export default {
           .then(r=>{
             if(r.data.status=='success') {
               this.tags=JSON.parse(r.data.result);
+              if(this.tags.length!=0)
+                this.tags2[this.tags[0].코드번호] = this.tags;
             }
           })
         },
@@ -275,12 +300,18 @@ export default {
             console.log(result.data)
           this.list2 = JSON.parse(result.data.result)
           console.log(this.list2);
+          console.log("hi");
+          //this.list3.push([]);
+          //console.log("??" + this.list3[0]);
           this.list2.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
             v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY년 M월 D일 h시 m분')
             v.mode = 'view'
           })
+          this.list3[index]=this.list2;
+          console.log("list3");
+          console.log(this.list3[index]);
       })
       .catch(error=>{
           console.log('서버에러')
@@ -368,6 +399,7 @@ export default {
       counter: '1',
       list: [],
       list2: [],
+      list3: [],
       comment: '',
       path: '',
       result: [],
@@ -377,6 +409,7 @@ export default {
       deptName: '',
       currentIndex: '1',
       tags: [],
+      tags2: [],
       tag: ''
     }
   }
@@ -443,7 +476,7 @@ a {
 }
 #comment-post-box button {
   position: absolute;
-  top: 75px;
+  top: 237px;
   right: 30px;
 }
 #comment-post-box {

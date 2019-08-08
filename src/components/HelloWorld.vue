@@ -42,7 +42,7 @@
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(post, index) in posts" :key="index" :to="'/postviewer?postId='+post.게시글번호">
-              {{index+1}}. {{post.제목}}({{post.게시판명}})<br>{{post.이름}}({{post.부서명}})
+              {{index+1}}. {{post.제목}}({{post.게시판명}})
             </router-link>
           </div>
         </div>
@@ -54,7 +54,7 @@
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(hot, index) in hots" :key="index" :to="'/postviewer?postId='+hot.게시글번호">
-              {{index+1}}. {{hot.제목}}({{hot.게시판명}}) ({{hot.추천수}}추천)<br>{{hot.이름}}({{hot.부서명}})
+              {{index+1}}. {{hot.제목}}({{hot.추천수}}추천)
             </router-link>
           </div>
         </div>
@@ -78,7 +78,7 @@
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
-              {{index+1}}. {{code.파일명}}<br>({{code.이름}}, {{code.댓글수}}개)
+              {{index+1}}. {{code.파일명}}<br>({{code.이름}})
             </router-link>
           </div>
         </div>
