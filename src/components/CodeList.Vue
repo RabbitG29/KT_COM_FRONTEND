@@ -1,5 +1,13 @@
 <template>
     <div class="container">
+      <div class="unlogin-box container" v-show="!isLogged">
+          <h1>KT Code-Cleaner</h1>
+          <br>
+        <div class="alert alert-warning" role="alert" >로그인이 필요합니다!</div>
+        <router-link tag="a" :to="{name: 'Login'}">클릭 시 로그인페이지로 이동합니다</router-link><br><br>
+        <button type="button" class="btn btn-outline-secondary" @click="$router.go(-1)">뒤로가기</button>
+    </div>
+      <div v-show="isLogged" >
       <modal id="code-delete" name="code-delete" height="auto" :scrollable="true" padding="10px">
         <div class="modal-container">
             <h3>코드를 정말 삭제하시겠습니까?</h3>
@@ -17,12 +25,21 @@
         <br>
         <div id="board">
       <div class="board-box">
-      <div v-show="isLogged" class="row form-group">
+      <div class="row form-group">
         <div class="col-sm-4" >
             <button type="button" class="btn btn-secondary"
         @click="gotoSonar()">과거 리뷰 보러가기</button>
           <button type="button" class="btn btn-secondary"
         @click="gotoUpload()">코드 등록 및 리뷰</button>
+        </div>
+      </div>
+      <div class="row form-group">
+        <label class="col-sm-1">코드검색</label>
+        <div class="col-sm-10">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명 혹은 작성자를 입력해주세요(대소문자 구분).">
+        </div>
+        <div class="col-sm-1">
+          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
         </div>
       </div>
       <div class="row"> 
@@ -42,14 +59,14 @@
             <tbody v-for="(item, index) in result" :key="index"> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
               <tr>
                 <td scope="col">{{index+1}}</td>
-                <td>{{item.부서명}}</td>
-                <td width=400 @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
+                <td style="text-align: left;">{{item.부서명}}</td>
+                <td width=400 @click="readCode(item)" style="cursor: pointer; text-align: left;">{{item.파일명}}</td>
                 <td>{{item.이름}}</td>
                 <td>{{item.writetime}}</td>
                 
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
-                    <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
+                    <button v-if="isLogged && item.작성자==getId" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
                 <td width=10><button v-if="isLogged" class="btn btn-sm btn-light" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" >▼</button>
                 </td>
               <tr> <!-- row of row로 table 내에서 처리 가능 -->
@@ -59,14 +76,16 @@
                   <!-- collapse 위치를 테이블 내로 이동하면서 accordion에서 일반 collapse로 변경-->
                     <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2">
                       <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
+                      <br>
+                      <h4>Tags : {{code.파일명}}</h4>
+                      <br>
                       <div class="card">
                             <div class="card-body">
-                              <h4>Tags : {{code.파일명}}</h4>
-                              <h5>
-                                <a class="card-text" v-for="(tag,index) in tags2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 태그가 있을 경우 -->
+                              <h5 style="text-align: left;">
+                                <a style="text-align: left;" class="card-text" v-for="(tag,index) in tags2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 태그가 있을 경우 -->
                                   #{{tag.태그명}} 
                                 </a>
-                                <a class="card-text" v-if="tags2[code.코드번호].length==0" :key="index"> <!-- 해당 코드리뷰에 태그가 없을 경우 -->
+                                <a style="text-align: left;" class="card-text" v-if="tags2[code.코드번호].length==0" :key="index"> <!-- 해당 코드리뷰에 태그가 없을 경우 -->
                                   태그가 없습니다.
                                 </a>
                               </h5>
@@ -123,14 +142,6 @@
       <br>
       <div>
       </div>
-      <div class="row form-group">
-        <label class="col-sm-1">코드검색</label>
-        <div class="col-sm-10">
-          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명 혹은 작성자를 입력해주세요(대소문자 구분).">
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
-        </div>
       </div>
 
     </div>
@@ -227,7 +238,7 @@ export default {
                     console.log(this.list);
                     this.list.forEach(v=>{
                         var dateinfo = v.작성시간
-                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
+                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
                         console.log(v);
                     })
                     this.getResult(true);
@@ -307,7 +318,7 @@ export default {
           this.list2.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
-            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.M.D HH:m')
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
             v.mode = 'view'
           })
           this.list3[index]=this.list2;
@@ -477,7 +488,7 @@ a {
 }
 #comment-post-box button {
   position: absolute;
-  top: 237px;
+  top: 285px;
   right: 30px;
 }
 #comment-post-box {

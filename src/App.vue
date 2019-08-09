@@ -3,7 +3,7 @@
       <div id="header">
             <div id="login-box">
                 <img src="./assets/kt_ci2.png" width="40px" style="float: left;" />
-                <router-link to="/" style="color: white; margin-left: 200px;"> KT Dev-Cleaner </router-link>
+                <router-link to="/" style="color: white; margin-left: 200px;"> KT Code-Cleaner </router-link>
                 <div id="login-menu">
                     <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
                     <span v-else>

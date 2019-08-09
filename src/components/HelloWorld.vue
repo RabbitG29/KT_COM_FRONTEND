@@ -1,55 +1,38 @@
 <template>
   <div class="container" align="center">
-    <br>
-    <div class="form-group row container" align="center">
-      <div class="col-lg-9" id="content-box">
-        <div class="card">
-          <div class="card-body" >
-            KT Dev-Cleaner에 오신 것을 환영합니다<br>
-            개발자<br>
-            커뮤니티입니다<br>
-            여기는<br>
-            개발자<br>
-            커뮤니티입니다<br>
-            여기는<br>
-            개발자<br>
-            커뮤니티입니다<br>
-            여기는<br>
-            개발자<br>
-            커뮤니티입니다<br>
-          </div>
-        </div>
+    <div class="form-group row container" align="center" style=" text-align: center;">
+      <div class="col-lg-4" id="img">
+        <img src="../assets/kt_home.png" style="max-width: 100%; height: auto;">
       </div>
-      <div class="col-lg-3" id="content-box">
+      <div class="col-lg-8" id="content-box">
         <div class="card">
-          <div class="card-header">
-            <h6><b>📜 많이 사용한 태그 </b></h6>
-          </div>
-          <div class="card-body" style="cursor: pointer">
-            <router-link style="text-align: left;" tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="'/'">
-              {{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회) <br>
-            </router-link>
+          <div class="card-body" style="text-align: left;" >
+            <h3 style="text-align: center;">More Clean, Code-Cleaner</h3><br>
+            <h4>코드는 깔끔하게,
+            개발은 Agile하게,
+            성능은 더 높게</h4>
+            <h5>더 빠르고 좋은 개발을 위한
+            KT 소프트웨어개발단의 커뮤니티입니다.</h5>
+            <br>
           </div>
         </div>
       </div>
     </div>
     <br>
-    <div class="form-group row container" align="center">  
-      <div class="col-lg-3" id="content-box">
+    <div class="form-group row container" align="center">
+      <div class="col-lg-12" id="content-box">
         <div class="card">
-          <div class="card-header">
-            <h6><b>📃 최근 게시글 </b></h6>
-          </div>
-          <div class="card-body" style="cursor: pointer">
-            <router-link tag="div" class="form-group" v-for="(post, index) in posts" :key="index" :to="'/postviewer?postId='+post.게시글번호">
-              {{index+1}}. {{post.제목}}({{post.게시판명}})
-            </router-link>
+          <div class="card-body" style="text-align: center; background-color: rgb(42, 42, 46); color: white; padding: 50px" >
+            <h3>KT Code-Cleaner에 오신 것을 환영합니다</h3>
           </div>
         </div>
       </div>
-      <div class="col-lg-3">
+    </div>
+    <br>
+    <div class="form-group row container" align="center">
+      <div class="col-lg-4">
         <div class="card"  id="content-box">
-          <div class="card-header">
+          <div class="card-header" style="text-align: center;">
             <h6><b>📜 HOT 게시글 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
@@ -59,26 +42,26 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-3"  id="content-box">
-        <div class="card"  id="content-box">
-          <div class="card-header">
-            <h6><b>📃 최근 코드리뷰(전체공개) </b></h6>
+      <div class="col-lg-4" id="content-box">
+        <div class="card">
+          <div class="card-header" style="text-align: center;">
+            <h6><b>📜 HOT 코드리뷰 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
-            <router-link tag="div" class="form-group" v-for="(code, index) in codes" :key="index" :to="'/codelist'">
-              {{index+1}}. {{code.파일명}}<br>{{code.이름}}({{code.부서명}})
+            <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
+              {{index+1}}. {{code.파일명}} - {{code.이름}}
             </router-link>
           </div>
         </div>
       </div>
-      <div class="col-lg-3" id="content-box">
+      <div class="col-lg-4" id="content-box">
         <div class="card">
-          <div class="card-header">
-            <h6><b>📜 댓글 많은 코드리뷰 </b></h6>
+          <div class="card-header" style="text-align: center;">
+            <h6><b>📜 HOT 태그 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
-            <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
-              {{index+1}}. {{code.파일명}}<br>({{code.이름}})
+            <router-link style="text-align: left;" tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="{name:'HashTag', query: {tag:tag.태그명}}" >
+              {{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회) <br>
             </router-link>
           </div>
         </div>

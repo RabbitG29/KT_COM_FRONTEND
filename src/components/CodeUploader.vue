@@ -1,5 +1,13 @@
 <template>
   <div class="container">
+    <div class="unlogin-box container" v-show="!isLogged">
+          <h1>KT Code-Cleaner</h1>
+          <br>
+        <div class="alert alert-warning" role="alert" >로그인이 필요합니다!</div>
+        <router-link tag="a" :to="{name: 'Login'}">클릭 시 로그인페이지로 이동합니다</router-link><br><br>
+        <button type="button" class="btn btn-outline-secondary" @click="$router.go(-1)">뒤로가기</button>
+    </div>
+    <div v-show="isLogged" >
       <h1>리뷰할 코드 업로드</h1>
       <br>
         <b-form-select v-model="mode" class="mb-3">
@@ -28,6 +36,7 @@
     </div>
     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="submit()">등록하기</button>
     <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
+  </div>
   </div>
 </template>
 

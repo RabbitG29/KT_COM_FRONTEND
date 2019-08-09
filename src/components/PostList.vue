@@ -1,11 +1,30 @@
 <template>
   <div class="container">
       <h1>{{this.boardName}}</h1>
+      <br>
       <div id="board">
       <div class="board-box">
-      <div v-show="isLogged" class="row form-group">
-        <div class="col-sm-10"></div>
-        <div class="col-sm-2" >
+      <div class="row form-group">
+        <label class="col-sm-1">검색</label>
+        <div class="col-sm-2">
+        <b-form-select v-model="searchCategory" class="mb-3">
+          <option value="0" >전체 카테고리</option>
+          <option v-for="(category, index) in categories" :key="index" :value="category.카테고리번호">{{category.카테고리명}}</option>
+        </b-form-select>
+        </div>
+        <div class="col-sm-2">
+        <b-form-select v-model="searchDept" class="mb-3">
+          <option value="0" >전체 부서</option>
+          <option v-for="(dept, index) in depts" :key="index" :value="dept.부서명">{{dept.부서명}}</option>
+        </b-form-select>
+        </div>
+        <div class="col-sm-5">
+          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명 또는 작성자를 입력해주세요(대소문자 구분).">
+        </div>
+        <div class="col-sm-1">
+          <button type="button" class="btn btn-primary" @click.prevent="getResult(true)">검색</button>
+        </div>
+        <div class="col-sm-1" >
           <button type="button" class="btn btn-secondary"
         @click="createPost()">글 등록</button>
         </div>
@@ -28,35 +47,14 @@
               <tr v-for="(item, index) in result" @click="readPost(item)" :key="index" style="cursor: pointer">
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.카테고리명}}</td>
-                <td width=500>{{item.제목}}</td>
+                <td style="text-align: left;" width=500>{{item.제목}}</td>
                 <td>{{item.이름}}</td>
-                <td>{{item.부서명}}</td>
+                <td style="text-align: left;">{{item.부서명}}</td>
                 <td>{{item.writetime}}</td>
                 <td width=100>{{item.추천수}}</td>
               </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-      <div class="row form-group">
-        <label class="col-sm-1">검색</label>
-        <div class="col-sm-2">
-        <b-form-select v-model="searchCategory" class="mb-3">
-          <option value="0" >전체 카테고리</option>
-          <option v-for="(category, index) in categories" :key="index" :value="category.카테고리번호">{{category.카테고리명}}</option>
-        </b-form-select>
-        </div>
-        <div class="col-sm-2">
-        <b-form-select v-model="searchDept" class="mb-3">
-          <option value="0" >전체 부서</option>
-          <option v-for="(dept, index) in depts" :key="index" :value="dept.부서명">{{dept.부서명}}</option>
-        </b-form-select>
-        </div>
-        <div class="col-sm-5">
-          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명 또는 작성자를 입력해주세요(대소문자 구분).">
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
         </div>
       </div>
     </div>
@@ -100,7 +98,7 @@ export default {
                 this.boardName = this.list[0].게시판명;
                 this.list.forEach(v=>{
                   var dateinfo = v.작성시각
-                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
+                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
                 })
                  this.getResult(true);
             })

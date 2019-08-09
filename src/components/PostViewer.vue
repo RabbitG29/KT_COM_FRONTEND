@@ -1,5 +1,13 @@
 <template>
   <div class="container">
+    <div class="unlogin-box container" v-show="!isLogged">
+          <h1>KT Code-Cleaner</h1>
+          <br>
+        <div class="alert alert-warning" role="alert" >로그인이 필요합니다!</div>
+        <router-link tag="a" :to="{name: 'Login'}">클릭 시 로그인페이지로 이동합니다</router-link><br><br>
+        <button type="button" class="btn btn-outline-secondary" @click="$router.go(-1)">뒤로가기</button>
+    </div>
+    <div v-show="isLogged" >
     <div class="card">
       <div class="card-header">
         <div class="container" id="post-box">
@@ -8,15 +16,15 @@
           <h5><small class="text-right">{{writetime}}(추천수 : {{thumbsup}})</small></h5>
           <div id="edit-box">
             <div v-show="isLogged && getId == writerID">
-              <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="editPost">수정</button>
-              <button type="button" class="btn btn-danger" style="cursor: pointer" @click.prevent="deletePost">삭제</button>
+              <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="editPost"  v-if="writerID==getId">수정</button>
+              <button type="button" class="btn btn-danger" style="cursor: pointer" @click.prevent="deletePost" v-if="writerID==getId">삭제</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="card-body">
+      <div class="card-body" >
     <!--    <h5 class="card-title">Special title treatment</h5> -->
-        <div class="card-text">
+        <div class="card-text" style="text-align: left;">
             <markdown-it-vue class="md-body" :content="content" />
         </div>
         <br>
@@ -34,9 +42,9 @@
     <div class="card-body">
     <!--    여기에 태그들을 넣자 -->
       <h2>Tags</h2>
-      <h4>
-        <a class="card-text" v-for="(tag,index) in tags" :key="index">
-            {{tag.태그명}},
+      <h4 style="text-align: left;">
+        <a class="card-text" v-for="(tag,index) in tags" :key="index"  >
+            #{{tag.태그명}} 
         </a>
         <a class="card-text" v-if="this.tags.length==0" :key="index">
           태그가 없습니다.
@@ -81,6 +89,7 @@
       </div>
       <div class="col-sm-2"></div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -197,7 +206,7 @@ export default {
           this.list.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
-            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY년 M월 D일 h시 m분')
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
             v.mode = 'view'
           })
       })
@@ -287,7 +296,7 @@ export default {
         console.log(result)
         this.title = result.제목
         this.writer = result.이름
-        this.writetime = this.$moment(result.작성시각).tz('Asia/Seoul').format('YYYY년 M월 D일 h시 m분')
+        this.writetime = this.$moment(result.작성시각).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
         this.writerID = result.작성자
         this.content = result.내용
         this.thumbsup = result.추천수

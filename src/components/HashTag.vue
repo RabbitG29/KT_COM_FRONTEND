@@ -1,5 +1,13 @@
 <template>
   <div class="container">
+      <div class="unlogin-box container" v-show="!isLogged">
+          <h1>KT Code-Cleaner</h1>
+          <br>
+        <div class="alert alert-warning" role="alert" >로그인이 필요합니다!</div>
+        <router-link tag="a" :to="{name: 'Login'}">클릭 시 로그인페이지로 이동합니다</router-link><br><br>
+        <button type="button" class="btn btn-outline-secondary" @click="$router.go(-1)">뒤로가기</button>
+    </div>
+    <div v-show="isLogged" >
     <h2>Search by HashTag</h2><br>
     <div class="row form-group">
         <label class="col-sm-1">태그 검색</label>
@@ -41,7 +49,7 @@
                             <tr v-for="(item, index) in posts" @click="readPost(item)" :key="index" style="cursor: pointer">
                                 <td scope="col">{{index+1}}</td>
                                 <td>{{item.카테고리명}}</td>
-                                <td width=500>{{item.제목}}</td>
+                                <td style="text-align: left;" width=500>{{item.제목}}</td>
                                 <td>{{item.이름}}</td>
                                 <td>{{item.writetime}}</td>
                                 <td width=100>{{item.추천수}}</td>
@@ -67,8 +75,8 @@
             <tbody v-for="(item, index) in codes" :key="index"> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
               <tr>
                 <td scope="col">{{index+1}}</td>
-                <td>{{item.부서명}}</td>
-                <td width=400 @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
+                <td style="text-align: left;">{{item.부서명}}</td>
+                <td width=400 @click="readCode(item)" style="cursor: pointer; text-align: left;">{{item.파일명}}</td>
                 <td>{{item.이름}}</td>
                 <td>{{item.writetime}}</td>
                 <td>
@@ -80,6 +88,7 @@
         </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 </template>
@@ -93,6 +102,10 @@ export default {
     },
     components: {
         VueTagsInput
+    },
+    mounted: function() {
+        this.tag = this.$route.query.tag;
+        console.log(this.tag);
     },
   methods: {
       readPost: function(item) {
@@ -125,27 +138,30 @@ export default {
             .then(result=>{
                 console.log(JSON.parse(result.data.result))
                 if(this.searchMode==0) { // 게시글 검색
+                    console.log(this.detailMode);
                     this.posts = [];
                     var temp = JSON.parse(result.data.result);
                     var temp2 = [];
                     var temp3 = [];
                     for(var i=0;i<temp.length;i++) {
                         temp2.push(temp[i]);
-                        console.log(temp2[i]);
+                        //console.log(temp2[i]);
                         for(var j=0;j<temp2[i].length;j++) {
-                            console.log(temp2[i][j]);
+                            //console.log(temp2[i][j]);
                             temp3.push(temp2[i][j]);
                         }
                     }
                     // 중복 제거 혹은 필터링을 통해 AND 및 OR 검색이 가능하도록
-                    if(this.detailMode==1 && this.tags > 1) { // AND 조건에서 1개짜리일 경우에는 중복이 없으므로 넘김
+                    if(this.detailMode==1 && this.tags.length > 1) { // AND 조건에서 1개짜리일 경우에는 중복이 없으므로 넘김
                         var temp4 = [];
                         temp4 = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
                             return t.게시글번호 === array.게시글번호;
                         }) !== index); // 중복으로 나온 것 즉, AND
+                        console.log(temp4);
                         this.posts = Object(temp4).filter((array,index,self) => self.findIndex((t)=> {
                             return t.게시글번호 === array.게시글번호;
                         }) === index); // 중복으로 검출된 것이 여러개이니 다시 중복된 것을 걸러준다.
+                        console.log(this.posts);
                     }
                     else { // OR 조건이거나 AND 조건에서 태그가 하나일 경우
                         this.posts = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
@@ -155,7 +171,7 @@ export default {
                     console.log(this.posts);
                     this.posts.forEach(v=>{
                         var dateinfo = v.작성시각
-                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
+                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
                         console.log("왜")
                     })
                 }
@@ -173,24 +189,24 @@ export default {
                         }
                     }
                     // 중복 제거 혹은 필터링을 통해 AND 및 OR 검색이 가능하도록
-                    if(this.detailMode==1 && this.tags > 1) { // AND 조건에서 1개짜리일 경우에는 중복이 없으므로 넘김
+                    if(this.detailMode==1 && this.tags.length > 1) { // AND 조건에서 1개짜리일 경우에는 중복이 없으므로 넘김
                         var temp4 = [];
                         temp4 = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
-                            return t.게시글번호 === array.게시글번호;
+                            return t.코드번호 === array.코드번호;
                         }) !== index); // 중복으로 나온 것 즉, AND
                         this.codes = Object(temp4).filter((array,index,self) => self.findIndex((t)=> {
-                            return t.게시글번호 === array.게시글번호;
+                            return t.코드번호 === array.코드번호;
                         }) === index); // 중복으로 검출된 것이 여러개이니 다시 중복된 것을 걸러준다.
                     }
                     else { // OR 조건이거나 AND 조건에서 태그가 하나일 경우
                         this.codes = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
-                            return t.게시글번호 === array.게시글번호;
+                            return t.코드번호 === array.코드번호;
                         }) === index); // 중복 제거
                     }
                     console.log(this.codes);
                     this.codes.forEach(v=>{
                         var dateinfo = v.작성시간
-                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
+                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
                         console.log("왜")
                     })
                 }
