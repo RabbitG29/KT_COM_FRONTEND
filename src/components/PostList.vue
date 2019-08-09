@@ -17,9 +17,9 @@
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center">카테고리</th>
+                <th class="text-center">제목</th>
                 <th class="text-center">작성자</th>
                 <th class="text-center">부서</th>
-                <th class="text-center">제목</th>
                 <th class="text-center">작성일시</th>
                 <th class="text-center">추천수</th>
               </tr>
@@ -28,9 +28,9 @@
               <tr v-for="(item, index) in result" @click="readPost(item)" :key="index" style="cursor: pointer">
                 <td scope="col">{{index+1}}</td>
                 <td>{{item.카테고리명}}</td>
+                <td width=500>{{item.제목}}</td>
                 <td>{{item.이름}}</td>
                 <td>{{item.부서명}}</td>
-                <td width=400>{{item.제목}}</td>
                 <td>{{item.writetime}}</td>
                 <td width=100>{{item.추천수}}</td>
               </tr>
@@ -100,7 +100,7 @@ export default {
                 this.boardName = this.list[0].게시판명;
                 this.list.forEach(v=>{
                   var dateinfo = v.작성시각
-                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY년 M월 D일 H시 m분')
+                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
                 })
                  this.getResult(true);
             })

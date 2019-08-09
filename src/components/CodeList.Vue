@@ -31,32 +31,33 @@
             <thead>
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
-                <th class="text-center">작성자</th>
                 <th class="text-center">부서</th>
                 <th class="text-center">코드</th>
+                <th class="text-center">작성자</th>
                 <th class="text-center">작성일시</th>
-                <th class="text-center">코멘트</th>
                 <th class="text-center">다운로드/삭제</th>
+                <th class="text-center"></th>
               </tr>
             </thead>
             <tbody v-for="(item, index) in result" :key="index"> <!-- TODO : 이름 클릭하면 대시보드로 갈 수 있게 해보자 -> 완료-->
               <tr>
                 <td scope="col">{{index+1}}</td>
-                <td>{{item.이름}}</td>
                 <td>{{item.부서명}}</td>
-                <td @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
+                <td width=400 @click="readCode(item)" style="cursor: pointer">{{item.파일명}}</td>
+                <td>{{item.이름}}</td>
                 <td>{{item.writetime}}</td>
-                <td><button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" >펼치기</button>
-                </td>
+                
                 <td>
-                    <button v-if="isLogged" class="btn btn-sm btn-secondary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
+                    <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
                     <button v-if="isLogged" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
+                <td width=10><button v-if="isLogged" class="btn btn-sm btn-light" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" >▼</button>
+                </td>
               <tr> <!-- row of row로 table 내에서 처리 가능 -->
-              <td colspan="7"> <!-- 모든 열의 자리를 차지하도록 -->
+              <td colspan="7" style="padding: 0px;"> <!-- 모든 열의 자리를 차지하도록 -->
                 <div class="row" id="comment" >
                   <div v-if="isLogged" class="list-group col-sm-12"> 
                   <!-- collapse 위치를 테이블 내로 이동하면서 accordion에서 일반 collapse로 변경-->
-                    <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2" >
+                    <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2">
                       <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
                       <div class="card">
                             <div class="card-body">
@@ -226,7 +227,7 @@ export default {
                     console.log(this.list);
                     this.list.forEach(v=>{
                         var dateinfo = v.작성시간
-                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY년 M월 D일 H시 m분')
+                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.M.D HH:m')
                         console.log(v);
                     })
                     this.getResult(true);
@@ -306,7 +307,7 @@ export default {
           this.list2.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
-            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY년 M월 D일 h시 m분')
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.M.D HH:m')
             v.mode = 'view'
           })
           this.list3[index]=this.list2;
