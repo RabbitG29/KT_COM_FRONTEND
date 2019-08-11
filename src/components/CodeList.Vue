@@ -250,7 +250,7 @@ export default {
             .catch(e=>{
               console.log(e);
               this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
             })
@@ -271,7 +271,7 @@ export default {
             .catch(e=>{
                 console.log(e);
                 this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
             })
@@ -331,7 +331,7 @@ export default {
       .catch(error=>{
           console.log('서버에러')
           this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
       })
@@ -355,9 +355,9 @@ export default {
        }
      })
      .catch(error=>{
-         console.log('서버에러')
+         console.log(error)
          this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
        })
@@ -375,9 +375,9 @@ export default {
         }
       })
       .catch(error=>{
-        console.log('서버에러')
+        console.log(error)
         this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
       })
@@ -403,7 +403,11 @@ export default {
         }
       })
       .catch(error=>{
-        console.log('서버에러')
+        console.log(error)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
       })
     }
     },

@@ -215,8 +215,11 @@ export default {
                 }
             })
             .catch(error=>{
-                console.log('서버에러')
-                console.log(error);
+                console.log(error)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
             }) 
         }
     },

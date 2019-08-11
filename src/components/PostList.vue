@@ -108,8 +108,11 @@ export default {
                  this.getResult(true);
             })
             .catch(error=>{
-                console.log('서버에러')
-                
+              console.log(error)
+              /*this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+              })*/
             }) 
         },
         getCategories: function() {

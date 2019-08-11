@@ -215,18 +215,18 @@ export default {
           })
       })
       .catch(error=>{
-          console.log('서버에러')
-          this.$notice({
-                type: 'alert',
+          console.log(error)
+            this.$notice({
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
-            })
+            })  
       })
     },
     commentEroll : function(){
      var url = this.$config.targetURL+'/board/comment';
      if(this.comment=='') {
        this.$notice({
-                type: 'dangerous',
+                type: 'error',
                 text: '댓글 내용을 입력해주세요.'
               })
        return;
@@ -248,9 +248,9 @@ export default {
        }
      })
      .catch(error=>{
-         console.log('서버에러')
-         this.$notice({
-                type: 'alert',
+         console.log(error)
+            this.$notice({
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
        })
@@ -268,9 +268,9 @@ export default {
         }
       })
       .catch(error=>{
-        console.log('서버에러')
-        this.$notice({
-                type: 'alert',
+        console.log(error)
+            this.$notice({
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
       })
@@ -296,7 +296,11 @@ export default {
         }
       })
       .catch(error=>{
-        console.log('서버에러')
+        console.log(error)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
       })
     },
     getData: function() {
@@ -315,9 +319,13 @@ export default {
       }
     })
     .catch(e=>{
-        this.$Progress.fail()
+        console.log(e)
+            /*this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })*/
     })
-    this.path = this.$config.targetURL+'/board/post/download?postId='+this.id // 만들어야댐
+    this.path = this.$config.targetURL+'/board/post/download?postId='+this.id
     }
   },
   data () {

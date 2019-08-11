@@ -45,7 +45,7 @@ export default {
         console.log(data.id)
         console.log(data.name)
         console.log(data.deptId)
-        this.$store.commit('logIn', { // TODO : 사원정보넣기!!
+        this.$store.commit('logIn', { // 사원정보넣기
             id: data.id,
             name: data.name,
             deptId: data.deptId
@@ -69,15 +69,15 @@ export default {
               else {
                 console.log('error')
                     this.$notice({
-                        type: 'alert',
+                        type: 'error',
                         text: '로그인 정보가 올바르지 않습니다'
                     })
               }
             })
           .catch((error)=>{
-            console.log('server success')
+            console.log(error)
             this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
           })

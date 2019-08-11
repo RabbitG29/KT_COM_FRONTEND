@@ -21,10 +21,10 @@
       <br>
     <div class="dropbox">
       <input class="input-file" type="file" name="userfile" @change="upload($event.target.name, $event.target.files)" @drop="upload($event.target.name, $event.target.files)">
-      <h2>압축파일 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
+      <h2 v-if="!this.file1">압축파일(zip) 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
+      <h2 v-if="this.file1" style="left:25%;">첨부한 파일명 : {{this.filename}}</h2>
     </div>
     <br>
-    <h5>파일명 : {{this.filename}}</h5>
     <br>
     <div class="form-group">
       <label for="id">SonarCloud Organization(기본 : kt)</label>
@@ -43,7 +43,7 @@
 <script>
 // TODO : 아오 프로그레스 스피너 외않되? -> 해결
 // TODO : 코드 파일 형식 or .zip 파일만 올릴 수 있게 -> 해결
-// TODO : 유효성 검사 -> 파일이 코드 파일이나 zip이 아닌 경우를 거를 수 있을까?
+// TODO : 유효성 검사 -> 파일이 코드 파일이나 zip이 아닌 경우를 거를 수 있을까? -> 일단은 하드 코딩으로 해결
 import VueCircle from 'vue2-circle-progress'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import VueTagsInput from '@johmun/vue-tags-input';
@@ -62,6 +62,17 @@ export default {
         this.id=this.getId;
     },
   methods: {
+        fileCheck() { // SonarCloud가 지원하는 언어 파일 혹은 압축 파일인지 확인
+          this.fileExt = this.filename.slice(this.filename.indexOf(".")+1).toLowerCase();
+          for(var i=0;i<this.languages.length;i++) {
+            if(this.languages[i]==this.fileExt) { // 더 좋은 방법이 있을까?
+              console.log(true);
+              return true;
+            }
+          }
+          console.log(false);
+          return false;
+        },
         progress(event,progress,stepValue){
           console.log(stepValue);
         },
@@ -82,8 +93,15 @@ export default {
             this.file1=files[0];
         },
         submit: function() {
+            if(!this.fileCheck()) {
+              this.$notice({
+                type: 'error',
+                text: '코드 파일이나 압축 파일(zip)이 맞는지 다시 확인해 주세요.'
+              })
+              return;
+            }
             this.$modal.show('spinner');
-            var url = this.$config.targetURL+'/review';
+            var url = '45.119.147.154:3002/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
             console.log(url);
             var formData = new FormData()
             formData.append('id', this.id)
@@ -108,9 +126,9 @@ export default {
               this.$router.go(-1)
             })
             .catch(error=>{
-                console.log('서버에러')
+                console.log(error)
                 this.$notice({
-                type: 'alert',
+                type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
                 this.$router.push({
@@ -124,12 +142,14 @@ export default {
       msg: 'CodeCode',
       filename: '',
       file1: '',
+      fileExt: '',
       id: '',
       fill : { gradient: ["red", "green", "blue"] },
       mode: '3',
       organization: 'kt',
       tag: '',
-      tags: []
+      tags: [],
+      languages: ['cpp', 'java', 'js', 'vue', 'php', 'css', 'html', 'xml', 'py', 'cs', 'ts', 'go', 'zip', 'rb', 'rbz', 'kt', 'sc', 'mxml', 'jsx', ]
     }
   }
 }
@@ -173,8 +193,8 @@ a {
   color: #42b983;
 }
 .dropbox {
-    outline: 2px dashed #aaa;
-    background: #7fb4dd;
+    outline: 2px dashed #000000;
+    background: #ffffff;
     width: 1100px;
     height: 300px;
     position: relative; 

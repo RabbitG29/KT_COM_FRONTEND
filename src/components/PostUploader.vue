@@ -86,6 +86,11 @@ mounted: function() {
             }
           })
           .catch(e=>{
+            console.log(e)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
           })
     }
 },
@@ -147,10 +152,11 @@ methods: {
               this.$router.go(-1)
             })
             .catch(error=>{
-                console.log('서버에러')
-                this.$router.push({
-                  name: 'Board'
-                })
+                console.log(error)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
               })
           }
           else {
@@ -174,10 +180,11 @@ methods: {
               this.$router.go(-1)
             })
             .catch(error=>{
-                console.log('서버에러')
-                this.$router.push({
-                  name: 'Board'
-                })
+                console.log(error)
+            this.$notice({
+                type: 'error',
+                text: '서버에 오류가 있습니다.'
+            })
               })
           }
         }
