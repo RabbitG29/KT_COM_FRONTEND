@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <go-top></go-top>
       <h1>{{this.boardName}}</h1>
       <br>
       <div id="board">
@@ -62,8 +63,12 @@
 </template>
 
 <script>
+import GoTop from '@inotom/vue-go-top';
 export default {
   name: 'HelloWorld',
+  components: {
+    GoTop
+  },
   mounted: function() {
     this.boardId = this.$route.query.boardId;
     this.boardName = this.$route.query.boardName;

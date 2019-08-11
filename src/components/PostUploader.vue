@@ -9,7 +9,7 @@
     </div>
     <div v-show="isLogged">
       <div class="board-box container">
-        <button type="button" class="btn btn-outline-primary" style="float:right" @click.prevent="submitPost">{{mode=='create'?'등록':'수정'}}</button>
+        <button type="button" :disabled="this.title=='' || this.content==''" class="btn btn-outline-primary" style="float:right" @click.prevent="submitPost">{{mode=='create'?'등록':'수정'}}</button>
         <button type="button" class="btn btn-outline-secondary" style="float:right" @click="$router.go(-1)">뒤로가기</button>
         <form>
           <div class="form-group row container">
@@ -30,7 +30,7 @@
           <div class="form-group">
             <textarea class="md-text" rows="10" v-model="content" placeholder="content(markdown)"/>
             <br>
-              <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
+              <vue-tags-input v-if="this.mode=='create'" id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
             <br>
             <h2>Markdown Preview</h2>
             <br>

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
       <div id="header">
-            <div id="login-box">
+            <div id="login-box"> <!-- 상단 로그인 바 -->
                 <img src="./assets/kt_ci2.png" width="40px" style="float: left;" />
                 <router-link to="/" style="color: white; margin-left: 200px;"> KT Code-Cleaner </router-link>
                 <div id="login-menu">
@@ -22,11 +22,13 @@
                 </div>
             </div>
         </div>
-        <sidebar-menu @collapse="onToggleCollapse" :menu="menu" :collapsed="collapsed" @item-click="onItemClick" >
+        <!-- 사이드 바 -->
+        <sidebar-menu @collapse="onToggleCollapse" width="280px" :menu="menu" :collapsed="collapsed" @item-click="onItemClick" >
             <span slot="collapse-icon">↔</span>
             <span slot="dropdown-icon">▶</span>
         </sidebar-menu>
-        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 375px;' : 'margin-left: 200px'" />
+        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 320px;' : 'margin-left: 200px'" />
+        <!-- footer -->
         <div id="footer">
             <small>ⓒ Copyright 2019 All Rights Reserved</small>
         </div>
@@ -65,8 +67,7 @@ export default {
             console.log(collapsed);
             this.isCallapsed=collapsed;
         },
-       onItemClick(event, item) { // 여기서 분기해서 처리 가능
-            //SidebarMenu.collapse(true); 페이지 바뀌면 메뉴가 접혔으면 좋겠는뎅
+       onItemClick(event, item) { // 여기서 메뉴 선택 시 분기해서 처리 가능
             if(item.title=='kt.com')
                 window.open("http://www.kt.com","new page");
             else if(item.title=='recruit.kt.com')
@@ -75,44 +76,44 @@ export default {
                 window.open("https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard", "new page");
             else if(item.title=='공지사항') {
                 this.$router.push({
-                name: 'PostList',
-                query: { boardId:1, boardName:item.title }
+                    name: 'PostList',
+                    query: { boardId:1, boardName:item.title }
                 })
             }
             else if(item.title=='자유게시판') {
                 this.$router.push({
-                name: 'PostList',
-                query: { boardId:2, boardName:item.title }
+                    name: 'PostList',
+                    query: { boardId:2, boardName:item.title }
                 })
             }
             else if(item.title=='Q&A') {
                 this.$router.push({
-                name: 'PostList',
-                query: { boardId:3, boardName:item.title }
+                    name: 'PostList',
+                    query: { boardId:3, boardName:item.title }
                 })
             }
             else if(item.title=='지식 공유') {
                 this.$router.push({
-                name: 'PostList',
-                query: { boardId:4, boardName:item.title }
+                    name: 'PostList',
+                    query: { boardId:4, boardName:item.title }
                 })
             }
             else if(item.title=='내 코드') {
                 this.$router.push({
-                name: 'CodeList',
-                query: { mode:1 }
+                    name: 'CodeList',
+                    query: { mode:1 }
                 })
             }
             else if(item.title=='부서 코드') {
                 this.$router.push({
-                name: 'CodeList',
-                query: { mode:2 }
+                    name: 'CodeList',
+                    query: { mode:2 }
                 })
             }
             else if(item.title=='전체 코드') {
                 this.$router.push({
-                name: 'CodeList',
-                query: { mode:3 }
+                    name: 'CodeList',
+                    query: { mode:3 }
                 })
             }
        }
@@ -120,7 +121,7 @@ export default {
     data(){
         return {
             baseClass: 'v-icon',
-            isCallapsed: false,
+            isCallapsed: false, // 메뉴가 접혔을 때 margin 조절을 위해서 접혔는지 여부 체크
              menu: [ // TODO : 아이콘 바꾸자 -> 해결
                 {
                     href: '/',
@@ -128,7 +129,7 @@ export default {
                     icon: 'fa fa-home'
                 },
                 {
-                    //href: '/',
+                    //href: '',
                     // TODO : query로 boardId 어케 넘겨주지?
                     title: '게시판',
                     icon: 'fa fa-newspaper',
@@ -140,56 +141,39 @@ export default {
                             icon: 'fa fa-flag',
                         },
                         {
-                            href: '/',
+                            href: '/postlist',
                             title: '자유게시판',
                             icon: 'fa fa-user',
                         },
                         {
-                            href: '/',
+                            href: '/postlist',
                             title: 'Q&A',
                             icon: 'fa fa-question-circle',
                         },
                         {
-                            href: '/',
+                            href: '/postlist',
                             title: '지식 공유',
                             icon: 'fa fa-exclamation',
                         }
                     ]
                 },
-               /* {
-                    //href: '/',
-                    title: '채팅',
-                    icon: 'fa fa-comments',
-                    child: [
-                        {
-                            href: '/',
-                            title: '자유채팅',
-                            icon: 'fa fa-user',
-                        },
-                        {
-                            href: '/',
-                            title: 'Q&A',
-                            icon: 'fa fa-question-circle',
-                        }
-                    ]
-                },*/
                 {
-                    //href: '/codelist',
+                    //href: '',
                     title: '코드 리뷰',
                     icon: 'fa fa-code',
                     child: [
                         {
-                            href: '/',
+                            href: '/codelist',
                             title: '내 코드',
                             icon: 'fa fa-user',
                         },
                         {
-                            href: '/',
+                            href: '/codelist',
                             title: '부서 코드',
                             icon: 'fa fa-users',
                         },
                         {
-                            href: '/',
+                            href: '/codelist',
                             title: '전체 코드',
                             icon: 'fa fa-code',
                         }
@@ -222,7 +206,7 @@ export default {
                     href: '/hashtag'
                 }
             ],
-            collapsed: false
+            collapsed: false,
         }
     }
 }

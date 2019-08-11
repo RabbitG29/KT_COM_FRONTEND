@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+      <go-top></go-top>
       <div class="unlogin-box container" v-show="!isLogged">
           <h1>KT Code-Cleaner</h1>
           <br>
@@ -27,7 +28,7 @@
           <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
         </div>
         <div class="col-sm-1">
-          <button class="btn btn-sm btn-primary" @click.prevent="getData">검색</button>
+          <button class="btn btn-sm btn-primary" :disabled="(this.tags.length==0)" @click.prevent="getData">검색</button>
         </div>
     </div>
     <div id="board">
@@ -95,13 +96,15 @@
 
 <script>
 import VueTagsInput from '@johmun/vue-tags-input';
+import GoTop from '@inotom/vue-go-top';
 export default {
   name: 'HelloWorld',
   computed: {
         
     },
     components: {
-        VueTagsInput
+        VueTagsInput,
+        GoTop
     },
     mounted: function() {
         this.tag = this.$route.query.tag;

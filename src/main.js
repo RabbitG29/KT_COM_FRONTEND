@@ -29,6 +29,7 @@ import { SpinnerPlugin } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { BFormSelect } from 'bootstrap-vue'
 import { CollapsePlugin } from 'bootstrap-vue'
+import GoTop from '@inotom/vue-go-top';
 Vue.use(CollapsePlugin)
 import VueTags from "vue-tags";
 
@@ -38,7 +39,7 @@ Vue.component('b-form-select', BFormSelect)
 
 Vue.component('v-select', vSelect)
 Vue.use(SpinnerPlugin)
-
+Vue.use(GoTop);
 Vue.use(feather, 'v-icon')
 
 

@@ -1,5 +1,6 @@
 <template>
   <div class="container" align="center">
+    <go-top></go-top>
     <div class="form-group row container" align="center" style=" text-align: center;">
       <div class="col-lg-4" id="img">
         <img src="../assets/kt_home.png" style="max-width: 100%; height: auto;">
@@ -72,10 +73,12 @@
 
 <script>
 import TagsBall from 'vue-tags-ball'
+import GoTop from '@inotom/vue-go-top';
 export default {
   name: 'HelloWorld',
   components: {
-    "tags-ball":TagsBall
+    "tags-ball":TagsBall,
+    GoTop
   },
   computed: {
         

@@ -53,5 +53,8 @@ export default new Router({
             name: 'HashTag',
             component: HashTag
         }
-    ]
+    ],
+    scrollBehavior (to, from, savedPosition) {
+        return { x: 0, y: 0 } // 라우터 뷰 변화 시에 맨 위가 되도록
+    }
 })

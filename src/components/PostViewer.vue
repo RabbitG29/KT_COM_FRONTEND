@@ -1,5 +1,7 @@
 <template>
   <div class="container">
+    <go-top></go-top>
+    <!-- 로그인되어있지 않을 경우 들어가지 못하게 -->
     <div class="unlogin-box container" v-show="!isLogged">
           <h1>KT Code-Cleaner</h1>
           <br>
@@ -57,7 +59,7 @@
     <div v-if="isLogged" class="list-group col-sm-12">
       <div id="comment-post-box">
       <textarea v-model="comment" class="form-control"  placeholder="Comment" rows="3"></textarea>
-      <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll">댓글작성</button>
+      <button type="button" class="btn btn-primary" style="cursor: pointer" :disabled="(this.comment=='')" @click.prevent="commentEroll">댓글작성</button>
       </div>
     </div>
 
@@ -79,7 +81,7 @@
                 <div v-show="getId==item.작성자">
                   <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
                   <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
-                  <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                  <button v-else type="button" class="btn btn-light btn-sm" :disabled="(this.comment=='')" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
                   <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호)">삭제</button>
                 </div>
 
@@ -97,9 +99,11 @@
 // TODO : Markdown Viewer 적용하기 https://github.com/markdown-it/markdown-it -> 완료
 import MarkdownItVue from 'markdown-it-vue'
 import 'markdown-it-vue/dist/markdown-it-vue.css'
+import GoTop from '@inotom/vue-go-top';
 export default {
   components: {
-    MarkdownItVue
+    MarkdownItVue,
+    GoTop
   },
   name: 'HelloWorld',
   mounted: function() {
@@ -220,6 +224,13 @@ export default {
     },
     commentEroll : function(){
      var url = this.$config.targetURL+'/board/comment';
+     if(this.comment=='') {
+       this.$notice({
+                type: 'dangerous',
+                text: '댓글 내용을 입력해주세요.'
+              })
+       return;
+     }
      var json = {
        postId: this.postId,
        content: this.comment,

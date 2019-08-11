@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+      <go-top></go-top>
       <div class="unlogin-box container" v-show="!isLogged">
           <h1>KT Code-Cleaner</h1>
           <br>
@@ -153,11 +154,13 @@
 //TODO : Callapse Toggle을 자유롭게 다룰 수 있다면 가능할 듯? -> Arcodian 이용 codeId, 현재 펼쳐진 codeId 이용 https://bootstrap-vue.js.org/docs/components/collapse/
 var path = require('path');
 import { BCollapse } from 'bootstrap-vue'
+import GoTop from '@inotom/vue-go-top';
 
 export default {
   name: 'CodeList',
-  component: {
-    BCollapse
+  components: {
+    BCollapse,
+    GoTop
   },
   computed: {
         isLogged () {

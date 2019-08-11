@@ -16,6 +16,7 @@
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/vue-fontawesome": "^0.1.6",
+    "@inotom/vue-go-top": "^1.1.0",
     "@johmun/vue-tags-input": "^2.1.0",
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",

@@ -34,7 +34,7 @@
       <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
     </div>
     </div>
-    <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="submit()">등록하기</button>
+    <button v-if="isLogged" class="btn btn-sm btn-primary" :disabled="this.organization=='' || !this.file1" @click.prevent="submit()">등록하기</button>
     <button class="btn btn-sm btn-secondary" @click="$router.go(-1)">뒤로가기</button>
   </div>
   </div>
@@ -43,7 +43,7 @@
 <script>
 // TODO : 아오 프로그레스 스피너 외않되? -> 해결
 // TODO : 코드 파일 형식 or .zip 파일만 올릴 수 있게 -> 해결
-// TODO : 유효성 검사
+// TODO : 유효성 검사 -> 파일이 코드 파일이나 zip이 아닌 경우를 거를 수 있을까?
 import VueCircle from 'vue2-circle-progress'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import VueTagsInput from '@johmun/vue-tags-input';
