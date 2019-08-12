@@ -97,7 +97,7 @@
                         <h4>Comment : {{code.파일명}}</h4>
                         <div id="comment-post-box">
                           <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
-                          <button type="button" class="btn btn-primary" style="cursor: pointer" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
+                          <button type="button" class="btn btn-primary" style="cursor: pointer" :disabled="(comment=='')" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
                         </div>
                         <div id="dummy" style="font-size: 0px;">
                           {{tags}}
@@ -120,7 +120,7 @@
                                     <div v-show="getId==item.작성자">
                                       <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
                                       <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
-                                      <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                                      <button v-else type="button" class="btn btn-light btn-sm" style="cursor: pointer" :disabled="(item.내용=='')" @click.prevent="editComment(item)">확인</button>
                                       <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호,item.소속코드)">삭제</button>
                                     </div>
                                   </div>
@@ -249,10 +249,10 @@ export default {
             })
             .catch(e=>{
               console.log(e);
-              this.$notice({
+              /*this.$notice({
                 type: 'error',
                 text: '서버에 오류가 있습니다.'
-            })
+            })*/
             })
         },
         deleteCode: function(codeId) {

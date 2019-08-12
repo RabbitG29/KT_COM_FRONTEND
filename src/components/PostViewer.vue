@@ -81,7 +81,7 @@
                 <div v-show="getId==item.작성자">
                   <button v-if="item.mode == 'edit'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">취소</button>
                   <button v-if="item.mode == 'view'" type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click="changeCommentMode(index)">수정</button>
-                  <button v-else type="button" class="btn btn-light btn-sm" :disabled="(this.comment=='')" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
+                  <button v-else type="button" class="btn btn-light btn-sm" :disabled="(item.내용=='')" style="cursor: pointer" @click.prevent="editComment(item)">확인</button>
                   <button type="button" class="btn btn-light btn-sm" style="cursor: pointer" @click.prevent="deleteComment(item.댓글번호)">삭제</button>
                 </div>
 
@@ -173,6 +173,7 @@ export default {
       })
     },
     changeCommentMode: function(index){
+      console.log(index);
       if(this.list[index].mode == 'view')
         this.list[index].mode = 'edit'
       else

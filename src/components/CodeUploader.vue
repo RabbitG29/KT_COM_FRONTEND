@@ -63,7 +63,7 @@ export default {
     },
   methods: {
         fileCheck() { // SonarCloud가 지원하는 언어 파일 혹은 압축 파일인지 확인
-          this.fileExt = this.filename.slice(this.filename.indexOf(".")+1).toLowerCase();
+          this.fileExt = this.filename.slice(this.filename.indexOf(".")+1).toLowerCase(); // 뒤에서부터 보게 하면?
           for(var i=0;i<this.languages.length;i++) {
             if(this.languages[i]==this.fileExt) { // 더 좋은 방법이 있을까?
               console.log(true);
@@ -101,7 +101,7 @@ export default {
               return;
             }
             this.$modal.show('spinner');
-            var url = '45.119.147.154:3002/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
+            var url = 'http://45.119.147.154:3002/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
             console.log(url);
             var formData = new FormData()
             formData.append('id', this.id)
@@ -122,8 +122,6 @@ export default {
                 type: 'success',
                 text: '코드 등록이 성공적으로 완료되었습니다.'
               })
-              
-              this.$router.go(-1)
             })
             .catch(error=>{
                 console.log(error)
