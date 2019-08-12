@@ -128,7 +128,7 @@ export default {
                         {
                             href: '/postlist',
                             title: '자유게시판',
-                            icon: 'fa fa-user',
+                            icon: 'fa fa-comments',
                         },
                         {
                             href: '/postlist',
@@ -165,7 +165,7 @@ export default {
                 },
                                 {
                     title: '태그검색',
-                    icon: 'fa fa-hashtag',
+                    icon: 'fa fa-search',
                     href: '/hashtag'
                 },
                 {
@@ -184,7 +184,7 @@ export default {
                         },
                         {
                             title: '보안취약점 가이드',
-                            icon: 'fa fa-code',
+                            icon: 'fa fa-hashtag',
                         }
 
             ],

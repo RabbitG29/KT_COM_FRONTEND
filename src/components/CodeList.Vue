@@ -78,8 +78,7 @@
                     <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2">
                       <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
                       <br>
-                      <h4>Tags : {{code.파일명}}</h4>
-                      <br>
+                      <h6>Tags : {{code.파일명}}</h6>
                       <div class="card">
                             <div class="card-body">
                               <h5 style="text-align: left;">
@@ -94,7 +93,22 @@
                             </div>
                             </div>
                             <br>
-                        <h4>Comment : {{code.파일명}}</h4>
+                            <h6>Issues : {{code.파일명}}</h6>
+                            <div class="card">
+                            <div class="card-body">
+                              <h5 style="text-align: left;">
+                                <a style="text-align: left;" class="card-text" v-for="(issue,index) in issues2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 이슈가 있을 경우 -->
+                                  #{{issue}}
+                                </a>
+                                <a style="text-align: left;" class="card-text" v-if="issues2[code.코드번호].length==0" :key="index"> <!-- 해당 코드리뷰에 이슈가 없을 경우 -->
+                                  이슈가 없습니다.
+                                </a>
+                              </h5>
+                              <br>
+                            </div>
+                            </div>
+                            <br>
+                        <h6>Comment : {{code.파일명}}</h6>
                         <div id="comment-post-box">
                           <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
                           <button type="button" class="btn btn-primary" style="cursor: pointer" :disabled="(comment=='')" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
@@ -102,6 +116,7 @@
                         <div id="dummy" style="font-size: 0px;">
                           {{tags}}
                           {{tags2}}
+                          {{issues2}}
                         {{list2}}
                         {{list3[code.코드번호]}}
                         </div>
@@ -180,7 +195,7 @@ export default {
         this.mode = this.$route.query.mode;
         this.deptId = this.getDeptId;
         this.getData()
-        
+        this.getIssues(currentItem);
         //this.getComment(this.list[0].코드번호);
       }
     },
@@ -191,6 +206,7 @@ export default {
         for(var i=0;i<5000;i++) {
           this.list3.push([]);
           this.tags2.push([]);
+          this.issues2.push([]);
         }
 
         console.log("hoho");
@@ -217,10 +233,22 @@ export default {
             }
           })
         },
+        getIssues: function(item) {
+          var url = this.$config.targetURL+'/review/issues?codeId='+item.코드번호;
+          this.$http.get(url)
+          .then(r=>{
+            
+            this.issues2[item.코드번호]=r.data.tags;
+            console.log(this.issues2[item.코드번호]);
+            console.log(item.코드번호);
+          })
+        },
         changeIndex: function(index,item) {
             this.currentIndex = index;
+            this.currentItem = item;
             this.getComment(item.코드번호);
             this.getTags(item.코드번호);
+            this.getIssues(item);
         },
         readCode: function(item) {
             window.open(item.링크);
@@ -245,6 +273,8 @@ export default {
                         console.log(v);
                     })
                     this.getResult(true);
+                    for(var i=0;i<this.list.length;i++)
+                      this.getIssues(this.list[i]);
                 }
             })
             .catch(e=>{
@@ -429,7 +459,10 @@ export default {
       currentIndex: '1',
       tags: [],
       tags2: [],
-      tag: ''
+      tag: '',
+      issues: [],
+      issues2: [],
+      currentItem: ''
     }
   }
 }
@@ -495,7 +528,7 @@ a {
 }
 #comment-post-box button {
   position: absolute;
-  top: 285px;
+  top: 390px;
   right: 30px;
 }
 #comment-post-box {
