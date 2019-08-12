@@ -1,37 +1,21 @@
 <template>
   <div id="app">
       <div id="header">
-            <div id="login-box"> <!-- 상단 로그인 바 -->
-                <img src="./assets/kt_ci2.png" width="40px" style="float: left;" />
-                <router-link to="/" style="color: white; margin-left: 200px;"> KT Code-Cleaner </router-link>
-                <div id="login-menu">
+                <div id="login-menu" style="margin-top: 5px;">
                     <router-link v-if="!isLogged" to="Login"> 로그인 </router-link>
                     <span v-else>
                         <a>안녕하세요 {{getName}}님</a>
                         <a href="" @click="logOut"> 로그아웃 </a>
                     </span>
                 </div>
-            </div>
-            <div class="header">
-                <div class="container">
-                    <div class="row">
-                        <div class=" col-sm-8 col-xs-8 container">
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <!-- 사이드 바 -->
-        <sidebar-menu @collapse="onToggleCollapse" width="280px" :menu="menu" :collapsed="collapsed" @item-click="onItemClick" >
+        <sidebar-menu @collapse="onToggleCollapse" v-bind:style=" isCallapsed ? 'width: 2.5%;' : 'width: 15%'" :menu="menu" :collapsed="collapsed" @item-click="onItemClick" id="sidebar">
             <span slot="collapse-icon">↔</span>
             <span slot="dropdown-icon">▶</span>
         </sidebar-menu>
-        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 320px;' : 'margin-left: 200px'" />
-        <!-- footer -->
-        <div id="footer">
-            <small>ⓒ Copyright 2019 All Rights Reserved</small>
-        </div>
+        <br><br>
+        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 20%;' : 'margin-left: 14%'" />
     </div>
 </template>
 
@@ -39,6 +23,9 @@
 // TODO : 디폴트로 접혀있게 하려면 어떻게 해야하지? -> 해결
 import { SidebarMenu } from 'vue-sidebar-menu';
 import customIcon from 'vue-icon/lib/vue-feather.esm'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import VueSidebarMenu from 'vue-sidebar-menu'
+
 export default {
   name: 'App',
   components: {
@@ -125,15 +112,13 @@ export default {
              menu: [ // TODO : 아이콘 바꾸자 -> 해결
                 {
                     href: '/',
-                    title: '홈',
+                    title: 'KT Code Cleaner',
                     icon: 'fa fa-home'
                 },
                 {
-                    //href: '',
-                    // TODO : query로 boardId 어케 넘겨주지?
+                    header: true,
                     title: '게시판',
-                    icon: 'fa fa-newspaper',
-                    child: [
+                },
                         {
                             href: '/postlist',
                             query: 'boardId=1',
@@ -154,14 +139,11 @@ export default {
                             href: '/postlist',
                             title: '지식 공유',
                             icon: 'fa fa-exclamation',
-                        }
-                    ]
                 },
                 {
-                    //href: '',
+                    header: true,
                     title: '코드 리뷰',
-                    icon: 'fa fa-code',
-                    child: [
+                },
                         {
                             href: '/codelist',
                             title: '내 코드',
@@ -176,14 +158,20 @@ export default {
                             href: '/codelist',
                             title: '전체 코드',
                             icon: 'fa fa-code',
-                        }
-                    ]
                 },
                 {
-                    //href: '/',
+                    header: true,
+                    title: '검색',
+                },
+                                {
+                    title: '태그검색',
+                    icon: 'fa fa-hashtag',
+                    href: '/hashtag'
+                },
+                {
+                    header: true,
                     title: '사이트맵',
-                    icon: 'fa fa-map',
-                    child: [ // TODO : 링크가 안걸려 -> 해결
+                },
                         {
                             //href: 'http://www.kt.com',
                             title: 'kt.com',
@@ -198,13 +186,7 @@ export default {
                             title: '보안취약점 가이드',
                             icon: 'fa fa-code',
                         }
-                    ]
-                },
-                {
-                    title: '태그검색',
-                    icon: 'fa fa-hashtag',
-                    href: '/hashtag'
-                }
+
             ],
             collapsed: false,
         }
@@ -235,6 +217,7 @@ export default {
 }
 div {
  font-family: 'Olleh','NanumGothic';
+ font-weight: 700;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -272,18 +255,18 @@ div {
     margin-bottom: 5px;
     font-size: 15px;
     display: relative;
-    color: white;
+    color: black;
     z-index: 10;
 }
 a {
     margin-left: 5px;
 }
 #login-menu a {
-    color: white;
+    color: black;
 }
 
 #main-menu {
-    background: white;
+    background: black;
 }
 
 #main-menu a {
@@ -324,4 +307,5 @@ a {
   content: '\f07e';
   font-family: 'FontAwesome';
 }
+
 </style>

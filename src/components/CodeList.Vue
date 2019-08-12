@@ -50,7 +50,7 @@
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
                 <th class="text-center">부서</th>
-                <th class="text-center">코드</th>
+                <th class="text-center">코드(링크연결)</th>
                 <th class="text-center">작성자</th>
                 <th class="text-center">작성일시</th>
                 <th class="text-center">다운로드/삭제</th>

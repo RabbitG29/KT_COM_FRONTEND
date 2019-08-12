@@ -34,11 +34,11 @@
       <div class="col-lg-4">
         <div class="card"  id="content-box">
           <div class="card-header" style="text-align: center;">
-            <h6><b>📜 HOT 게시글 </b></h6>
+            <h6><b style="float:left; color:black;">📜 HOT 게시글 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link tag="div" class="form-group" v-for="(hot, index) in hots" :key="index" :to="'/postviewer?postId='+hot.게시글번호">
-              {{index+1}}. {{hot.제목}}({{hot.추천수}}추천)
+              <a style="float: left; color:black;">{{index+1}}. {{hot.제목}}</a><a style="float: right; color:black;" >{{hot.추천수}}추천</a><br>
             </router-link>
           </div>
         </div>
@@ -46,11 +46,11 @@
       <div class="col-lg-4" id="content-box">
         <div class="card">
           <div class="card-header" style="text-align: center;">
-            <h6><b>📜 HOT 코드리뷰 </b></h6>
+            <h6><b style="float:left; color:black;">📜 HOT 코드리뷰 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
-              {{index+1}}. {{code.파일명}} - {{code.이름}}
+              <a style="float: left; color:black;">{{index+1}}. {{code.파일명}}</a> <a style="float: right; color:black;" >{{code.이름}}</a><br>
             </router-link>
           </div>
         </div>
@@ -58,11 +58,11 @@
       <div class="col-lg-4" id="content-box">
         <div class="card">
           <div class="card-header" style="text-align: center;">
-            <h6><b>📜 HOT 태그 </b></h6>
+            <h6><b style="float:left; color:black;">📜 HOT 태그 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
             <router-link style="text-align: left;" tag="div" class="form-group" v-for="(tag, index) in tags2" :key="index" :to="{name:'HashTag', query: {tag:tag.태그명}}" >
-              {{index+1}}. {{tag.태그명}}({{tag.태그횟수}}회) <br>
+              <a style="float: left; color:black;">{{index+1}}. {{tag.태그명}}</a> <a style="float: right; color:black;" >{{tag.태그횟수}}회 태그</a> <br>
             </router-link>
           </div>
         </div>
