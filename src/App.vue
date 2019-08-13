@@ -120,23 +120,23 @@ export default {
                     title: '게시판',
                 },
                         {
-                            href: '/postlist',
+                            href: '/postlist?boardId=1&boardName=%EA%B3%B5%EC%A7%80%EC%82%AC%ED%95%AD',
                             query: 'boardId=1',
                             title: '공지사항',
                             icon: 'fa fa-flag',
                         },
                         {
-                            href: '/postlist',
+                            href: '/postlist?boardId=2&boardName=%EC%9E%90%EC%9C%A0%EA%B2%8C%EC%8B%9C%ED%8C%90',
                             title: '자유게시판',
                             icon: 'fa fa-comments',
                         },
                         {
-                            href: '/postlist',
+                            href: '/postlist?boardId=3&boardName=Q%26A',
                             title: 'Q&A',
                             icon: 'fa fa-question-circle',
                         },
                         {
-                            href: '/postlist',
+                            href: '/postlist?boardId=4&boardName=%EC%A7%80%EC%8B%9D%20%EA%B3%B5%EC%9C%A0',
                             title: '지식 공유',
                             icon: 'fa fa-exclamation',
                 },
@@ -145,17 +145,17 @@ export default {
                     title: '코드 리뷰',
                 },
                         {
-                            href: '/codelist',
+                            href: '/codelist?mode=1',
                             title: '내 코드',
                             icon: 'fa fa-user',
                         },
                         {
-                            href: '/codelist',
+                            href: '/codelist?mode=2',
                             title: '부서 코드',
                             icon: 'fa fa-users',
                         },
                         {
-                            href: '/codelist',
+                            href: '/codelist?mode=3',
                             title: '전체 코드',
                             icon: 'fa fa-code',
                 },

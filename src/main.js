@@ -6,7 +6,6 @@ import 'es6-promise'
 import Vue from 'vue'
 import vueResource from 'vue-resource'
 import Notifications from 'vue-notification'
-import VueSocketio from 'vue-socket.io'
 import App from './App'
 import vuejsmodal from 'vue-js-modal'
 import router from './router'
@@ -24,7 +23,6 @@ import wysiwyg from 'vue-wysiwyg'
 import VueSidebarMenu from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import feather from 'vue-icon'
-import fontawesome from '@fortawesome/fontawesome'
 import { SpinnerPlugin } from 'bootstrap-vue'
 import vSelect from 'vue-select'
 import { BFormSelect } from 'bootstrap-vue'
@@ -34,19 +32,12 @@ Vue.use(CollapsePlugin)
 import VueTags from "vue-tags";
 import { TooltipPlugin } from 'bootstrap-vue'
 Vue.use(TooltipPlugin)
-
 Vue.component("input-tags", VueTags);
-
 Vue.component('b-form-select', BFormSelect)
-
 Vue.component('v-select', vSelect)
 Vue.use(SpinnerPlugin)
 Vue.use(GoTop);
 Vue.use(feather, 'v-icon')
-
-
-
-
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.prototype.$config = config

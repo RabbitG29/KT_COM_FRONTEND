@@ -110,7 +110,8 @@ export default {
     },
     mounted: function() {
         this.tag = this.$route.query.tag;
-        console.log(this.tag);
+        //this.tags.push(this.$route.query.tag);
+        //console.log(this.tag);
     },
   methods: {
       readPost: function(item) {

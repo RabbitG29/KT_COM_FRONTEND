@@ -49,7 +49,7 @@
             <h6><b style="float:left; color:black;">📜 HOT 코드리뷰 </b></h6>
           </div>
           <div class="card-body" style="cursor: pointer">
-            <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist'">
+            <router-link  tag="div" class="form-group" v-for="(code, index) in codes2" :key="index" :to="'/codelist?mode=3'">
               <a style="float: left; color:black;">{{index+1}}. {{code.파일명}}</a> <a style="float: right; color:black;" >{{code.이름}}</a><br>
             </router-link>
           </div>
