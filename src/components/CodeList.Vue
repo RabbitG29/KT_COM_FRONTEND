@@ -25,25 +25,21 @@
         <h1 v-if="this.mode!=1&&this.mode!=2">All Code Review List</h1>
         <br>
         <div id="board">
-      <div class="board-box">
-      <div class="row form-group">
-        <div class="col-sm-4" >
-            <button type="button" class="btn btn-secondary"
-        @click="gotoSonar()">과거 리뷰 보러가기</button>
-          <button type="button" class="btn btn-secondary"
-        @click="gotoUpload()">코드 등록 및 리뷰</button>
-        </div>
-      </div>
-      <div class="row form-group">
-        <label class="col-sm-1">코드검색</label>
-        <div class="col-sm-10">
-          <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명 혹은 작성자를 입력해주세요(대소문자 구분).">
-        </div>
-        <div class="col-sm-1">
-          <button class="btn btn-sm btn-primary" @click.prevent="getResult(true)">검색</button>
-        </div>
-      </div>
-      <div class="row"> 
+          <div class="board-box">
+            <div class="row form-group">
+                <div class="col-sm-9">
+                  <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="코드명 혹은 작성자를 입력해주세요(대소문자 구분).">
+                </div>
+                <div class="col-sm-1">
+                  <button class="btn btn-primary" @click.prevent="getResult(true)">검색</button>
+                </div>
+                <div class="col-sm-1" >
+            <!-- <button type="button" class="btn btn-secondary"
+        @click="gotoSonar()">과거 리뷰 보러가기</button>-->
+                  <button type="button" class="btn btn-secondary" @click="gotoUpload()">코드 등록</button>
+                </div>
+              </div>
+              <div class="row"> 
           <!-- 코드 리스트 출력 -->
           <table class="table table-striped">
             <thead>
@@ -77,9 +73,12 @@
                   <!-- collapse 위치를 테이블 내로 이동하면서 accordion에서 일반 collapse로 변경-->
                     <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2">
                       <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
-                      <br>
-                      <h6>Tags : {{code.파일명}}</h6>
+                      <div class="row" id="tag" >
+                        <div v-if="isLogged" class="list-group col-sm-6"> 
                       <div class="card">
+                        <div class="card-header">
+                                Tags
+                              </div>
                             <div class="card-body">
                               <h5 style="text-align: left;">
                                 <a style="text-align: left;" class="card-text" v-for="(tag,index) in tags2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 태그가 있을 경우 -->
@@ -92,9 +91,13 @@
                               <br>
                             </div>
                             </div>
+                            </div>
                             <br>
-                            <h6>Issues : {{code.파일명}}</h6>
+                            <div v-if="isLogged" class="list-group col-sm-6"> 
                             <div class="card">
+                              <div class="card-header">
+                                Issues
+                              </div>
                             <div class="card-body">
                               <h5 style="text-align: left;">
                                 <a style="text-align: left;" class="card-text" v-for="(issue,index) in issues2[code.코드번호]" :key="index"> <!-- 해당 코드리뷰에 이슈가 있을 경우 -->
@@ -107,8 +110,8 @@
                               <br>
                             </div>
                             </div>
-                            <br>
-                        <h6>Comment : {{code.파일명}}</h6>
+                            </div>
+                            </div>
                         <div id="comment-post-box">
                           <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
                           <button type="button" class="btn btn-primary" style="cursor: pointer" :disabled="(comment=='')" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
@@ -144,7 +147,7 @@
                             </div>
                             <div class="col-sm-2"></div>
                           </div>
-                          
+                          <br>
                           </div>
                         </b-collapse>
                       </div>
@@ -521,6 +524,10 @@ a {
   width: 100%;
   margin-left: 0px;
 }
+#tag {
+  margin-top: 5px;
+  margin-left: 5px;
+}
 #comment-box #edit-box {
   position: absolute;
   bottom: 15px;
@@ -528,7 +535,7 @@ a {
 }
 #comment-post-box button {
   position: absolute;
-  top: 390px;
+  top: 195px;
   right: 30px;
 }
 #comment-post-box {

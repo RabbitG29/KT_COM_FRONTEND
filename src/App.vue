@@ -57,8 +57,8 @@ export default {
        onItemClick(event, item) { // 여기서 메뉴 선택 시 분기해서 처리 가능
             if(item.title=='kt.com')
                 window.open("http://www.kt.com","new page");
-            else if(item.title=='recruit.kt.com')
-                window.open("http://recruit.kt.com","new page");
+            else if(item.title=='설문조사')
+                window.open("https://form.office.naver.com/form/responseView.cmd?formkey=NTcxNGU4ZmMtMDIxYy00NTQxLWIxYmQtMjVkYjJmN2MyNDQ1&sourceId=urlshare","new page");
             else if(item.title=='보안취약점 가이드')
                 window.open("https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard", "new page");
             else if(item.title=='공지사항') {
@@ -169,6 +169,11 @@ export default {
                     href: '/hashtag'
                 },
                 {
+                    title: '구독 게시글',
+                    icon: 'fa fa-newspaper',
+                    href: '/followpost'
+                },
+                {
                     header: true,
                     title: '사이트맵',
                 },
@@ -179,7 +184,7 @@ export default {
                         },
                         {
                             //href: 'http://www.kt.com',
-                            title: 'recruit.kt.com',
+                            title: '설문조사',
                             icon: 'fa fa-hashtag',
                         },
                         {

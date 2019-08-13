@@ -8,6 +8,7 @@ import PostList from '@/components/PostList'
 import PostViewer from '@/components/PostViewer'
 import PostUploader from '@/components/PostUploader'
 import HashTag from '@/components/HashTag'
+import FollowPost from '@/components/FollowPost'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
             path: '/hashtag',
             name: 'HashTag',
             component: HashTag
+        },
+        {
+            path: '/followpost',
+            name: 'FollowPost',
+            component: FollowPost
         }
     ],
     scrollBehavior (to, from, savedPosition) {

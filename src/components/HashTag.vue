@@ -39,6 +39,7 @@
                         <thead>
                             <tr class="text-center">
                                 <th class="text-center" scope="col">#</th>
+                                <th class="text-center">게시판</th>
                                 <th class="text-center">카테고리</th>
                                 <th class="text-center">제목</th>
                                 <th class="text-center">작성자</th>
@@ -49,6 +50,7 @@
                         <tbody>
                             <tr v-for="(item, index) in posts" @click="readPost(item)" :key="index" style="cursor: pointer">
                                 <td scope="col">{{index+1}}</td>
+                                <td>{{item.게시판명}}</td>
                                 <td>{{item.카테고리명}}</td>
                                 <td style="text-align: left;" width=500>{{item.제목}}</td>
                                 <td>{{item.이름}}</td>

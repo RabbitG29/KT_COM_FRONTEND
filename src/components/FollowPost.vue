@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-    <go-top></go-top>
-      <h1>{{this.boardName}}</h1>
-      <br>
-      <div id="board">
+    <h1>구독 게시글</h1>
+    <br>
+    <div id="board">
       <div class="board-box">
       <div class="row form-group">
         <div class="col-sm-2">
@@ -18,15 +17,11 @@
           <option v-for="(dept, index) in depts" :key="index" :value="dept.부서명">{{dept.부서명}}</option>
         </b-form-select>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-7">
           <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명 또는 작성자를 입력해주세요(대소문자 구분).">
         </div>
         <div class="col-sm-1">
           <button type="button" class="btn btn-primary" @click.prevent="getResult(true)">검색</button>
-        </div>
-        <div class="col-sm-1" >
-          <button type="button" class="btn btn-secondary"
-        @click="createPost()">글 등록</button>
         </div>
       </div>
       <div class="row">
@@ -35,6 +30,7 @@
             <thead>
                <tr class="text-center">
                 <th class="text-center" scope="col">#</th>
+                <th class="text-center">게시판</th>
                 <th class="text-center">카테고리</th>
                 <th class="text-center">제목</th>
                 <th class="text-center">작성자</th>
@@ -46,8 +42,9 @@
             <tbody>
               <tr v-for="(item, index) in result" @click="readPost(item)" :key="index" style="cursor: pointer">
                 <td scope="col">{{index+1}}</td>
+                <td>{{item.게시판명}}</td>
                 <td>{{item.카테고리명}}</td>
-                <td style="text-align: left;" width=500>{{item.제목}}</td>
+                <td style="text-align: left;" width=400>{{item.제목}}</td>
                 <td>{{item.이름}}</td>
                 <td style="text-align: left;">{{item.부서명}}</td>
                 <td>{{item.writetime}}</td>
@@ -62,44 +59,43 @@
 </template>
 
 <script>
-import GoTop from '@inotom/vue-go-top';
 export default {
-  name: 'HelloWorld',
+  name: 'FollowPost',
   components: {
-    GoTop
   },
+  computed: {
+    isLogged: function(){
+      return this.$store.getters.isLogged
+    },
+    getId(){
+      return this.$store.getters.getId
+    }
+},
   mounted: function() {
-    this.boardId = this.$route.query.boardId;
-    this.boardName = this.$route.query.boardName;
-    console.log(this.boardId);
+    this.getData();
+    this.getCategories();
+    this.getDepts();
+  },
+  created: function(){
     this.getData();
     this.getCategories();
     this.getDepts();
   },
   watch: {
       $route: function(to, from){
-        this.boardId = this.$route.query.boardId
-        this.boardName = this.$route.query.boardName;
-        console.log('현재 게시판 번호 : '+this.boardId)
-        this.getData();
         this.getCategories();
         this.getDepts();
       }
   },
-  computed: {
-        
-    },
   methods: {
-        getData: function(){
-            var url = this.$config.targetURL+'/board/post?boardId='+this.boardId
+      getData: function(){
+            var url = this.$config.targetURL+'/board/post/following?id='+this.getId;
             console.log(url)
             this.$http.get(url)
             .then(result=>{
                 //console.log(result)
                 console.log(JSON.parse(result.data.result))
                 this.list = JSON.parse(result.data.result)
-                //console.log(list)
-                this.boardName = this.list[0].게시판명;
                 this.list.forEach(v=>{
                   var dateinfo = v.작성시각
                   v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
@@ -114,7 +110,23 @@ export default {
               })*/
             }) 
         },
-        getCategories: function() {
+        getResult: function(flag){
+            let arr_base=[];
+            let arr=[];            
+            for(var i=0;i<this.list.length;i++){
+              if(this.name && ((this.list[i].제목.indexOf(String(this.name)) == -1) && (this.list[i].이름.indexOf(String(this.name)) == -1)))
+                continue;
+              if(this.searchCategory!=0 && this.list[i].소속카테고리!=this.searchCategory)
+                continue;
+              if(this.searchDept!=0 && this.list[i].부서명!=this.searchDept)
+                continue;
+              arr_base.push(this.list[i]);
+            }
+            this.result = arr_base;
+            //console.log(this.result);
+            //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
+        },
+         getCategories: function() {
           var url = this.$config.targetURL+'/board/categories/';
           this.$http.get(url)
           .then(r=>{
@@ -134,15 +146,6 @@ export default {
             }
           })
         },
-        createPost: function() {
-            this.$router.push({
-                name: 'PostUploader',
-                query: {
-                    boardId: this.boardId,
-                    mode: 'create'
-                }
-            })
-        },
         readPost: function(item) {
             this.$router.push({
                 name: 'PostViewer',
@@ -151,29 +154,10 @@ export default {
                 }
             })
         },
-        getResult: function(flag){
-            let arr_base=[];
-            let arr=[];            
-            for(var i=0;i<this.list.length;i++){
-              if(this.name && ((this.list[i].제목.indexOf(String(this.name)) == -1) && (this.list[i].이름.indexOf(String(this.name)) == -1)))
-                continue;
-              if(this.searchCategory!=0 && this.list[i].소속카테고리!=this.searchCategory)
-                continue;
-              if(this.searchDept!=0 && this.list[i].부서명!=this.searchDept)
-                continue;
-              arr_base.push(this.list[i]);
-            }
-            this.result = arr_base;
-            //console.log(this.result);
-            //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
-        }
     },
-    data () {
+  data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      boardId: '',
-      boardName: '',
-      list: [],
       result: [],
       name: '',
       searchCategory: '0',
@@ -206,19 +190,5 @@ export default {
 }
 div {
  font-family: 'Olleh','NanumGothic';
-}
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
 }
 </style>

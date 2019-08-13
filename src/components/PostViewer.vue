@@ -13,6 +13,9 @@
     <div class="card">
       <div class="card-header">
         <div class="container" id="post-box">
+          <div id="back-box">
+          <button type="button" class="btn btn-secondary" style="float:left; cursor: pointer" @click.prevent="goBack">뒤로가기</button>
+          </div>
           <h3 font-style="bold" v-html="title"></h3>
           <h5>작성자 : {{writer}}</h5>
           <h5><small class="text-right">{{writetime}}(추천수 : {{thumbsup}})</small></h5>
@@ -36,7 +39,8 @@
         </div>
         <button v-if="this.like!=1" type="button" class="btn btn-primary" style="float:right cursor: pointer" @click.prevent="goLike">추천하기</button>
         <button v-if="this.like==1" type="button" class="btn btn-primary" style="float:right cursor: pointer" @click.prevent="goLike">추천취소</button>
-        <button type="button" class="btn btn-secondary" style="float:right cursor: pointer" @click.prevent="goBack">뒤로가기</button>
+        <button v-if="this.following!=1" type="button" class="btn btn-secondary" style="float:right cursor: pointer" @click.prevent="goFollow">구독하기</button>
+        <button v-if="this.following==1" type="button" class="btn btn-secondary" style="float:right cursor: pointer" @click.prevent="goFollow">구독취소</button>
       </div>
     </div>
     <br>
@@ -112,6 +116,7 @@ export default {
       this.getComment();
       this.getLike();
       this.getTags();
+      this.getFollow();
   },
   computed: {
     isLogged: function(){
@@ -169,6 +174,45 @@ export default {
        }
        else if(result.data.status == 'unlike'){
          this.like=0;
+       }
+      })
+    },
+    goFollow: function() {
+      var url = this.$config.targetURL+'/board/post/follow';
+      var json = {
+          postId: this.postId,
+          id: this.getId
+      }
+      this.$http.post(url, json)
+      .then(result=>{
+        if(result.data.status == 'follow'){
+         this.$notice({
+           type: 'success',
+           text: '게시글 구독이 성공적으로 완료되었습니다.'
+         })
+         this.getData();
+         this.following=1;
+       }
+       else if(result.data.status == 'unfollow'){
+         this.$notice({
+           type: 'success',
+           text: '게시글 구독 취소가 성공적으로 완료되었습니다.'
+         })
+         this.getData();
+         this.following=0;
+       }
+      })
+    },
+    getFollow: function() {
+      var url = this.$config.targetURL+'/board/post/follow?postId='+this.postId+'&id='+this.getId;
+      this.$http.get(url)
+      .then(result=>{
+        console.log(result.body);
+        if(result.data.status == 'follow'){
+         this.following=1;
+       }
+       else if(result.data.status == 'unfollow'){
+         this.following=0;
        }
       })
     },
@@ -346,7 +390,8 @@ export default {
       filename: '',
       list: [],
       like: '',
-      tags: []
+      tags: [],
+      following: ''
     }
   }
 }
@@ -362,20 +407,20 @@ export default {
       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.woff2) format('woff2'),
       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.woff) format('woff'),
       url(//fonts.gstatic.com/ea/nanumgothic/v5/NanumGothic-Regular.ttf) format('truetype');
-  font-weight : normal;
+  font-weight : 700;
   font-style : normal;
 }
 @font-face {
     font-family: 'Olleh';
     src:url('../assets/Droid-Sans-Fallback.ttf') format('truetype');
-    font-weight : normal;
+    font-weight : 700;
     font-style : normal;
 }
 div {
  font-family: 'Olleh','NanumGothic';
 }
 h1, h2 {
-  font-weight: normal;
+  font-weight: 600;
 }
 ul {
   list-style-type: none;
@@ -435,6 +480,11 @@ a {
   position: absolute;
   top: 20px;
   right: 20px;
+}
+#post-box #back-box {
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
 .list-group .card {
   margin: 5px;
