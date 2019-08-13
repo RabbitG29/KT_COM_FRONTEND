@@ -10,7 +10,7 @@
     <div v-show="isLogged" >
       <h1>리뷰할 코드 업로드</h1>
       <br>
-        <b-form-select v-model="mode" class="mb-3">
+        <b-form-select v-model="mode" class="mb-3" v-b-tooltip.hover title="코드 공개 범위 설정">
           <option value="1" >비공개</option>
           <option value="2">부서 공개</option>
           <option value="3">전체 공개</option>

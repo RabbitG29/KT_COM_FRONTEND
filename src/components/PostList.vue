@@ -22,11 +22,10 @@
           <input class="form-control" v-model="name" @input="getResult(true)" @keydown.enter="getResult(true)" placeholder="게시글명 또는 작성자를 입력해주세요(대소문자 구분).">
         </div>
         <div class="col-sm-1">
-          <button type="button" class="btn btn-primary" @click.prevent="getResult(true)">검색</button>
+          <button type="button" v-b-tooltip.hover title="게시글 검색" class="btn btn-primary" @click.prevent="getResult(true)">검색</button>
         </div>
         <div class="col-sm-1" >
-          <button type="button" class="btn btn-secondary"
-        @click="createPost()">글 등록</button>
+          <button type="button" class="btn btn-secondary" v-b-tooltip.hover title="게시글 등록" @click="createPost()">글 등록</button>
         </div>
       </div>
       <div class="row">

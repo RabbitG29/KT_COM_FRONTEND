@@ -36,7 +36,7 @@
                 <div class="col-sm-1" >
             <!-- <button type="button" class="btn btn-secondary"
         @click="gotoSonar()">과거 리뷰 보러가기</button>-->
-                  <button type="button" class="btn btn-secondary" @click="gotoUpload()">코드 등록</button>
+                  <button type="button" class="btn btn-secondary" v-b-tooltip.hover title="코드 업로드 및 리뷰 진행" @click="gotoUpload()">코드 등록</button>
                 </div>
               </div>
               <div class="row"> 
@@ -57,14 +57,14 @@
               <tr>
                 <td scope="col">{{index+1}}</td>
                 <td style="text-align: left;">{{item.부서명}}</td>
-                <td width=400 @click="readCode(item)" style="cursor: pointer; text-align: left;">{{item.파일명}}</td>
+                <td width=400 @click="readCode(item)" style="cursor: pointer; text-align: left;" v-b-tooltip.hover title="SonarCloud로 이동(새 창)">{{item.파일명}}</td>
                 <td>{{item.이름}}</td>
                 <td>{{item.writetime}}</td>
                 
                 <td>
                     <button v-if="isLogged" class="btn btn-sm btn-primary" @click.prevent="downloadCode(item.코드번호)">다운로드</button>
                     <button v-if="isLogged && item.작성자==getId" class="btn btn-sm btn-danger" @click.prevent="deleteRequest(item)">삭제</button></td> <!-- TODO : 다운/삭제기능 -->
-                <td width=10><button v-if="isLogged" class="btn btn-sm btn-light" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" >▼</button>
+                <td width=10><button v-if="isLogged" class="btn btn-sm btn-light" @click.prevent="changeIndex(index+1,item)" v-b-toggle="'accordion-'+(index+1)" v-b-tooltip.hover title="태그, 이슈 및 코멘트 펼치기" >▼</button>
                 </td>
               <tr> <!-- row of row로 table 내에서 처리 가능 -->
               <td colspan="7" style="padding: 0px;"> <!-- 모든 열의 자리를 차지하도록 -->

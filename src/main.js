@@ -32,6 +32,8 @@ import { CollapsePlugin } from 'bootstrap-vue'
 import GoTop from '@inotom/vue-go-top';
 Vue.use(CollapsePlugin)
 import VueTags from "vue-tags";
+import { TooltipPlugin } from 'bootstrap-vue'
+Vue.use(TooltipPlugin)
 
 Vue.component("input-tags", VueTags);
 

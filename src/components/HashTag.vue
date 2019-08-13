@@ -11,7 +11,7 @@
     <div v-show="isLogged" >
     <h2>Search by HashTag</h2><br>
     <div class="row form-group">
-        <label class="col-sm-1">태그 검색</label>
+        <div class="col-sm-1" />
         <div class="col-sm-2">
         <b-form-select v-model="searchMode" class="mb-3">
           <option value="0" >게시판</option>
@@ -19,7 +19,7 @@
         </b-form-select>
         </div>
         <div class="col-sm-2">
-        <b-form-select v-model="detailMode" class="mb-3">
+        <b-form-select v-model="detailMode" class="mb-3" v-b-tooltip.hover title="태그 옵션(&&, ||)">
           <option value="0" >OR</option>
           <option value="1">AND</option>
         </b-form-select>
@@ -28,7 +28,7 @@
           <vue-tags-input id="tagtag" v-model="tag" :tags="tags" @tags-changed="newTags => tags = newTags"/>
         </div>
         <div class="col-sm-1">
-          <button class="btn btn-sm btn-primary" :disabled="(this.tags.length==0)" @click.prevent="getData">검색</button>
+          <button class="btn btn-primary" v-b-tooltip.hover title="태그 검색" :disabled="(this.tags.length==0)" @click.prevent="getData">검색</button>
         </div>
     </div>
     <div id="board">
