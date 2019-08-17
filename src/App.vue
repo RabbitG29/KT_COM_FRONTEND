@@ -15,7 +15,9 @@
             <span slot="dropdown-icon">▶</span>
         </sidebar-menu>
         <br><br>
-        <router-view v-bind:style=" !isCallapsed ? 'margin-left: 20%;' : 'margin-left: 14%'" />
+        <div style="margin-left: auto; margin-right: auto;">
+        <router-view v-bind:style=" !isCallapsed ? 'transform: translateX(10%);' : ''" style="margin-bottom: 50px;" />
+        </div>
     </div>
 </template>
 
@@ -217,7 +219,7 @@ export default {
 @font-face {
     font-family: 'Olleh';
     src:url('assets/Droid-Sans-Fallback.ttf') format('truetype');
-    font-weight : normal;
+    font-weight : 700;
     font-style : normal;
 }
 div {

@@ -272,7 +272,7 @@ export default {
                     console.log(this.list);
                     this.list.forEach(v=>{
                         var dateinfo = v.작성시간
-                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
+                        v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
                         console.log(v);
                     })
                     this.getResult(true);
@@ -354,7 +354,7 @@ export default {
           this.list2.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
-            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
             v.mode = 'view'
           })
           this.list3[index]=this.list2;

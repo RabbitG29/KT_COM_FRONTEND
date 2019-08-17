@@ -101,7 +101,7 @@ export default {
                 this.boardName = this.list[0].게시판명;
                 this.list.forEach(v=>{
                   var dateinfo = v.작성시각
-                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
+                  v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
                 })
                  this.getResult(true);
             })

@@ -122,6 +122,9 @@ export default {
                 type: 'success',
                 text: '코드 등록이 성공적으로 완료되었습니다.'
               })
+              this.$router.push({
+                name: 'CodeList'
+              })
             })
             .catch(error=>{
                 console.log(error)
@@ -129,10 +132,10 @@ export default {
                 type: 'error',
                 text: '서버에 오류가 있습니다.'
             })
-                this.$router.push({
-                  name: 'CodeList'
-                })
+              this.$router.push({
+                name: 'CodeList'
               })
+            })
         }
     },
   data () {

@@ -255,7 +255,7 @@ export default {
           this.list.forEach(v=>{
             var ct = v.작성시각
             console.log(ct)
-            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
+            v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
             v.mode = 'view'
           })
       })
@@ -356,7 +356,7 @@ export default {
         console.log(result)
         this.title = result.제목
         this.writer = result.이름
-        this.writetime = this.$moment(result.작성시각).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
+        this.writetime = this.$moment(result.작성시각).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
         this.writerID = result.작성자
         this.content = result.내용
         this.thumbsup = result.추천수
