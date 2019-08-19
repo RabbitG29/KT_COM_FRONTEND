@@ -21,7 +21,7 @@
       <br>
     <div class="dropbox">
       <input class="input-file" type="file" name="userfile" @change="upload($event.target.name, $event.target.files)" @drop="upload($event.target.name, $event.target.files)">
-      <h2 v-if="!this.file1">압축파일(zip) 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
+      <h2 v-if="!this.file1">압축파일(zip, 코드 파일만 압축) 혹은 코드파일을 드래그해서 드랍해주세요. </h2>
       <h2 v-if="this.file1" style="left:25%;">첨부한 파일명 : {{this.filename}}</h2>
     </div>
     <br>
@@ -117,11 +117,20 @@ export default {
             .then(result=>{
               console.log(result);
                this.$modal.hide('spinner');
-              console.log('success!')
-              this.$notice({
-                type: 'success',
-                text: '코드 등록이 성공적으로 완료되었습니다.'
-              })
+               if(result.data.status=='success') {
+                  console.log('success!')
+                  this.$notice({
+                    type: 'success',
+                    text: '코드 등록이 성공적으로 완료되었습니다.'
+                  })
+                }
+                else { // 서버에는 정상적으로 올라갔으나 SonarScanner 오류인 경우
+                  console.log('fail')
+                  this.$notice({
+                    type: 'error',
+                    text: '코드 등록에 실패하였습니다(SonarScanner 오류).'
+                  })
+                }
               this.$router.push({
                 name: 'CodeList'
               })
@@ -204,7 +213,7 @@ a {
   .dropbox > h2{
     position: absolute;
     top: 45%;
-    left: 20%;
+    left: 6%;
     z-index: 2;
   }
   .input-file{
