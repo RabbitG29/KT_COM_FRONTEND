@@ -135,7 +135,6 @@ methods: {
               categoryId: this.categoryId,
               title: this.title,
               boardId: this.boardId,
-              categoryId: this.categoryId,
               tags: submitTags
             }
             console.log(this.boardId)
@@ -160,17 +159,17 @@ methods: {
               })
           }
           else {
-            var url = this.$config.targetURL+'/board/post/';
-            var json = {
+            var url2 = this.$config.targetURL+'/board/post/';
+            var json2 = {
               content: this.content,
               title: this.title,
               postId: this.postId,
               categoryId: this.categoryId
             }
-            var formData = new FormData()
-            formData.append('information', JSON.stringify(json))
-            formData.append('userfile', this.file1)
-            this.$http.put(url, formData)
+            var formData2 = new FormData()
+            formData2.append('information', JSON.stringify(json2))
+            formData2.append('userfile', this.file1)
+            this.$http.put(url2, formData2)
             .then(result=>{
               console.log('success!')
               this.$notice({

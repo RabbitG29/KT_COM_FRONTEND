@@ -111,8 +111,7 @@ export default {
             }) 
         },
         getResult: function(flag){
-            let arr_base=[];
-            let arr=[];            
+            let arr_base=[];          
             for(var i=0;i<this.list.length;i++){
               if(this.name && ((this.list[i].제목.indexOf(String(this.name)) == -1) && (this.list[i].이름.indexOf(String(this.name)) == -1)))
                 continue;

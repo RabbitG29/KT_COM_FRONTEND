@@ -26,7 +26,6 @@
 import { SidebarMenu } from 'vue-sidebar-menu';
 import customIcon from 'vue-icon/lib/vue-feather.esm'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
-import VueSidebarMenu from 'vue-sidebar-menu'
 
 export default {
   name: 'App',

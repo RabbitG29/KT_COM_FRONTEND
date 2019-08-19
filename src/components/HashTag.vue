@@ -132,8 +132,8 @@ export default {
         getData: function(){
             var url = this.$config.targetURL+'/tags/bytag/'
             var texts = [];
-            for(var i=0;i<this.tags.length;i++)
-                texts.push(this.tags[i].text);
+            for(var k=0;k<this.tags.length;k++)
+                texts.push(this.tags[k].text);
             var json = {
                 "tags" : texts,
                 "mode" : this.searchMode
@@ -183,29 +183,29 @@ export default {
                 }
                 else { // 코드 검색
                     this.codes = [];
-                    var temp = JSON.parse(result.data.result);
-                    var temp2 = [];
-                    var temp3 = [];
-                    for(var i=0;i<temp.length;i++) {
-                        temp2.push(temp[i]);
-                        console.log(temp2[i]);
-                        for(var j=0;j<temp2[i].length;j++) {
-                            console.log(temp2[i][j]);
-                            temp3.push(temp2[i][j]);
+                    var temp5 = JSON.parse(result.data.result);
+                    var temp6 = [];
+                    var temp7 = [];
+                    for(var m=0;m<temp5.length;m++) {
+                        temp6.push(temp5[m]);
+                        console.log(temp6[m]);
+                        for(var n=0;n<temp6[m].length;n++) {
+                            console.log(temp6[m][n]);
+                            temp7.push(temp6[m][n]);
                         }
                     }
                     // 중복 제거 혹은 필터링을 통해 AND 및 OR 검색이 가능하도록
                     if(this.detailMode==1 && this.tags.length > 1) { // AND 조건에서 1개짜리일 경우에는 중복이 없으므로 넘김
-                        var temp4 = [];
-                        temp4 = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
+                        var temp8 = [];
+                        temp8 = Object(temp7).filter((array,index,self) => self.findIndex((t)=> {
                             return t.코드번호 === array.코드번호;
                         }) !== index); // 중복으로 나온 것 즉, AND
-                        this.codes = Object(temp4).filter((array,index,self) => self.findIndex((t)=> {
+                        this.codes = Object(temp8).filter((array,index,self) => self.findIndex((t)=> {
                             return t.코드번호 === array.코드번호;
                         }) === index); // 중복으로 검출된 것이 여러개이니 다시 중복된 것을 걸러준다.
                     }
                     else { // OR 조건이거나 AND 조건에서 태그가 하나일 경우
-                        this.codes = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
+                        this.codes = Object(temp7).filter((array,index,self) => self.findIndex((t)=> {
                             return t.코드번호 === array.코드번호;
                         }) === index); // 중복 제거
                     }
