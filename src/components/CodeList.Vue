@@ -68,8 +68,7 @@
                 </td>
               <tr> <!-- row of row로 table 내에서 처리 가능 -->
               <td colspan="7" style="padding: 0px;"> <!-- 모든 열의 자리를 차지하도록 -->
-                <div class="row" id="comment" >
-                  <div v-if="isLogged" class="list-group col-sm-12"> 
+
                   <!-- collapse 위치를 테이블 내로 이동하면서 accordion에서 일반 collapse로 변경-->
                     <b-collapse :id="'accordion-'+(index2+1)" role="tabpanel" v-for="(code, index2) in result" :key="index2">
                       <div v-if="index==index2"> <!-- 본인 collapse만 펴지게 -->
@@ -114,7 +113,7 @@
                             </div>
                         <div id="comment-post-box">
                           <textarea v-model="comment" class="form-control"  :placeholder="'Comment to '+code.파일명" rows="3"></textarea>
-                          <button type="button" class="btn btn-primary" style="cursor: pointer" :disabled="(comment=='')" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
+                          <button type="button" class="btn btn-primary" style="cursor: pointer; margin-right: 5px;" :disabled="(comment=='')" @click.prevent="commentEroll(code.코드번호)">댓글작성</button>
                         </div>
                         <div id="dummy" style="font-size: 0px;">
                           {{tags}}
@@ -150,8 +149,7 @@
                           <br>
                           </div>
                         </b-collapse>
-                      </div>
-                    </div>
+
                   </td>
                 </tr>
             </tbody>
@@ -534,9 +532,8 @@ a {
   right: 30px;
 }
 #comment-post-box button {
-  position: absolute;
-  top: 195px;
-  right: 30px;
+  position: relative;
+  margin-top: 5px;
 }
 #comment-post-box {
   margin-top: 15px;
