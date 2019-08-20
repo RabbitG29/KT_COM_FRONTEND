@@ -101,7 +101,7 @@ export default {
               return;
             }
             this.$modal.show('spinner');
-            var url = 'http://45.119.147.154:3002/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
+            var url = 'http://45.119.147.154:8080/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
             console.log(url);
             var formData = new FormData()
             formData.append('id', this.id)
