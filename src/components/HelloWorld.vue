@@ -14,6 +14,7 @@
             성능은 더 높게</h4>
             <h5>더 빠르고 좋은 개발을 위한
             KT 소프트웨어개발단의 커뮤니티입니다.</h5>
+            <h5>피드백은 "설문조사"메뉴에 올려주시면 감사하겠습니다.</h5>
             <br>
           </div>
         </div>
@@ -101,7 +102,7 @@ export default {
           this.$http.get(this.$config.targetURL + '/review/recent')
           .then(r=>{
           if(r.data.status == 'success'){
-            console.log(r)
+            //console.log(r)
             this.codes = JSON.parse(r.data.result)
           }
         })
@@ -110,7 +111,7 @@ export default {
           this.$http.get(this.$config.targetURL + '/review/many')
           .then(r=>{
           if(r.data.status == 'success'){
-            console.log(r)
+            //console.log(r)
             this.codes2 = JSON.parse(r.data.result)
           }
         })
@@ -119,7 +120,7 @@ export default {
           this.$http.get(this.$config.targetURL + '/board/post/recent')
           .then(r=>{
           if(r.data.status == 'success'){
-            console.log(r)
+           // console.log(r)
             this.posts = JSON.parse(r.data.result)
           }
         })
@@ -128,7 +129,7 @@ export default {
           this.$http.get(this.$config.targetURL + '/board/post/hot')
           .then(r=>{
           if(r.data.status == 'success'){
-            console.log(r)
+           // console.log(r)
             this.hots = JSON.parse(r.data.result)
           }
         })
@@ -137,12 +138,12 @@ export default {
         this.$http.get(this.$config.targetURL + '/tags/liketag')
         .then(r=>{
           if(r.data.status == 'success') {
-            console.log(r)
+          //  console.log(r)
             this.tags2 = JSON.parse(r.data.result)
             for(var i=0;i<this.tags2.length;i++) {
               this.tags.push(this.tags2[i].태그명);
             }
-            console.log(this.tags);
+           // console.log(this.tags);
           }
         })
       }

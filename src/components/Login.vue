@@ -41,10 +41,10 @@ export default {
   },
   methods: {
       logIn(data){
-        console.log("commit")
-        console.log(data.id)
-        console.log(data.name)
-        console.log(data.deptId)
+        //console.log("commit")
+        //console.log(data.id)
+        //console.log(data.name)
+        //console.log(data.deptId)
         this.$store.commit('logIn', { // 사원정보넣기
             id: data.id,
             name: data.name,
@@ -57,8 +57,8 @@ export default {
           this.$http.get(this.$config.targetURL+`/users/login?id=${this.id}&password=${this.password}`)
           .then((result)=>{
               if(result.data.status == 'success'){ // 로그인 성공
-                  console.log('success')
-                  console.log(result.data)
+                  //console.log('success')
+                  //console.log(result.data)
                   this.logIn(result.data)
                   this.$notice({
                       type: 'success',

@@ -138,13 +138,13 @@ export default {
                 "tags" : texts,
                 "mode" : this.searchMode
             }
-            console.log(texts);
-            console.log(json);
+           // console.log(texts);
+           // console.log(json);
             this.$http.post(url, json)
             .then(result=>{
-                console.log(JSON.parse(result.data.result))
+               // console.log(JSON.parse(result.data.result))
                 if(this.searchMode==0) { // 게시글 검색
-                    console.log(this.detailMode);
+                  //  console.log(this.detailMode);
                     this.posts = [];
                     var temp = JSON.parse(result.data.result);
                     var temp2 = [];
@@ -163,22 +163,22 @@ export default {
                         temp4 = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
                             return t.게시글번호 === array.게시글번호;
                         }) !== index); // 중복으로 나온 것 즉, AND
-                        console.log(temp4);
+                      //  console.log(temp4);
                         this.posts = Object(temp4).filter((array,index,self) => self.findIndex((t)=> {
                             return t.게시글번호 === array.게시글번호;
                         }) === index); // 중복으로 검출된 것이 여러개이니 다시 중복된 것을 걸러준다.
-                        console.log(this.posts);
+                      //  console.log(this.posts);
                     }
                     else { // OR 조건이거나 AND 조건에서 태그가 하나일 경우
                         this.posts = Object(temp3).filter((array,index,self) => self.findIndex((t)=> {
                             return t.게시글번호 === array.게시글번호;
                         }) === index); // 중복 제거
                     }
-                    console.log(this.posts);
+                  //  console.log(this.posts);
                     this.posts.forEach(v=>{
                         var dateinfo = v.작성시각
                         v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')
-                        console.log("왜")
+                       // console.log("왜")
                     })
                 }
                 else { // 코드 검색
@@ -188,9 +188,9 @@ export default {
                     var temp7 = [];
                     for(var m=0;m<temp5.length;m++) {
                         temp6.push(temp5[m]);
-                        console.log(temp6[m]);
+                      //  console.log(temp6[m]);
                         for(var n=0;n<temp6[m].length;n++) {
-                            console.log(temp6[m][n]);
+                         //   console.log(temp6[m][n]);
                             temp7.push(temp6[m][n]);
                         }
                     }
@@ -209,7 +209,7 @@ export default {
                             return t.코드번호 === array.코드번호;
                         }) === index); // 중복 제거
                     }
-                    console.log(this.codes);
+                  //  console.log(this.codes);
                     this.codes.forEach(v=>{
                         var dateinfo = v.작성시간
                         v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:MM')

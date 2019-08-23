@@ -31,6 +31,7 @@ import GoTop from '@inotom/vue-go-top';
 Vue.use(CollapsePlugin)
 import VueTags from "vue-tags";
 import { TooltipPlugin } from 'bootstrap-vue'
+import VueAnalytics from 'vue-analytics'
 Vue.use(TooltipPlugin)
 Vue.component("input-tags", VueTags);
 Vue.component('b-form-select', BFormSelect)
@@ -51,6 +52,13 @@ Vue.use(VueSidebarMenu)
 Vue.use(wysiwyg, {})
 Vue.use(vuejsmodal, {dialog: true})
 
+Vue.use(VueAnalytics, {
+    id: 'UA-123282718-2',
+    router,
+    autoTracking: {
+      pageviewOnLoad: false
+    }
+  })
 
 const options = {
     color: '#bffaf3',

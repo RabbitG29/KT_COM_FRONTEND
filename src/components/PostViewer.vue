@@ -207,7 +207,7 @@ export default {
       var url = this.$config.targetURL+'/board/post/follow?postId='+this.postId+'&id='+this.getId;
       this.$http.get(url)
       .then(result=>{
-        console.log(result.body);
+       // console.log(result.body);
         if(result.data.status == 'follow'){
          this.following=1;
        }
@@ -217,7 +217,7 @@ export default {
       })
     },
     changeCommentMode: function(index){
-      console.log(index);
+    //  console.log(index);
       if(this.list[index].mode == 'view')
         this.list[index].mode = 'edit'
       else
@@ -248,13 +248,13 @@ export default {
     getComment: function(){
       this.$http.get(this.$config.targetURL+'/board/comment?postId='+this.postId)
       .then(result=>{
-          console.log(result)
-          console.log(result.data.status)
+       //   console.log(result)
+        //  console.log(result.data.status)
           this.list = JSON.parse(result.data.result)
-          console.log(this.list);
+       //   console.log(this.list);
           this.list.forEach(v=>{
             var ct = v.작성시각
-            console.log(ct)
+         //   console.log(ct)
             v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
             v.mode = 'view'
           })
@@ -304,7 +304,7 @@ export default {
       this.$http.delete(this.$config.targetURL+'/board/comment?commentId='+commentId)
       .then(result=>{
         if(result.data.status == 'success'){
-          console.log('삭제성공')
+        //  console.log('삭제성공')
           this.getComment()
           this.$notice({
             type: 'success',
@@ -323,7 +323,7 @@ export default {
     editComment : function(item){
       var commentId = item.댓글번호
       var comment = item.내용
-      console.log(commentId + '  ' +comment)
+    //  console.log(commentId + '  ' +comment)
       var url = this.$config.targetURL+'/board/comment';
       var json = {
         commentId: commentId,
@@ -332,7 +332,7 @@ export default {
       this.$http.put(url, json)
       .then(result=>{
         if(result.data.status == 'success'){
-          console.log('수정성공')
+        //  console.log('수정성공')
           this.getComment()
           this.$notice({
             type: 'success',
@@ -353,7 +353,7 @@ export default {
     .then(r=>{
       if(r.data.status == 'success'){
         var result = JSON.parse(r.data.result)[0]
-        console.log(result)
+     //   console.log(result)
         this.title = result.제목
         this.writer = result.이름
         this.writetime = this.$moment(result.작성시각).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')

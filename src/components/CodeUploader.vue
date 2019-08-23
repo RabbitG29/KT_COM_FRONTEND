@@ -66,18 +66,18 @@ export default {
           this.fileExt = this.filename.slice(this.filename.indexOf(".")+1).toLowerCase(); // 뒤에서부터 보게 하면?
           for(var i=0;i<this.languages.length;i++) {
             if(this.languages[i]==this.fileExt) { // 더 좋은 방법이 있을까?
-              console.log(true);
+              //console.log(true);
               return true;
             }
           }
-          console.log(false);
+          //console.log(false);
           return false;
         },
         progress(event,progress,stepValue){
-          console.log(stepValue);
+          //console.log(stepValue);
         },
         progress_end(event){
-          console.log("Circle progress end");
+         // console.log("Circle progress end");
         },
         spinner() {
           this.$modal.show('spinner');
@@ -88,7 +88,7 @@ export default {
         },
         upload: function(name, files) {
             //console.log(name); 
-            console.log(files[0].name);
+            //console.log(files[0].name);
             this.filename=files[0].name;
             this.file1=files[0];
         },
@@ -102,7 +102,7 @@ export default {
             }
             this.$modal.show('spinner');
             var url = 'http://45.119.147.154:8080/review'; // 따로 포트 운용(다른 사이트 작업이 멈추지 않게)
-            console.log(url);
+            //console.log(url);
             var formData = new FormData()
             formData.append('id', this.id)
             formData.append('userfile', this.file1)
@@ -115,7 +115,7 @@ export default {
             formData.append('tags', JSON.stringify(submitTags));
             this.$http.post(url, formData)
             .then(result=>{
-              console.log(result);
+              //console.log(result);
                this.$modal.hide('spinner');
                if(result.data.status=='success') {
                   console.log('success!')
@@ -125,7 +125,7 @@ export default {
                   })
                 }
                 else { // 서버에는 정상적으로 올라갔으나 SonarScanner 오류인 경우
-                  console.log('fail')
+                 // console.log('fail')
                   this.$notice({
                     type: 'error',
                     text: '코드 등록에 실패하였습니다(SonarScanner 오류).'

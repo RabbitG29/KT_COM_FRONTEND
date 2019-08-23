@@ -90,11 +90,11 @@ export default {
   methods: {
       getData: function(){
             var url = this.$config.targetURL+'/board/post/following?id='+this.getId;
-            console.log(url)
+            //console.log(url)
             this.$http.get(url)
             .then(result=>{
                 //console.log(result)
-                console.log(JSON.parse(result.data.result))
+                //console.log(JSON.parse(result.data.result))
                 this.list = JSON.parse(result.data.result)
                 this.list.forEach(v=>{
                   var dateinfo = v.작성시각
@@ -141,7 +141,7 @@ export default {
           .then(r=>{
             if(r.data.status=="success") {
               this.depts = JSON.parse(r.data.result);
-              console.log(this.depts);
+              //console.log(this.depts);
             }
           })
         },

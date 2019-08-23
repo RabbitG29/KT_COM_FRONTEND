@@ -70,7 +70,7 @@ export default {
   mounted: function() {
     this.boardId = this.$route.query.boardId;
     this.boardName = this.$route.query.boardName;
-    console.log(this.boardId);
+ //   console.log(this.boardId);
     this.getData();
     this.getCategories();
     this.getDepts();
@@ -79,7 +79,7 @@ export default {
       $route: function(to, from){
         this.boardId = this.$route.query.boardId
         this.boardName = this.$route.query.boardName;
-        console.log('현재 게시판 번호 : '+this.boardId)
+      //  console.log('현재 게시판 번호 : '+this.boardId)
         this.getData();
         this.getCategories();
         this.getDepts();
@@ -91,11 +91,11 @@ export default {
   methods: {
         getData: function(){
             var url = this.$config.targetURL+'/board/post?boardId='+this.boardId
-            console.log(url)
+         //   console.log(url)
             this.$http.get(url)
             .then(result=>{
                 //console.log(result)
-                console.log(JSON.parse(result.data.result))
+               // console.log(JSON.parse(result.data.result))
                 this.list = JSON.parse(result.data.result)
                 //console.log(list)
                 this.boardName = this.list[0].게시판명;
@@ -119,7 +119,7 @@ export default {
           .then(r=>{
             if(r.data.status=="success") {
               this.categories = JSON.parse(r.data.result);
-              console.log(this.categories);
+          //    console.log(this.categories);
             }
           })
         },
@@ -129,7 +129,7 @@ export default {
           .then(r=>{
             if(r.data.status=="success") {
               this.depts = JSON.parse(r.data.result);
-              console.log(this.depts);
+           //   console.log(this.depts);
             }
           })
         },

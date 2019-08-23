@@ -70,13 +70,13 @@ mounted: function() {
     if(this.mode=='edit') {
       this.postId = this.$route.query.postId;
       this.getTags();
-      console.log(this.postId);
+   //   console.log(this.postId);
           this.$http.get(this.$config.targetURL+'/board/post/view?postId='+this.postId)
           .then(r=>{
-            console.log(r.data.result);
+           // console.log(r.data.result);
             if(r.data.status == 'success'){
               var result = JSON.parse(r.data.result)[0]
-              console.log(result);
+           //   console.log(result);
               this.title = result.제목
               this.writer = result.이름
               this.content = result.내용
@@ -96,7 +96,7 @@ mounted: function() {
 },
 methods: {
         fileChanges: function(e){
-          console.log(e)
+       //   console.log(e)
           var file = e.target.files[0]
           this.file1 = file;
         },
@@ -106,7 +106,7 @@ methods: {
           .then(r=>{
             if(r.data.status=="success") {
               this.categories = JSON.parse(r.data.result);
-              console.log(this.categories);
+         //     console.log(this.categories);
             }
           })
         },
@@ -137,7 +137,7 @@ methods: {
               boardId: this.boardId,
               tags: submitTags
             }
-            console.log(this.boardId)
+         //   console.log(this.boardId)
             var formData = new FormData()
             formData.append('information', JSON.stringify(json))
             formData.append('userfile', this.file1)

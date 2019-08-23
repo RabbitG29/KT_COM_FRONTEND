@@ -196,7 +196,7 @@ export default {
         this.mode = this.$route.query.mode;
         this.deptId = this.getDeptId;
         this.getData()
-        this.getIssues(currentItem);
+        //this.getIssues(currentItem);
         //this.getComment(this.list[0].코드번호);
       }
     },
@@ -240,8 +240,8 @@ export default {
           .then(r=>{
             
             this.issues2[item.코드번호]=r.data.tags;
-            console.log(this.issues2[item.코드번호]);
-            console.log(item.코드번호);
+           // console.log(this.issues2[item.코드번호]);
+            //console.log(item.코드번호);
           })
         },
         changeIndex: function(index,item) {
@@ -249,7 +249,7 @@ export default {
             this.currentItem = item;
             this.getComment(item.코드번호);
             this.getTags(item.코드번호);
-            this.getIssues(item);
+            //this.getIssues(item);
         },
         readCode: function(item) {
             window.open(item.링크);
@@ -260,22 +260,25 @@ export default {
         },
         getData: function() {
             var url = this.$config.targetURL+`/review?id=${this.id}&mode=${this.mode}&deptId=${this.deptId}`;
-            console.log(url);
+           // console.log(url);
             this.$http.get(url).then(r=>{
-                console.log(r);
+                //console.log(r);
                 if(r.data.status == 'success'){
-                    console.log(JSON.parse(r.data.result));
+                    //console.log(JSON.parse(r.data.result));
                     this.list = JSON.parse(r.data.result);
                     //this.list = r.data.result;
-                    console.log(this.list);
+                   // console.log(this.list);
                     this.list.forEach(v=>{
                         var dateinfo = v.작성시간
                         v.writetime = this.$moment(dateinfo).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
-                        console.log(v);
+                        //console.log(v);
                     })
                     this.getResult(true);
-                    for(var i=0;i<this.list.length;i++)
+                    for(var i=0;i<this.list.length;i++) {
                       this.getIssues(this.list[i]);
+                      //this.getComment(this.list[i].코드번호); // -> TODO : request를 한 번에 요청하는 방향으로
+                      //this.getTags(this.list[i].코드번호);
+                    }
                 }
             })
             .catch(e=>{
@@ -326,7 +329,7 @@ export default {
               arr_base.push(this.list[i]);
             }
             this.result = arr_base;
-            console.log(this.result);
+            //console.log(this.result);
             //this.result = arr_base.slice(this.page_max*this.page, this.page_max*(this.page+1));
         },
         changeCommentMode: function(index){
@@ -334,30 +337,30 @@ export default {
             this.list2[index].mode = 'edit'
           else
             this.list2[index].mode = 'view'
-          console.log("good");
+          //console.log("good");
           //console.log(this.list[index].mode);
           this.$forceUpdate()
         },
         getComment: function(index){
-          console.log("hihi");
+          //console.log("hihi");
           this.$http.get(this.$config.targetURL+'/review/comment?codeId='+index)
           .then(result=>{
-            console.log("hi2");
-            console.log(result.data)
+            //console.log("hi2");
+            //console.log(result.data)
           this.list2 = JSON.parse(result.data.result)
-          console.log(this.list2);
-          console.log("hi");
+          //console.log(this.list2);
+          //console.log("hi");
           //this.list3.push([]);
           //console.log("??" + this.list3[0]);
           this.list2.forEach(v=>{
             var ct = v.작성시각
-            console.log(ct)
+           // console.log(ct)
             v.작성시각 = this.$moment(ct).tz('Asia/Seoul').format('YYYY.MM.DD HH:mm')
             v.mode = 'view'
           })
           this.list3[index]=this.list2;
-          console.log("list3");
-          console.log(this.list3[index]);
+         // console.log("list3");
+          //console.log(this.list3[index]);
       })
       .catch(error=>{
           console.log('서버에러')
@@ -416,7 +419,7 @@ export default {
     editComment : function(item){
       var commentId = item.댓글번호
       var comment = item.내용
-      console.log(commentId + '  ' +comment)
+      //console.log(commentId + '  ' +comment)
       var url = this.$config.targetURL+'/review/comment';
       var json = {
         commentId: commentId,
@@ -425,7 +428,7 @@ export default {
       this.$http.put(url, json)
       .then(result=>{
         if(result.data.status == 'success'){
-          console.log('수정성공')
+         // console.log('수정성공')
           this.getComment(item.소속코드)
           this.$notice({
             type: 'success',
